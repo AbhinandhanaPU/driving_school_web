@@ -34,7 +34,7 @@ class TutorController extends GetxController {
       .collection('DrivingSchoolCollection')
       .doc(UserCredentialsController.schoolId);
 
-  Future<void> createNewTeacher(TeacherModel teacherModel) async {
+  Future<void> createNewTutor(TeacherModel teacherModel) async {
     buttonstate.value = ButtonState.loading;
     try {
       await _firebase
@@ -62,6 +62,20 @@ class TutorController extends GetxController {
         buttonstate.value = ButtonState.idle;
       });
       log("Error .... $e");
+    }
+  }
+
+  Future<void> deleteTutor(TeacherModel teacherModel) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Teachers')
+          .doc(teacherModel.docid)
+          .delete()
+          .then((value) => log("Tutor deleted"));
+    } catch (e) {
+      log("Tutor deletion error:$e");
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_data_list.dart';
+import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
@@ -40,11 +41,26 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              const Row(
+              Row(
                 children: [
-                  RouteSelectedTextContainer(
+                  const RouteSelectedTextContainer(
                     title: 'All Students',
                     width: 200,
+                  ),
+                  const Spacer(),
+                  ButtonContainerWidget(
+                    curving: 0,
+                    colorindex: 6,
+                    height: 35,
+                    width: 220,
+                    child: const Center(
+                      child: TextFontWidgetRouter(
+                        text: 'Send practice shedule to Students',
+                        fontsize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: cWhite,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -101,7 +117,15 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 3,
                           child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Sheduled Practice'),
+                              headerTitle: 'Sheduled Date'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: CatrgoryTableHeaderWidget(
+                              headerTitle: 'Sheduled Time'),
                         ),
                         SizedBox(
                           width: 02,

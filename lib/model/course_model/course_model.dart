@@ -1,13 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class CourseModel {
-  String courseType;
+  String courseName;
+  String courseDes;
   String tutor;
   String duration;
   String rate;
   String courseId;
   CourseModel({
-    required this.courseType,
+    required this.courseName,
+    required this.courseDes,
     required this.tutor,
     required this.duration,
     required this.rate,
@@ -15,14 +18,16 @@ class CourseModel {
   });
 
   CourseModel copyWith({
-    String? courseType,
+    String? courseName,
+    String? courseDes,
     String? tutor,
     String? duration,
     String? rate,
     String? courseId,
   }) {
     return CourseModel(
-      courseType: courseType ?? this.courseType,
+      courseName: courseName ?? this.courseName,
+      courseDes: courseDes ?? this.courseDes,
       tutor: tutor ?? this.tutor,
       duration: duration ?? this.duration,
       rate: rate ?? this.rate,
@@ -32,7 +37,8 @@ class CourseModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'courseType': courseType,
+      'courseName': courseName,
+      'courseDes': courseDes,
       'tutor': tutor,
       'duration': duration,
       'rate': rate,
@@ -42,11 +48,12 @@ class CourseModel {
 
   factory CourseModel.fromMap(Map<String, dynamic> map) {
     return CourseModel(
-      courseType: map['courseType'] ?? "",
-      tutor: map['tutor'] ?? "",
-      duration: map['duration'] ?? "",
-      rate: map['rate'] ?? "",
-      courseId: map['courseId'] ?? "",
+      courseName: map['courseName'] as String,
+      courseDes: map['courseDes'] as String,
+      tutor: map['tutor'] as String,
+      duration: map['duration'] as String,
+      rate: map['rate'] as String,
+      courseId: map['courseId'] as String,
     );
   }
 
@@ -57,14 +64,15 @@ class CourseModel {
 
   @override
   String toString() {
-    return 'CourseModel(courseType: $courseType, tutor: $tutor, duration: $duration, rate: $rate, courseId: $courseId)';
+    return 'CourseModel(courseName: $courseName, courseDes: $courseDes, tutor: $tutor, duration: $duration, rate: $rate, courseId: $courseId)';
   }
 
   @override
   bool operator ==(covariant CourseModel other) {
     if (identical(this, other)) return true;
 
-    return other.courseType == courseType &&
+    return other.courseName == courseName &&
+        other.courseDes == courseDes &&
         other.tutor == tutor &&
         other.duration == duration &&
         other.rate == rate &&
@@ -73,7 +81,8 @@ class CourseModel {
 
   @override
   int get hashCode {
-    return courseType.hashCode ^
+    return courseName.hashCode ^
+        courseDes.hashCode ^
         tutor.hashCode ^
         duration.hashCode ^
         rate.hashCode ^

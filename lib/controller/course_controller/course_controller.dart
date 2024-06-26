@@ -13,12 +13,13 @@ class CourseController extends GetxController {
   final formKey = GlobalKey<FormState>();
   Rx<ButtonState> buttonstate = ButtonState.idle.obs;
 
-  TextEditingController courseTypeController = TextEditingController();
+  TextEditingController courseNameController = TextEditingController();
+  TextEditingController courseDesController = TextEditingController();
   TextEditingController courseTutorController = TextEditingController();
   TextEditingController courseDurationController = TextEditingController();
   TextEditingController courseRateController = TextEditingController();
   clearFields() {
-    courseTypeController.clear();
+    courseNameController.clear();
     courseTutorController.clear();
     courseDurationController.clear();
     courseRateController.clear();
@@ -28,7 +29,8 @@ class CourseController extends GetxController {
     log("Creating Course .....");
     final uuid = const Uuid().v1();
     final courseDetails = CourseModel(
-        courseType: courseTypeController.text,
+        courseName: courseNameController.text,
+        courseDes: courseDesController.text,
         tutor: courseTutorController.text,
         duration: courseDurationController.text,
         rate: courseRateController.text,

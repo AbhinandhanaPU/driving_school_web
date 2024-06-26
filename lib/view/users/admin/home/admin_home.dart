@@ -9,6 +9,7 @@ import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/app_bar/admin_appBar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/course_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_list.dart';
@@ -21,6 +22,7 @@ import 'package:new_project_driving/view/users/admin/screens/registration/teache
 import 'package:new_project_driving/view/users/admin/screens/road_test/road_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/view_all_students.dart';
 import 'package:new_project_driving/view/users/admin/screens/tutor/view_all_tutor.dart';
+import 'package:new_project_driving/view/users/admin/screens/videos/video_list.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:sidebar_drawer/sidebar_drawer.dart';
@@ -222,10 +224,11 @@ List<Widget> pages = [
   const RoadTestStudentListContainer(), // index 9
   const PracticeSheduleStudentListContainer(), // index 10
   const FeesAndBillsList(), // index 11
-  NoticeAllList(), // index 12
+  AllAdminListPage(), // index 12
   NoticeAllList(), // index 13
-  const AllEventsList(), // index 14
-  AdminNotificationCreate(), // index 15
-  AdminNotificationCreate(), // index 16
-  LoginHistroyContainer(), // index 17
+  NoticeAllList(), // index 14
+  const AllEventsList(), // index 15
+  const VideosList(), // index 16
+  AdminNotificationCreate(), // index 17
+  LoginHistroyContainer(), // index 18
 ];

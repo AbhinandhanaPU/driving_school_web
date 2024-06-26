@@ -24,9 +24,6 @@ class SelectLoginMonthDropDown extends StatelessWidget {
           return null;
         }
       },
-
-      // autoValidateMode: AutovalidateMode.always,
-
       asyncItems: (value) {
         loginHCtrl.allLoginMonthList.clear();
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
+import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class AllStudentDataList extends StatelessWidget {
@@ -12,9 +15,9 @@ class AllStudentDataList extends StatelessWidget {
     required this.index,
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
+    StudentController studentController = Get.put(StudentController());
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -141,6 +144,34 @@ class AllStudentDataList extends StatelessWidget {
               ],
             ),
           ), //............................. Status [Active or DeActivate]
+          const SizedBox(
+            width: 01,
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  customDeleteShowDialog(
+                    context: context,
+                    onTap: () {
+                      studentController
+                          .deleteStudents(data)
+                          .then((value) => Navigator.pop(context));
+                    },
+                  );
+                },
+                child: DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    index: index,
+                    headerTitle: ' Remove 🗑️'),
+              ),
+            ),
+          ), //........................................... delete
+          const SizedBox(
+            width: 01,
+          ),
         ],
       ),
     );

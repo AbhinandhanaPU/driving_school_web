@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_project_driving/controller/login_histroy_controller/login_histroy_controller.dart';
- 
+
 class SelectLoginDateDropDown extends StatelessWidget {
   SelectLoginDateDropDown({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final loginHCtrl = Get.put(AdminLoginHistroyController());
 
@@ -24,9 +24,6 @@ class SelectLoginDateDropDown extends StatelessWidget {
           return null;
         }
       },
-
-      // autoValidateMode: AutovalidateMode.always,
-
       asyncItems: (value) {
         loginHCtrl.allLoginDayList.clear();
 
@@ -37,7 +34,6 @@ class SelectLoginDateDropDown extends StatelessWidget {
         if (value != null) {
           loginHCtrl.loginHDayValue.value = value;
           log(loginHCtrl.loginHDayValue.value);
-
         }
       },
       popupProps: const PopupProps.menu(

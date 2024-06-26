@@ -10,7 +10,7 @@ class StudentController extends GetxController {
   List<StudentModel> studentProfileList = [];
   Rxn<StudentModel> studentModelData = Rxn<StudentModel>();
   RxBool ontapStudent = false.obs;
-  
+
   final _fbServer = server
       .collection('DrivingSchoolCollection')
       .doc(UserCredentialsController.schoolId);
@@ -24,6 +24,20 @@ class StudentController extends GetxController {
       log(studentProfileList[0].toString());
     } catch (e) {
       showToast(msg: "User Data Error");
+    }
+  }
+
+  Future<void> deleteStudents(StudentModel studentModel) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Students')
+          .doc(studentModel.docid)
+          .delete()
+          .then((value) => log("Student deleted"));
+    } catch (e) {
+      log("Student deletion error:$e");
     }
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/admin_section/teacher_controller/teacher_controller.dart';
+import 'package:new_project_driving/controller/admin_section/Tutor_controller/tutor_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/teacher_model/teacher_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/tutor/teachers_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/tutor/tutor_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/tutor/tutor_details.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
@@ -103,6 +103,13 @@ class AllTutorListContainer extends StatelessWidget {
                                     flex: 2,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'Status')),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                    flex: 2,
+                                    child: CatrgoryTableHeaderWidget(
+                                        headerTitle: 'Delete')),
                                 SizedBox(
                                   width: 02,
                                 ),

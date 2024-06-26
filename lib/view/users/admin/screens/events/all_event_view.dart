@@ -167,6 +167,19 @@ class AllEventsList extends StatelessWidget {
                             .collection('AdminEvents')
                             .snapshots(),
                         builder: (context, snaPS) {
+                          if (snaPS.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          if (snaPS.data!.docs.isEmpty) {
+                            return const Center(
+                                child: Text(
+                              'No Events',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ));
+                          }
                           if (snaPS.hasData) {
                             return ListView.separated(
                                 itemBuilder: (context, index) {

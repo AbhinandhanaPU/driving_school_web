@@ -313,7 +313,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/books.png')),
+                child: Image.asset('webassets/png/createadmin.png')),
             onTap: () {
               index = 12;
               onTap.call(index);
@@ -321,7 +321,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Study Materials',
+                  title: 'Create Admin',
                 ),
               ],
             ),
@@ -338,7 +338,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/notice.png')),
+                child: Image.asset('webassets/png/books.png')),
             onTap: () {
               index = 13;
               onTap.call(index);
@@ -346,7 +346,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Notices',
+                  title: 'Study Materials',
                 ),
               ],
             ),
@@ -363,7 +363,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/banner.png')),
+                child: Image.asset('webassets/png/notice.png')),
             onTap: () {
               index = 14;
               onTap.call(index);
@@ -371,7 +371,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Events',
+                  title: 'Notices',
                 ),
               ],
             ),
@@ -388,7 +388,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/video.png')),
+                child: Image.asset('webassets/png/banner.png')),
             onTap: () {
               index = 15;
               onTap.call(index);
@@ -396,38 +396,12 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Videos',
+                  title: 'Events',
                 ),
               ],
             ),
           ),
         ),
-        // const SizedBox(
-        //   height: 10,
-        // ),
-        // Container(
-        //   color: selectedIndex == 14
-        //       ? themeColorBlue.withOpacity(0.1)
-        //       : Colors.transparent,
-        //   child: ListTile(
-        //     leading: SizedBox(
-        //         height: 20,
-        //         width: 20,
-        //         child: Image.asset('webassets/png/meetings.png')),
-        //     onTap: () {
-        //       index = 14;
-        //       onTap.call(index);
-        //     },
-        //     title: Row(
-        //       children: [
-        //         DashboardTextFontWidget(
-        //           title: 'Meetings',
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        // //////////////////////////////...........................................
         const SizedBox(
           height: 10,
         ),
@@ -439,7 +413,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/notification.png')),
+                child: Image.asset('webassets/png/video.png')),
             onTap: () {
               index = 16;
               onTap.call(index);
@@ -447,7 +421,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Notifications',
+                  title: 'Videos',
                 ),
               ],
             ),
@@ -464,9 +438,34 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/logout.png')),
+                child: Image.asset('webassets/png/notification.png')),
             onTap: () {
               index = 17;
+              onTap.call(index);
+            },
+            title: Row(
+              children: [
+                DashboardTextFontWidget(
+                  title: 'Notifications',
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Container(
+          color: selectedIndex == 18
+              ? themeColorBlue.withOpacity(0.1)
+              : Colors.transparent,
+          child: ListTile(
+            leading: SizedBox(
+                height: 20,
+                width: 20,
+                child: Image.asset('webassets/png/logout.png')),
+            onTap: () {
+              index = 18;
               onTap.call(index);
             },
             title: Row(

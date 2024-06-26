@@ -67,7 +67,7 @@ class PracticeSheduleDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: '--'),
           ), //............................. Student joining Date
           const SizedBox(
             width: 01,
@@ -79,7 +79,7 @@ class PracticeSheduleDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: '--'),
           ), //............................. Student Completed days
           const SizedBox(
             width: 01,
@@ -91,7 +91,7 @@ class PracticeSheduleDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: '--'),
           ), //............................. Student Practce Status
           const SizedBox(
             width: 01,
@@ -103,19 +103,31 @@ class PracticeSheduleDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: '--'),
           ), //............................. Student Sheduled Practce
           const SizedBox(
             width: 01,
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: '--'),
+          ), //............................. Student Sheduled time
+          const SizedBox(
+            width: 01,
+          ),
+          Expanded(
+            flex: 3,
+            child: DataContainerWidget(
+                rowMainAccess: MainAxisAlignment.center,
+                color: cWhite,
+                // width: 150,
+                index: index,
+                headerTitle: '--'),
           ), //............................. Student pending
           const SizedBox(
             width: 01,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/controller/admin_section/Tutor_controller/tutor_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/teacher_model/teacher_model.dart';
+import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class AllTutorDataList extends StatelessWidget {
@@ -15,6 +18,7 @@ class AllTutorDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TutorController tutorController = Get.put(TutorController());
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -155,6 +159,35 @@ class AllTutorDataList extends StatelessWidget {
               ],
             ),
           ), //............................. Status [Active or DeActivate]
+          const SizedBox(
+            width: 01,
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  customDeleteShowDialog(
+                    context: context,
+                    onTap: () {
+                      tutorController
+                          .deleteTutor(data)
+                          .then((value) => Navigator.pop(context));
+                    },
+                  );
+                },
+                child: DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    // width: 150,
+                    index: index,
+                    headerTitle: ' Remove 🗑️'),
+              ),
+            ),
+          ), //........................................... delete
+          const SizedBox(
+            width: 01,
+          ),
         ],
       ),
     );

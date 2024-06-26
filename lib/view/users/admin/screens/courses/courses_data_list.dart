@@ -42,7 +42,7 @@ class AllCoursesDataList extends StatelessWidget {
           Expanded(
               flex: 2,
               child: TextFontWidget(
-                text: '  ${data.courseType}',
+                text: '  ${data.courseName}',
                 fontsize: 12,
                 overflow: TextOverflow.ellipsis,
               )), //................................................. courseType

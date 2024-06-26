@@ -49,10 +49,21 @@ createCoursesAdmin(BuildContext context) {
                                 top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
                               width: 500,
-                              controller: courseController.courseTypeController,
+                              controller: courseController.courseNameController,
                               validator: checkFieldEmpty,
-                              title: 'Course Type',
-                              hintText: 'Course Type',
+                              title: 'Course Name',
+                              hintText: 'Course Name',
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 5, left: 10, right: 10),
+                            child: TextFormFiledHeightnoColor(
+                              width: 500,
+                              controller: courseController.courseDesController,
+                              validator: checkFieldEmpty,
+                              title: 'Course Description',
+                              hintText: 'Course Description',
                             ),
                           ),
                           Padding(
@@ -83,7 +94,6 @@ createCoursesAdmin(BuildContext context) {
                             padding: const EdgeInsets.only(
                                 top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
-                              onTap: () {},
                               width: 500,
                               controller: courseController.courseRateController,
                               validator: checkFieldEmpty,

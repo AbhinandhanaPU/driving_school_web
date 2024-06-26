@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
-import 'package:new_project_driving/controller/admin_section/teacher_controller/teacher_controller.dart';
+import 'package:new_project_driving/controller/admin_section/Tutor_controller/tutor_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/teacher_model/teacher_model.dart';
 import 'package:new_project_driving/view/widget/back_button/back_button.dart';
@@ -33,7 +33,7 @@ createTeacherFunction(BuildContext context) {
         function: () async {
           if (teacherController.formKey.currentState!.validate()) {
             teacherController
-                .createNewTeacher(TeacherModel(
+                .createNewTutor(TeacherModel(
                   teacherName: teacherController.tutorNameController.text,
                   teacheremail: teacherController.tutorEmailController.text,
                   phoneNumber: teacherController.tutorPhoneNumeber.text.trim(),
