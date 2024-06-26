@@ -30,29 +30,26 @@ class AllLoginLogoutDataList extends StatelessWidget {
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                // width: 150,
                 index: index,
-                headerTitle: '${index + 1}'), //....................No
+                headerTitle: '${index + 1}'),
           ),
           const SizedBox(
             width: 01,
           ),
-
           Expanded(
             flex: 4,
             child: Row(
               children: [
                 Expanded(
                   child: TextFontWidget(
-                    text: "  ${data.adminName}",
-                    // "  Name of the Person",
+                    text: "  ${data.adminuserName}",
                     fontsize: 12,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
-          ), //........................................... Parent Name
+          ),
           const SizedBox(
             width: 02,
           ),
@@ -62,15 +59,14 @@ class AllLoginLogoutDataList extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextFontWidget(
-                    text: "  ${data.adminName}",
-                    //  "  @gmail.com",
+                    text: "  ${data.adminuserName}",
                     fontsize: 12,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
-          ), // ................................... Parent Email
+          ),
           const SizedBox(
             width: 02,
           ),
@@ -87,7 +83,7 @@ class AllLoginLogoutDataList extends StatelessWidget {
                 ),
               ],
             ),
-          ), //....................................... parent Phone Number
+          ),
           const SizedBox(
             width: 02,
           ),
@@ -106,8 +102,7 @@ class AllLoginLogoutDataList extends StatelessWidget {
                 ),
               ],
             ),
-          ), //............................. Student Class
-
+          ),
           const SizedBox(
             width: 02,
           ),

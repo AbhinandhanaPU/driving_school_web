@@ -3,14 +3,14 @@ import 'dart:convert';
 
 class AdminLoginDetailHistoryModel {
   String adminID;
-  String adminName;
+  String adminuserName;
   String docid;
   String loginTime;
   String logoutTime;
 
   AdminLoginDetailHistoryModel({
     required this.adminID,
-    required this.adminName,
+    required this.adminuserName,
     required this.docid,
     required this.loginTime,
     required this.logoutTime,
@@ -18,14 +18,14 @@ class AdminLoginDetailHistoryModel {
 
   AdminLoginDetailHistoryModel copyWith({
     String? adminID,
-    String? adminName,
+    String? adminuserName,
     String? docid,
     String? loginTime,
     String? logoutTime,
   }) {
     return AdminLoginDetailHistoryModel(
-      adminID: docid ?? this.adminID,
-      adminName: adminName ?? this.adminName,
+      adminID: adminID ?? this.adminID,
+      adminuserName: adminuserName ?? this.adminuserName,
       docid: docid ?? this.docid,
       loginTime: loginTime ?? this.loginTime,
       logoutTime: logoutTime ?? this.logoutTime,
@@ -35,7 +35,7 @@ class AdminLoginDetailHistoryModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'adminID': adminID,
-      'adminName': adminName,
+      'adminuserName': adminuserName,
       'docid': docid,
       'loginTime': loginTime,
       'logoutTime': logoutTime,
@@ -45,7 +45,7 @@ class AdminLoginDetailHistoryModel {
   factory AdminLoginDetailHistoryModel.fromMap(Map<String, dynamic> map) {
     return AdminLoginDetailHistoryModel(
       adminID: map['adminID'] ?? '',
-      adminName: map['adminName'] ?? '',
+      adminuserName: map['adminuserName'] ?? '',
       docid: map['docid'] ?? '',
       loginTime: map['loginTime'] ?? '',
       logoutTime: map['logoutTime'] ?? '',
@@ -60,7 +60,7 @@ class AdminLoginDetailHistoryModel {
 
   @override
   String toString() {
-    return 'AdminLoginDetailHistoryModel(adminID: $adminID, adminName: $adminName, docid: $docid, loginTime: $loginTime, logoutTime: $logoutTime)';
+    return 'AdminLoginDetailHistoryModel(adminID: $adminID, adminuserName: $adminuserName, docid: $docid, loginTime: $loginTime, logoutTime: $logoutTime)';
   }
 
   @override
@@ -68,7 +68,7 @@ class AdminLoginDetailHistoryModel {
     if (identical(this, other)) return true;
 
     return other.adminID == adminID &&
-        other.adminName == adminName &&
+        other.adminuserName == adminuserName &&
         other.docid == docid &&
         other.loginTime == loginTime &&
         other.logoutTime == logoutTime;
@@ -77,15 +77,9 @@ class AdminLoginDetailHistoryModel {
   @override
   int get hashCode {
     return adminID.hashCode ^
-        adminName.hashCode ^
+        adminuserName.hashCode ^
         docid.hashCode ^
         loginTime.hashCode ^
         logoutTime.hashCode;
   }
-}
-
-class LoginTimeIDSavingClass {
-  static String id = '';
-  static String date = '';
-  static String emailId = '';
 }

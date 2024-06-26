@@ -87,7 +87,6 @@ class LoginHistroyContainer extends StatelessWidget {
                         child: SizedBox(
                           width: 200,
                           height: 70,
-                          // color: cWhite,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -97,17 +96,18 @@ class LoginHistroyContainer extends StatelessWidget {
                                 height: 05,
                               ),
                               SizedBox(
-                                  height: 40,
-                                  child: adminLoginHistroyController
-                                              .selectedMonth.value ==
-                                          true
-                                      ? SelectLoginDateDropDown()
-                                      : const Row(
-                                          children: [
-                                            Text('Please select the month  '),
-                                            CircularProgressIndicator(),
-                                          ],
-                                        )),
+                                height: 40, child: SelectLoginDateDropDown(),
+                                //  adminLoginHistroyController
+                                //             .selectedMonth.value ==
+                                //         true
+                                //     ? SelectLoginDateDropDown()
+                                //     : const Row(
+                                //         children: [
+                                //           Text('Please select the month  '),
+                                //           CircularProgressIndicator(),
+                                //         ],
+                                //       ),
+                              ),
                             ],
                           ),
                         ),
