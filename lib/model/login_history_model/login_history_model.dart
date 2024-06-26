@@ -2,11 +2,11 @@
 import 'dart:convert';
 
 class AdminLoginDetailHistoryModel {
- String adminID;
+  String adminID;
   String adminName;
-   String docid;
-    String loginTime;
-     String logoutTime;
+  String docid;
+  String loginTime;
+  String logoutTime;
 
   AdminLoginDetailHistoryModel({
     required this.adminID,
@@ -15,7 +15,6 @@ class AdminLoginDetailHistoryModel {
     required this.loginTime,
     required this.logoutTime,
   });
-
 
   AdminLoginDetailHistoryModel copyWith({
     String? adminID,
@@ -45,17 +44,19 @@ class AdminLoginDetailHistoryModel {
 
   factory AdminLoginDetailHistoryModel.fromMap(Map<String, dynamic> map) {
     return AdminLoginDetailHistoryModel(
-      adminID: map['adminID'] ??'',
-      adminName: map['adminName'] ??'',
-      docid: map['docid'] ??'',
-      loginTime: map['loginTime'] ??'',
-      logoutTime: map['logoutTime'] ??'',
+      adminID: map['adminID'] ?? '',
+      adminName: map['adminName'] ?? '',
+      docid: map['docid'] ?? '',
+      loginTime: map['loginTime'] ?? '',
+      logoutTime: map['logoutTime'] ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory AdminLoginDetailHistoryModel.fromJson(String source) => AdminLoginDetailHistoryModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AdminLoginDetailHistoryModel.fromJson(String source) =>
+      AdminLoginDetailHistoryModel.fromMap(
+          json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -65,28 +66,26 @@ class AdminLoginDetailHistoryModel {
   @override
   bool operator ==(covariant AdminLoginDetailHistoryModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.adminID == adminID &&
-      other.adminName == adminName &&
-      other.docid == docid &&
-      other.loginTime == loginTime &&
-      other.logoutTime == logoutTime;
+
+    return other.adminID == adminID &&
+        other.adminName == adminName &&
+        other.docid == docid &&
+        other.loginTime == loginTime &&
+        other.logoutTime == logoutTime;
   }
 
   @override
   int get hashCode {
     return adminID.hashCode ^
-      adminName.hashCode ^
-      docid.hashCode ^
-      loginTime.hashCode ^
-      logoutTime.hashCode;
+        adminName.hashCode ^
+        docid.hashCode ^
+        loginTime.hashCode ^
+        logoutTime.hashCode;
   }
 }
 
-
 class LoginTimeIDSavingClass {
   static String id = '';
-  static String date ='';
-  static String emailId='';
+  static String date = '';
+  static String emailId = '';
 }
