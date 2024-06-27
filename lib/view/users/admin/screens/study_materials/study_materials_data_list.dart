@@ -5,10 +5,10 @@ import 'package:new_project_driving/controller/videos_controller/videos_controll
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
-class VideoDataList extends StatelessWidget {
+class StudyMaterialsDataList extends StatelessWidget {
   final int index;
   final Map<String, dynamic> data;
-  const VideoDataList({
+  const StudyMaterialsDataList({
     super.key,
     required this.index,
     required this.data,
@@ -42,7 +42,7 @@ class VideoDataList extends StatelessWidget {
               rowMainAccess: MainAxisAlignment.center,
               color: cWhite,
               index: index,
-              headerTitle: data['videoTitle'],
+              headerTitle: data['title'],
             ),
           ), //.............................Video Name
           const SizedBox(
@@ -55,7 +55,7 @@ class VideoDataList extends StatelessWidget {
               color: cWhite,
               // width: 150,
               index: index,
-              headerTitle: data['videoDes'],
+              headerTitle: data['des'],
             ),
           ), // ...................................Video Description
           const SizedBox(
@@ -68,7 +68,7 @@ class VideoDataList extends StatelessWidget {
               color: cWhite,
               // width: 150,
               index: index,
-              headerTitle: data['videoCategory'],
+              headerTitle: data['category'],
             ),
           ), // ...................................Video Category
           const SizedBox(

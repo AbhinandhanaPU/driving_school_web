@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/model/event_model/events_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/events/event_create.dart';
-import 'package:new_project_driving/view/users/admin/screens/events/event_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/study_materials_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/upload_materials.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class AllEventsList extends StatelessWidget {
-  const AllEventsList({super.key});
+class StudyMaterialsList extends StatelessWidget {
+  const StudyMaterialsList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,37 +28,38 @@ class AllEventsList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(left: 20, top: 20),
               child: GooglePoppinsWidgets(
-                text: 'Events ',
+                text: 'Study Materials ',
                 fontsize: ResponsiveWebSite.isMobile(context) ? 18 : 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
               child: Row(
                 children: [
                   const RouteSelectedTextContainer(
-                      width: 180, title: 'All Events'),
+                      width: 180, title: 'Study Materials'),
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      createEventAdmin(context);
+                      uploadStudyMaterials(context);
                     },
                     child: ButtonContainerWidget(
-                        curving: 30,
-                        colorindex: 0,
-                        height: 40,
-                        width: 180,
-                        child: const Center(
-                          child: TextFontWidgetRouter(
-                            text: 'Create Event',
-                            fontsize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: cWhite,
-                          ),
-                        )),
+                      curving: 30,
+                      colorindex: 0,
+                      height: 40,
+                      width: 180,
+                      child: const Center(
+                        child: TextFontWidgetRouter(
+                          text: 'Upload Study Material',
+                          fontsize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: cWhite,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -87,32 +87,8 @@ class AllEventsList extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 4,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Event Name'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Event Description'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Event Date'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
-                          flex: 4,
                           child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Venue'),
+                              CatrgoryTableHeaderWidget(headerTitle: 'Title'),
                         ),
                         SizedBox(
                           width: 02,
@@ -120,7 +96,15 @@ class AllEventsList extends StatelessWidget {
                         Expanded(
                           flex: 4,
                           child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Signed by'),
+                              headerTitle: 'Description'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: CatrgoryTableHeaderWidget(
+                              headerTitle: 'Category'),
                         ),
                         SizedBox(
                           width: 02,
@@ -164,7 +148,7 @@ class AllEventsList extends StatelessWidget {
                         stream: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
-                            .collection('AdminEvents')
+                            .collection('StudyMaterials')
                             .snapshots(),
                         builder: (context, snaPS) {
                           if (snaPS.connectionState ==
@@ -174,18 +158,18 @@ class AllEventsList extends StatelessWidget {
                           }
                           if (snaPS.data!.docs.isEmpty) {
                             return const Center(
-                                child: Text(
-                              'No Events',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
-                            ));
+                              child: Text(
+                                'No Study Materials',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500),
+                              ),
+                            );
                           }
                           if (snaPS.hasData) {
                             return ListView.separated(
                                 itemBuilder: (context, index) {
-                                  final data = EventModel.fromMap(
-                                      snaPS.data!.docs[index].data());
-                                  return AllEventsDataList(
+                                  final data = snaPS.data!.docs[index].data();
+                                  return StudyMaterialsDataList(
                                     data: data,
                                     index: index,
                                   );

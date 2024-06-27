@@ -341,7 +341,7 @@ class _StudentProfileCreationScreenState
                                     UploadTask uploadTask = FirebaseStorage
                                         .instance
                                         .ref()
-                                        .child("files/schoolProfile/$uid")
+                                        .child("files/studentProfile/$uid")
                                         .putData(file!);
                                     final TaskSnapshot snap = await uploadTask;
                                     studentSignUpController.downloadUrl.value =

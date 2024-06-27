@@ -9,18 +9,19 @@ import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/app_bar/admin_appBar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/course_details.dart';
-import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
+import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/notice/notice_all_ist.dart';
 import 'package:new_project_driving/view/users/admin/screens/notifications/admin_notification_create.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/registration/teachers_regi_container.dart';
 import 'package:new_project_driving/view/users/admin/screens/road_test/road_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/view_all_students.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/study_materials_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/tutor/view_all_tutor.dart';
 import 'package:new_project_driving/view/users/admin/screens/videos/video_list.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
@@ -225,7 +226,7 @@ List<Widget> pages = [
   const PracticeSheduleStudentListContainer(), // index 10
   const FeesAndBillsList(), // index 11
   AllAdminListPage(), // index 12
-  NoticeAllList(), // index 13
+  const StudyMaterialsList(), // index 13
   NoticeAllList(), // index 14
   const AllEventsList(), // index 15
   const VideosList(), // index 16

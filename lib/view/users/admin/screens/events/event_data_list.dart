@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/event_controller/event_controller.dart';
@@ -11,19 +10,22 @@ import 'package:new_project_driving/view/widget/reusable_table_widgets/data_cont
 class AllEventsDataList extends StatelessWidget {
   final int index;
   final EventModel data;
-  final Color color;
   AllEventsDataList({
     required this.data,
     required this.index,
-    required this.color,
     super.key,
   });
   final EventController eventController = Get.put(EventController());
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 45,
+      decoration: BoxDecoration(
+        color: index % 2 == 0
+            ? const Color.fromARGB(255, 246, 246, 246)
+            : Colors.blue[50],
+      ),
       child: Row(
         children: [
           Expanded(
@@ -98,22 +100,24 @@ class AllEventsDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: GestureDetector(
-              onTap: () {
-                eventController.editnameController.text = data.eventName;
-                eventController.editeventdateController.text = data.eventDate;
-                eventController.editvenueController.text = data.venue;
-                eventController.editdescriptionController.text =
-                    data.eventDescription;
-                eventController.editsignedByController.text = data.signedBy;
-                editFunctionOfEvent(context, data);
-              },
-              child: DataContainerWidget(
-                  rowMainAccess: MainAxisAlignment.center,
-                  color: cWhite,
-                  // width: 150,
-                  index: index,
-                  headerTitle: 'Update 🖋️'),
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  eventController.editnameController.text = data.eventName;
+                  eventController.editeventdateController.text = data.eventDate;
+                  eventController.editvenueController.text = data.venue;
+                  eventController.editdescriptionController.text =
+                      data.eventDescription;
+                  eventController.editsignedByController.text = data.signedBy;
+                  editFunctionOfEvent(context, data);
+                },
+                child: DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    // width: 150,
+                    index: index,
+                    headerTitle: 'Update 🖋️'),
+              ),
             ),
           ), //....................................... Edit
           const SizedBox(
@@ -121,24 +125,25 @@ class AllEventsDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: GestureDetector(
-              onTap: () {
-                customDeleteShowDialog(
-                    context: context,
-                    onTap: () {
-                      eventController.deleteEvent(
-                        data.id,
-                        context,
-                      );
-                      Navigator.pop(context);
-                    });
-              },
-              child: DataContainerWidget(
-                  rowMainAccess: MainAxisAlignment.center,
-                  color: cWhite,
-                  // width: 150,
-                  index: index,
-                  headerTitle: ' Remove 🗑️'),
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  customDeleteShowDialog(
+                      context: context,
+                      onTap: () {
+                        eventController.deleteEvent(
+                          data.id,
+                          context,
+                        );
+                        Navigator.pop(context);
+                      });
+                },
+                child: DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    index: index,
+                    headerTitle: ' Remove 🗑️'),
+              ),
             ),
           ), //....................Delete
         ],

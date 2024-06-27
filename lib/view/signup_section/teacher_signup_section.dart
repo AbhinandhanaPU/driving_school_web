@@ -328,7 +328,7 @@ class _TeacherProfileCreationScreenState
                                     UploadTask uploadTask = FirebaseStorage
                                         .instance
                                         .ref()
-                                        .child("files/schoolProfile/$uid")
+                                        .child("files/tutorProfile/$uid")
                                         .putData(file!);
 
                                     final TaskSnapshot snap = await uploadTask;
