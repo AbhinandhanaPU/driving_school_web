@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/user_login_Controller/user_login_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/users/admin/admin_profile/admin_profile.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:sidebar_drawer/sidebar_drawer.dart';
 
@@ -164,7 +161,9 @@ class AppBarAdminPanel extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 0),
                                 child: Text(
                                   'Admin',
-                                  style: TextStyle(color: cBlack.withOpacity(0.5), fontSize: 10.7),
+                                  style: TextStyle(
+                                      color: cBlack.withOpacity(0.5),
+                                      fontSize: 10.7),
                                 ),
                               ),
                             ],
@@ -191,17 +190,8 @@ class AppBarAdminPanel extends StatelessWidget {
                   width: 10,
                 ),
                 GestureDetector(
-                  onTap: () async {
-                    if (kDebugMode) {
-                      print("logoutUser");
-                    }
-                    await Get.find<UserLoginController>()
-                        .logoutSaveData()
-                        .then((value) => logoutUser());
-                    logoutUser();
-
-                    //   Get.to(()=>ClassWiseStudentListContainer());
-                    // adminProfileshowlist(context);
+                  onTap: () {
+                    adminProfileshowlist(context);
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
@@ -257,7 +247,8 @@ class AppBarAdminPanel extends StatelessWidget {
                     ),
                     title: Text(
                       'Title',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                       'Messages',
@@ -305,7 +296,8 @@ class AppBarAdminPanel extends StatelessWidget {
                     ),
                     title: Text(
                       'Title',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                       'Messages',
@@ -332,7 +324,8 @@ class AppBarAdminPanel extends StatelessWidget {
           child: const Center(
             child: Text(
               'Steven Zone',
-              style: TextStyle(fontSize: 15, color: cWhite, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 15, color: cWhite, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -344,7 +337,8 @@ class AppBarAdminPanel extends StatelessWidget {
               Container(
                 height: 50,
                 width: 200,
-                decoration: BoxDecoration(border: Border.all(color: cBlack.withOpacity(0.4))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: cBlack.withOpacity(0.4))),
                 child: Row(
                   children: [
                     Padding(
@@ -367,7 +361,8 @@ class AppBarAdminPanel extends StatelessWidget {
               Container(
                 height: 35,
                 width: 200,
-                decoration: BoxDecoration(border: Border.all(color: cBlack.withOpacity(0.4))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: cBlack.withOpacity(0.4))),
                 child: const Row(
                   children: [
                     Padding(
@@ -390,7 +385,8 @@ class AppBarAdminPanel extends StatelessWidget {
               Container(
                 height: 35,
                 width: 200,
-                decoration: BoxDecoration(border: Border.all(color: cBlack.withOpacity(0.4))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: cBlack.withOpacity(0.4))),
                 child: const Row(
                   children: [
                     Padding(

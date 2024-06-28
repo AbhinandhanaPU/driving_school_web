@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/class_controller/class_controller.dart';
+import 'package:new_project_driving/model/admin_model/admin_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/model/teacher_model/teacher_model.dart';
 import 'package:new_project_driving/utils/firebase/errors.dart';
@@ -45,22 +46,28 @@ class UserLoginController extends GetxController {
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)
             .collection('Admins')
-            .where('docid', isEqualTo: userUID.value)
+            .doc(authvalue.user?.uid)
             .get();
-        if (result.docs.isNotEmpty) {
+        if (result.data() != null) {
           await SharedPreferencesHelper.setString(
-              SharedPreferencesHelper.userRoleKey, 'admin');
+              SharedPreferencesHelper.userRoleKey, 'secondoryAdmin');
           await SharedPreferencesHelper.setString(
-              SharedPreferencesHelper.schoolIdKey, schoolID!);
-          await SharedPreferencesHelper.setString(
-                  SharedPreferencesHelper.schoolNameKey, schoolName!)
+                  SharedPreferencesHelper.schoolIdKey, schoolID!)
+              // await SharedPreferencesHelper.setString(
+              //         SharedPreferencesHelper.schoolNameKey, schoolName!)
               .then((value) async {
             logined.value = true;
             userEmailIDController.clear();
             userPasswordController.clear();
+
+            if (result.data() != null) {
+              UserCredentialsController.adminModel =
+                  AdminModel.fromMap(result.data()!);
+              log(UserCredentialsController.adminModel.toString());
+            }
             Get.offAll(() => SplashScreen());
           });
-        } else if (result.docs.isEmpty) {
+        } else if (result.data() == null) {
           showToast(msg: "Admin login failed");
         } else {
           showToast(msg: "Secondary-Admin login failed");
@@ -104,7 +111,16 @@ class UserLoginController extends GetxController {
               .then((value) async {
             log("SchoolID :  ${UserCredentialsController.schoolId}");
             log("userrole :  ${UserCredentialsController.userRole}");
+            final user = await server
+                .collection('DrivingSchoolCollection')
+                .doc(UserCredentialsController.schoolId)
+                .get();
 
+            if (user.data() != null) {
+              UserCredentialsController.adminModel =
+                  AdminModel.fromMap(user.data()!);
+              log(UserCredentialsController.adminModel.toString());
+            }
             userEmailIDController.clear();
             userPasswordController.clear();
             logined.value = true;
@@ -145,6 +161,7 @@ class UserLoginController extends GetxController {
         if (user.data() != null) {
           UserCredentialsController.studentModel =
               StudentModel.fromMap(user.data()!);
+          log(UserCredentialsController.studentModel.toString());
         }
 
         if (UserCredentialsController.studentModel?.userRole == "student") {
@@ -156,6 +173,8 @@ class UserLoginController extends GetxController {
           //     SharedPreferencesHelper.schoolNameKey, schoolName!);
           if (context.mounted) {
             logined.value = true;
+            userEmailIDController.clear();
+            userPasswordController.clear();
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
               return SplashScreen();
@@ -211,6 +230,8 @@ class UserLoginController extends GetxController {
           //     SharedPreferencesHelper.schoolNameKey, schoolName!);
           if (context.mounted) {
             logined.value = true;
+            userEmailIDController.clear();
+            userPasswordController.clear();
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
               return SplashScreen();

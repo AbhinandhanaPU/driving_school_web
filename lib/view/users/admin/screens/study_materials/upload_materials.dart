@@ -188,16 +188,19 @@ class StudyMaterialsUploadWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         try {
-          FilePickerResult? result =
-              await FilePicker.platform.pickFiles(allowedExtensions: [
-            'pdf',
-            'txt',
-            'doc',
-            'docx',
-            'jpg',
-            'jpeg',
-            'png',
-          ], type: FileType.custom, allowCompression: true);
+          FilePickerResult? result = await FilePicker.platform.pickFiles(
+            allowedExtensions: [
+              'pdf',
+              'txt',
+              'doc',
+              'docx',
+              'jpg',
+              'jpeg',
+              'png',
+            ],
+            type: FileType.custom,
+            allowCompression: true,
+          );
 
           if (result != null) {
             _studyMaterialsController.fileBytes.value =
