@@ -50,21 +50,11 @@ class AllCoursesDataList extends StatelessWidget {
             width: 02,
           ),
           Expanded(
-              flex: 2,
-              child: TextFontWidget(
-                text: '  ${data.tutor}',
-                fontsize: 12,
-                overflow: TextOverflow.ellipsis,
-              )), //................................................. tutor
-          const SizedBox(
-            width: 02,
-          ),
-          Expanded(
             flex: 2,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: TextFontWidget(
-                text: '  ${data.duration}',
+                text: '  ${data.duration} Days',
                 fontsize: 12,
                 overflow: TextOverflow.ellipsis,
               ),

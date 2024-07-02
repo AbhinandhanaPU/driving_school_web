@@ -90,15 +90,8 @@ class CoursesDetails extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 2,
-                        child: CatrgoryTableHeaderWidget(headerTitle: 'Tutor'),
-                      ),
-                      SizedBox(
-                        width: 02,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child:
-                            CatrgoryTableHeaderWidget(headerTitle: 'Duration'),
+                        child: CatrgoryTableHeaderWidget(
+                            headerTitle: 'Duration(In Days)'),
                       ),
                       SizedBox(
                         width: 02,

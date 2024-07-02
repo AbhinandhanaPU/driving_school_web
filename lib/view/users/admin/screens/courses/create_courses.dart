@@ -71,22 +71,10 @@ createCoursesAdmin(BuildContext context) {
                                 top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
                               width: 500,
-                              controller:
-                                  courseController.courseTutorController,
-                              validator: checkFieldEmpty,
-                              title: 'Tutor',
-                              hintText: 'Tutor',
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, left: 10, right: 10),
-                            child: TextFormFiledHeightnoColor(
-                              width: 500,
                               validator: checkFieldEmpty,
                               controller:
                                   courseController.courseDurationController,
-                              title: ' Duration',
+                              title: ' Duration (In Days)',
                               hintText: ' Duration',
                             ),
                           ),

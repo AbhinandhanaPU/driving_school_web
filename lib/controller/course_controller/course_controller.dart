@@ -15,13 +15,11 @@ class CourseController extends GetxController {
 
   TextEditingController courseNameController = TextEditingController();
   TextEditingController courseDesController = TextEditingController();
-  TextEditingController courseTutorController = TextEditingController();
-  TextEditingController courseDurationController = TextEditingController();
+   TextEditingController courseDurationController = TextEditingController();
   TextEditingController courseRateController = TextEditingController();
   clearFields() {
     courseNameController.clear();
-    courseTutorController.clear();
-    courseDurationController.clear();
+     courseDurationController.clear();
     courseRateController.clear();
   }
 
@@ -31,8 +29,7 @@ class CourseController extends GetxController {
     final courseDetails = CourseModel(
         courseName: courseNameController.text,
         courseDes: courseDesController.text,
-        tutor: courseTutorController.text,
-        duration: courseDurationController.text,
+         duration: courseDurationController.text,
         rate: courseRateController.text,
         courseId: uuid);
 
