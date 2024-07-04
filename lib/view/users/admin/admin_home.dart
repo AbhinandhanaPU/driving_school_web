@@ -8,8 +8,10 @@ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/app_bar/admin_appBar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
+import 'package:new_project_driving/view/users/admin/screens/attendance/student_attendance.dart';
+import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/course_details.dart';
-import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart'; 
+import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_list.dart';
@@ -219,8 +221,8 @@ List<Widget> pages = [
   const AllTeacherRegistrationList(), // index 2
   AllStudentListContainer(), // index 3
   AllTutorListContainer(), // index 4
-  AllTutorListContainer(), // index 5
-  AllTutorListContainer(), // index 6
+  const AllStudentsAttendance(), // index 5
+ const AllTutorAttendance(), // index 6
   const LearnersStudentListContainer(), // index 7
   const DrivingStudentListContainer(), // index 8
   const RoadTestStudentListContainer(), // index 9

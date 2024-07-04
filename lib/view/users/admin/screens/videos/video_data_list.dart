@@ -107,8 +107,7 @@ class VideoDataList extends StatelessWidget {
                     context: context,
                     onTap: () async {
                       await videosController
-                          .deletevideo(docId: data['docId'])
-                          .then((value) => Navigator.pop(context));
+                          .deletevideo(docId: data['docId']);
                     },
                   );
                 },

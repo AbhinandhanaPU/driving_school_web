@@ -77,7 +77,7 @@ class StudyMaterialsController extends GetxController {
     }
   }
 
-  Future<void> deletevideo({required String docId}) async {
+  Future<void> deleteStudyMaterial({required String docId}) async {
     try {
       await server
           .collection('DrivingSchoolCollection')
