@@ -4,6 +4,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/course_model/course_model.dart';
+import 'package:new_project_driving/view/users/admin/screens/courses/course_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
@@ -80,19 +81,14 @@ class AllCoursesDataList extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  // noticeController.noticeHeadingController.text = data.heading;
-                  // noticeController.editnoticePublishedDateController.text =
-                  //     data.publishedDate;
-                  // noticeController.noticeSubjectController.text = data.subject;
-                  // noticeController.editnoticeDateofoccationController.text =
-                  //     data.dateofoccation;
-                  // noticeController.noticevenueController.text = data.venue;
-                  // noticeController.editnoticeDateofSubmissionController.text =
-                  //     data.dateOfSubmission;
-                  // noticeController.noticeGuestController.text = data.chiefGuest;
-                  // noticeController.noticeSignedByController.text =
-                  //     data.signedBy;
-                  // editFunctionOfNotice(context, data);
+                  courseController.courseEditNameController.text =
+                      data.courseName;
+                  courseController.courseEditDesController.text =
+                      data.courseDes;
+                  courseController.courseEditDurationController.text =
+                      data.duration;
+                  courseController.courseEditRateController.text = data.rate;
+                  editFunctionOfCourse(context, data);
                 },
                 child: DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,

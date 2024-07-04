@@ -15,21 +15,33 @@ class CourseController extends GetxController {
 
   TextEditingController courseNameController = TextEditingController();
   TextEditingController courseDesController = TextEditingController();
-   TextEditingController courseDurationController = TextEditingController();
+  TextEditingController courseDurationController = TextEditingController();
   TextEditingController courseRateController = TextEditingController();
+
+  TextEditingController courseEditNameController = TextEditingController();
+  TextEditingController courseEditDesController = TextEditingController();
+  TextEditingController courseEditDurationController = TextEditingController();
+  TextEditingController courseEditRateController = TextEditingController();
+
   clearFields() {
-    courseNameController.clear();
-     courseDurationController.clear();
+    courseEditNameController.clear();
+    courseDesController.clear();
+    courseDurationController.clear();
     courseRateController.clear();
+
+    courseEditNameController.clear();
+    courseEditDesController.clear();
+    courseEditDurationController.clear();
+    courseEditRateController.clear();
   }
 
   Future<void> createCourses() async {
     log("Creating Course .....");
     final uuid = const Uuid().v1();
     final courseDetails = CourseModel(
-        courseName: courseNameController.text,
+        courseName: courseEditNameController.text,
         courseDes: courseDesController.text,
-         duration: courseDurationController.text,
+        duration: courseDurationController.text,
         rate: courseRateController.text,
         courseId: uuid);
 
@@ -71,6 +83,28 @@ class CourseController extends GetxController {
       });
     } catch (e) {
       log("Courses delete$e");
+    }
+  }
+
+  Future<void> updateCourse(String courseId, BuildContext context) async {
+    try {
+      server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Courses')
+          .doc(courseId)
+          .update({
+            'courseName': courseEditNameController.text,
+            'courseDes': courseEditDesController.text,
+            'duration': courseEditDurationController.text,
+            'rate': courseEditRateController.text,
+          })
+          .then((value) {})
+          .then((value) => Navigator.pop(context))
+          .then((value) => showToast(msg: 'Courses Updated!'));
+    } catch (e) {
+      showToast(msg: 'Courses  Updation failed.Try Again');
+      log("Courses Updation failed $e");
     }
   }
 }
