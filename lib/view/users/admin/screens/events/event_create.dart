@@ -34,110 +34,108 @@ createEventAdmin(BuildContext context) {
                 ],
               ),
               SizedBox(
-                  height: 800,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: Form(
-                      key: eventController.formKey,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 10, right: 10),
-                              child: TextFormFiledHeightnoColor(
-                                width: ResponsiveWebSite.isMobile(context)
-                                    ? double.infinity
-                                    : 500,
-                                validator: checkFieldEmpty,
-                                controller: eventController.eventnameController,
-                                title: 'Event Name',
-                                hintText: 'Event Name',
-                              ),
+                height: 800,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  child: Form(
+                    key: eventController.formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: TextFormFiledHeightnoColor(
+                            width: ResponsiveWebSite.isMobile(context)
+                                ? double.infinity
+                                : 500,
+                            validator: checkFieldEmpty,
+                            controller: eventController.eventnameController,
+                            title: 'Event Name',
+                            hintText: 'Event Name',
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: TextFormFiledHeightnoColor(
+                            onTap: () async {
+                              eventController.eventdateController.text =
+                                  await dateTimePicker(context);
+                            },
+                            width: ResponsiveWebSite.isMobile(context)
+                                ? double.infinity
+                                : 500,
+                            validator: checkFieldDateIsValid,
+                            controller: eventController.eventdateController,
+                            title: 'Date',
+                            hintText: 'Date',
+                          ),
+                        ), ////////////////////////////////////////////////////////1
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: TextFormFiledHeightnoColor(
+                            width: ResponsiveWebSite.isMobile(context)
+                                ? double.infinity
+                                : 500,
+                            validator: checkFieldEmpty,
+                            controller: eventController.eventvenueController,
+                            title: 'Venue',
+                            hintText: 'Venue',
+                          ),
+                        ), ///////////////////////////////////////////////2
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: TextFormFiledHeightnoColor(
+                            width: ResponsiveWebSite.isMobile(context)
+                                ? double.infinity
+                                : 500,
+                            validator: checkFieldEmpty,
+                            controller:
+                                eventController.eventdescriptionController,
+                            title: 'Description',
+                            hintText: 'Description',
+                          ),
+                        ), ////////////////////////////////////3
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: TextFormFiledHeightnoColor(
+                            width: ResponsiveWebSite.isMobile(context)
+                                ? double.infinity
+                                : 500,
+                            validator: checkFieldEmpty,
+                            controller: eventController.eventsignedByController,
+                            title: 'Signed by',
+                            hintText: 'Signed by',
+                          ),
+                        ), ////////////////////////////////////4
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25, bottom: 10),
+                          child: Center(
+                            child: Obx(
+                              () => ProgressButtonWidget(
+                                  function: () async {
+                                    if (eventController.formKey.currentState!
+                                        .validate()) {
+                                      eventController.createEvent().then(
+                                          (value) => Navigator.pop(context));
+                                    }
+                                  },
+                                  buttonstate:
+                                      eventController.buttonstate.value,
+                                  text: 'Create Event'),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 10, right: 10),
-                              child: TextFormFiledHeightnoColor(
-                                onTap: () async {
-                                  eventController.eventdateController.text =
-                                      await dateTimePicker(context);
-                                },
-                                width: ResponsiveWebSite.isMobile(context)
-                                    ? double.infinity
-                                    : 500,
-                                validator: checkFieldDateIsValid,
-                                controller: eventController.eventdateController,
-                                title: 'Date',
-                                hintText: 'Date',
-                              ),
-                            ), ////////////////////////////////////////////////////////1
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 10, right: 10),
-                              child: TextFormFiledHeightnoColor(
-                                width: ResponsiveWebSite.isMobile(context)
-                                    ? double.infinity
-                                    : 500,
-                                validator: checkFieldEmpty,
-                                controller:
-                                    eventController.eventvenueController,
-                                title: 'Venue',
-                                hintText: 'Venue',
-                              ),
-                            ), ///////////////////////////////////////////////2
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 10, right: 10),
-                              child: TextFormFiledHeightnoColor(
-                                width: ResponsiveWebSite.isMobile(context)
-                                    ? double.infinity
-                                    : 500,
-                                validator: checkFieldEmpty,
-                                controller:
-                                    eventController.eventdescriptionController,
-                                title: 'Description',
-                                hintText: 'Description',
-                              ),
-                            ), ////////////////////////////////////3
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 10, right: 10),
-                              child: TextFormFiledHeightnoColor(
-                                width: ResponsiveWebSite.isMobile(context)
-                                    ? double.infinity
-                                    : 500,
-                                validator: checkFieldEmpty,
-                                controller:
-                                    eventController.eventsignedByController,
-                                title: 'Signed by',
-                                hintText: 'Signed by',
-                              ),
-                            ), ////////////////////////////////////4
-
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 25, bottom: 10),
-                              child: Center(
-                                  child: Obx(() => ProgressButtonWidget(
-                                      function: () async {
-                                        if (eventController
-                                            .formKey.currentState!
-                                            .validate()) {
-                                          eventController.createEvent().then(
-                                              (value) =>
-                                                  Navigator.pop(context));
-                                        }
-                                      },
-                                      buttonstate:
-                                          eventController.buttonstate.value,
-                                      text: 'Create Event'))),
-                            )
-                            // }),
-                          ]),
+                          ),
+                        )
+                      ],
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

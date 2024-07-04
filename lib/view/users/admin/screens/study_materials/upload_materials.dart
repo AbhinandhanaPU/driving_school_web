@@ -68,7 +68,7 @@ uploadStudyMaterials(BuildContext context) {
                           child: TextFormFiledHeightnoColor(
                             width: 500,
                             controller:
-                                studyMaterialsController.videoTitleController,
+                                studyMaterialsController.titleController,
                             validator: checkFieldEmpty,
                             title: 'Title',
                             hintText: 'Title',
@@ -81,8 +81,7 @@ uploadStudyMaterials(BuildContext context) {
                           child: TextFormFiledHeightnoColor(
                             width: 500,
                             validator: checkFieldEmpty,
-                            controller:
-                                studyMaterialsController.videoDesController,
+                            controller: studyMaterialsController.desController,
                             title: 'Description',
                             hintText: 'Description',
                           ),
@@ -93,8 +92,7 @@ uploadStudyMaterials(BuildContext context) {
                           child: TextFormFiledHeightnoColor(
                             width: 500,
                             validator: checkFieldEmpty,
-                            controller:
-                                studyMaterialsController.videoCateController,
+                            controller: studyMaterialsController.cateController,
                             title: 'Category',
                             hintText: 'Category',
                           ),
