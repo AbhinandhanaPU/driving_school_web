@@ -113,8 +113,8 @@ createNoticeAdmin(BuildContext context) {
                                 if (noticeController.formKey.currentState!
                                     .validate()) {
                                   noticeController
-                                      .createNotice()
-                                      .then((value) => Navigator.pop(context));
+                                      .createNotice() ;
+                                      //.then((value) => Navigator.pop(context))
                                 }
                               },
                               buttonstate: noticeController.buttonstate.value,

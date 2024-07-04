@@ -121,8 +121,7 @@ createEventAdmin(BuildContext context) {
                                   function: () async {
                                     if (eventController.formKey.currentState!
                                         .validate()) {
-                                      eventController.createEvent().then(
-                                          (value) => Navigator.pop(context));
+                                      eventController.createEvent();
                                     }
                                   },
                                   buttonstate:
