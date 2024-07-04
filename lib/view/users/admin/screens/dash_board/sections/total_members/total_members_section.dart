@@ -30,26 +30,6 @@ class TotalMembersSection extends StatelessWidget {
                 count: 56,
                 title: 'Teachers'),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: TotalMemberContainerWidget(
-                imageradius: 18,
-                imagepath: 'assets/images/parents.png',
-                imageColor: const Color.fromARGB(255, 255, 160, 1),
-                color: const Color.fromARGB(255, 255, 242, 216),
-                count: 4020,
-                title: 'Parents'),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: TotalMemberContainerWidget(
-                imageradius: 18,
-                imagepath: 'assets/images/staff_png.png',
-                imageColor: const Color.fromARGB(255, 255, 5, 5),
-                color: const Color.fromARGB(255, 255, 234, 234),
-                count: 53,
-                title: 'Staffs'),
-          ),
         ],
       ),
     );
@@ -79,7 +59,8 @@ class TotalMemberContainerWidget extends StatelessWidget {
     return Container(
       height: 85,
       width: 250,
-      decoration: BoxDecoration(color: cWhite, border: Border.all(color: cBlack.withOpacity(0.1))),
+      decoration: BoxDecoration(
+          color: cWhite, border: Border.all(color: cBlack.withOpacity(0.1))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
