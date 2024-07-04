@@ -12,9 +12,9 @@ import 'package:uuid/uuid.dart';
 class StudyMaterialsController extends GetxController {
   final formKey = GlobalKey<FormState>();
 
-  TextEditingController videoTitleController = TextEditingController();
-  TextEditingController videoDesController = TextEditingController();
-  TextEditingController videoCateController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController desController = TextEditingController();
+  TextEditingController cateController = TextEditingController();
 
   RxBool isLoading = RxBool(false);
   Uuid uuid = const Uuid();
@@ -52,18 +52,18 @@ class StudyMaterialsController extends GetxController {
           .collection('StudyMaterials')
           .doc(uid)
           .set({
-        'title': videoTitleController.text,
-        'des': videoDesController.text,
-        'category': videoCateController.text,
+        'title': titleController.text,
+        'des': desController.text,
+        'category': cateController.text,
         'downloadUrl': downloadUrl,
         'fileName': fileName.value,
         'docId': uid,
       }).then((value) {
         fileBytes.value = null;
         fileName.value = '';
-        videoTitleController.clear();
-        videoDesController.clear();
-        videoCateController.clear();
+        titleController.clear();
+        desController.clear();
+        cateController.clear();
         showToast(msg: "Uploaded Successfully");
         log("Uploaded Successfully");
         Get.back();
