@@ -9,6 +9,7 @@ import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/app_bar/admin_appBar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/course_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart'; 
 import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_list.dart';
@@ -213,7 +214,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
 List<Widget> pages = [
   // AdminDashBoardSections(),
-  const AllTeacherRegistrationList(), // index 0
+  const AdminDashBoardSections(), // index 0
   const CoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
   AllStudentListContainer(), // index 3

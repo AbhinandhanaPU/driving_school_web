@@ -10,7 +10,7 @@ import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
 
-class CreateAdmin extends StatelessWidget {
+  class CreateAdmin extends StatelessWidget {
   final AdminController adminController = Get.put(AdminController());
   CreateAdmin({super.key});
   // final _formKey = GlobalKey<FormState>();
@@ -21,16 +21,14 @@ class CreateAdmin extends StatelessWidget {
       Text(
         "Create A New Admin",
         style: TextStyle(
-            fontSize: ResponsiveWebSite.isMobile(context) ? 15 : 17,
-            fontWeight: FontWeight.bold),
+            fontSize: ResponsiveWebSite.isMobile(context) ? 15 : 17, fontWeight: FontWeight.bold),
       ), //////////////////////..............0
       SizedBox(
         width: ResponsiveWebSite.isMobile(context) ? 80 : 150,
         child: Text(
           "Admin Name",
           style: TextStyle(
-              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15,
-              fontWeight: FontWeight.bold),
+              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15, fontWeight: FontWeight.bold),
         ),
       ), ////////////////////..................1
       SizedBox(
@@ -57,8 +55,7 @@ class CreateAdmin extends StatelessWidget {
         child: Text(
           "Admin Email",
           style: TextStyle(
-              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15,
-              fontWeight: FontWeight.bold),
+              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15, fontWeight: FontWeight.bold),
         ),
       ), //////////////////////..............3
       Container(
@@ -84,8 +81,7 @@ class CreateAdmin extends StatelessWidget {
         child: Text(
           "Phone Number",
           style: TextStyle(
-              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15,
-              fontWeight: FontWeight.bold),
+              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15, fontWeight: FontWeight.bold),
         ),
       ), /////////////////////////////....................5
       Container(
@@ -112,8 +108,7 @@ class CreateAdmin extends StatelessWidget {
         child: Text(
           "Admin Password",
           style: TextStyle(
-              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15,
-              fontWeight: FontWeight.bold),
+              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15, fontWeight: FontWeight.bold),
         ),
       ), ////////////////////////////........................7
       Container(
@@ -139,8 +134,7 @@ class CreateAdmin extends StatelessWidget {
         child: Text(
           "Confirm Password",
           style: TextStyle(
-              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15,
-              fontWeight: FontWeight.bold),
+              fontSize: ResponsiveWebSite.isMobile(context) ? 13 : 15, fontWeight: FontWeight.bold),
         ),
       ), ///////////////////////.....................9
       Container(
@@ -229,13 +223,12 @@ class CreateAdmin extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding:
-                              const EdgeInsets.only(left: 5, right: 5, top: 20),
+                          padding: const EdgeInsets.only(left: 5, right: 5, top: 20),
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 20, right: 10),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
                                 child: adminListWidgets[1],
                                 /////////////////.....................admin name
                               ),
@@ -274,8 +267,8 @@ class CreateAdmin extends StatelessWidget {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 20, right: 10),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
                                 child: adminListWidgets[5],
                                 /////////////////////....................Phone Number
                               ),
@@ -294,8 +287,8 @@ class CreateAdmin extends StatelessWidget {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 20, right: 10),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
                                 child: adminListWidgets[7],
                                 ////////////////////////.....................Admin Password
                               ),
@@ -314,8 +307,8 @@ class CreateAdmin extends StatelessWidget {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 20, right: 10),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
                                 child: adminListWidgets[9],
                                 ///////////////...............confirm password
                               ),
@@ -330,8 +323,7 @@ class CreateAdmin extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 25, bottom: 15, top: 15),
+                          padding: const EdgeInsets.only(left: 25, bottom: 15, top: 15),
                           child: adminListWidgets[11],
                           ///////////////////////.................submit button
                         ),
@@ -352,8 +344,8 @@ class CreateAdmin extends StatelessWidget {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 30, right: 30),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
                                 child: adminListWidgets[1],
                                 //////////////////////////..............admin name
                               ),
@@ -371,8 +363,8 @@ class CreateAdmin extends StatelessWidget {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 30, right: 30),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
                                 child: adminListWidgets[3],
                                 ////////////////admin email
                               ),
@@ -390,8 +382,8 @@ class CreateAdmin extends StatelessWidget {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 30, right: 30),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
                                 child: adminListWidgets[5],
                                 //////////////////................Phone Number
                               ),
@@ -409,8 +401,8 @@ class CreateAdmin extends StatelessWidget {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 30, right: 30),
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
                                 child: adminListWidgets[7],
                                 ////////////////////..................Admin Password
                               ),
@@ -446,8 +438,7 @@ class CreateAdmin extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 40, bottom: 25, top: 25),
+                          padding: const EdgeInsets.only(left: 40, bottom: 25, top: 25),
                           child: adminListWidgets[11],
                           ///////////////////////....................submit button
                         ),
