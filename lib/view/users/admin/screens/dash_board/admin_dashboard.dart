@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/view/users/admin/screens/dash_board/sections/attendence/others/others_attendence.dart';
+import 'package:new_project_driving/view/users/admin/screens/dash_board/sections/attendence/driving_att/drving_attendence.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/sections/attendence/total_students_attendence.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/sections/exam_status/exam_status.dart';
-import 'package:new_project_driving/view/users/admin/screens/dash_board/sections/totalStudent_graph/totalStudent.dart';
+import 'package:new_project_driving/view/users/admin/screens/dash_board/sections/road_attendance_graph/road_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/sections/total_members/total_members_section.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
@@ -30,9 +30,10 @@ class AdminDashBoardSections extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding:
-                    EdgeInsets.only(top: 25, left: ResponsiveWebSite.isMobile(context) ? 05 : 10),
-                child: const TotalMembersSection(),
+                padding: EdgeInsets.only(
+                    top: 25,
+                    left: ResponsiveWebSite.isMobile(context) ? 05 : 10),
+                child: TotalMembersSection(),
 
                 ///.............. Total Members Section
               ),
@@ -54,7 +55,7 @@ class AdminDashBoardSections extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 10, right: 0, left: 0),
-                          child: TotalStudentContainer(),
+                          child: RoadTestAttendanceContainer(),
                         ),
                       ],
                     )
@@ -63,17 +64,20 @@ class AdminDashBoardSections extends StatelessWidget {
                       child: Row(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 10, right: 0, left: 10),
+                            padding:
+                                EdgeInsets.only(top: 10, right: 0, left: 10),
                             child: TotalStudentAttendanceContainer(),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 10, right: 0, left: 10),
+                            padding:
+                                EdgeInsets.only(top: 10, right: 0, left: 10),
                             child:
                                 OthersTodayAttendanceContainer(), /////////........ Others --- Attendance
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 10, right: 0, left: 10),
-                            child: TotalStudentContainer(),
+                            padding:
+                                EdgeInsets.only(top: 10, right: 0, left: 10),
+                            child: RoadTestAttendanceContainer(),
                           ),
                         ],
                       ),
