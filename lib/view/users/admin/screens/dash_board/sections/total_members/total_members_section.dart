@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
+import 'package:new_project_driving/utils/firebase/firebase.dart';
+import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 
 class TotalMembersSection extends StatelessWidget {
   const TotalMembersSection({super.key});
@@ -13,22 +15,40 @@ class TotalMembersSection extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          TotalMemberContainerWidget(
-              imageradius: 20,
-              imagepath: 'assets/images/students.png',
-              imageColor: const Color.fromARGB(255, 60, 184, 120),
-              color: const Color.fromARGB(255, 209, 243, 224),
-              count: 4020,
-              title: 'Students'),
+          StreamBuilder(
+            stream: server
+                                    .collection('DrivingSchoolCollection')
+                                    .doc(UserCredentialsController.schoolId)
+                                    .collection('Students')
+                                    .snapshots(),
+            builder: (context, snapStCount) {
+              return TotalMemberContainerWidget(
+                  imageradius: 20,
+                  imagepath: 'assets/images/students.png',
+                  imageColor: const Color.fromARGB(255, 60, 184, 120),
+                  color: const Color.fromARGB(255, 209, 243, 224),
+                  count: snapStCount.data?.docs.length??0,
+                  title: 'Students');
+            }
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: TotalMemberContainerWidget(
-                imageradius: 18,
-                imagepath: 'assets/images/teachers.png',
-                imageColor: const Color.fromARGB(255, 63, 122, 252),
-                color: const Color.fromARGB(255, 225, 241, 255),
-                count: 56,
-                title: 'Teachers'),
+            child: StreamBuilder(
+              stream: server
+                                    .collection('DrivingSchoolCollection')
+                                    .doc(UserCredentialsController.schoolId)
+                                    .collection('Teachers')
+                                    .snapshots(),
+              builder: (context, snapTutorCount) {
+                return TotalMemberContainerWidget(
+                    imageradius: 18,
+                    imagepath: 'assets/images/teachers.png',
+                    imageColor: const Color.fromARGB(255, 63, 122, 252),
+                    color: const Color.fromARGB(255, 225, 241, 255),
+                    count: snapTutorCount.data?.docs.length??0,
+                    title: 'Tutors');
+              }
+            ),
           ),
         ],
       ),

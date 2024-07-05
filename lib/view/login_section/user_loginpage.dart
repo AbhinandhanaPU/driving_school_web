@@ -525,7 +525,7 @@ class _UserLoginPageScreenState extends State<UserLoginPageScreen>
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: cgreen.withOpacity(1),
-                                        fontSize: 25),
+                                        fontSize: ResponsiveWebSite.isMobile(context)? 15:25),
                                   ),
                                 ],
                               ),

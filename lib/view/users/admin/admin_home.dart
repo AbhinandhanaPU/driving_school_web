@@ -14,6 +14,7 @@ import 'package:new_project_driving/view/users/admin/screens/courses/course_deta
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/create_fees/view_fees_status.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
@@ -94,40 +95,27 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                         children: [
                                           SizedBox(
                                             height: 60,
-                                            child: Image.asset(
-                                              logoImage,
-                                              fit: BoxFit.fill,
+                                            child: Image.asset(logoImage, fit: BoxFit.fill,
                                             ),
                                           ),
                                           GooglePoppinsWidgets(
                                             text: institutionName,
-                                            fontsize:
-                                                ResponsiveWebSite.isMobile(
-                                                        context)
-                                                    ? 18
-                                                    : 20,
+                                            fontsize: ResponsiveWebSite.isMobile(context) ? 18: 20,
                                             fontWeight: FontWeight.w500,
                                           )
                                         ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, top: 12),
+                                    Padding(padding: const EdgeInsets.only( left: 10, top: 12),
                                       child: GestureDetector(
-                                        child: Text(
-                                          "Main Menu",
+                                        child: Text( "Main Menu",
                                           style: TextStyle(
-                                              color: cBlack.withOpacity(
-                                                0.4,
-                                              ),
+                                              color: cBlack.withOpacity( 0.4, ),
                                               fontSize: 12),
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
+                                    const SizedBox( height: 10,),
                                     DrawerSelectedPagesSectionAdmin(
                                       selectedIndex: selectedIndex,
                                       onTap: onPageSelected,
@@ -155,16 +143,16 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       color: Colors.white,
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding:  EdgeInsets.only(left:ResponsiveWebSite.isMobile(context) ? 0: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(0),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      height: 60,
+                                      height: ResponsiveWebSite.isMobile(context)? 40: 60,
                                       child: Image.asset(
                                         logoImage,
                                         fit: BoxFit.fill,
@@ -172,10 +160,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     ),
                                     GooglePoppinsWidgets(
                                       text: institutionName,
-                                      fontsize:
-                                          ResponsiveWebSite.isMobile(context)
-                                              ? 18
-                                              : 20,
+                                      fontsize: ResponsiveWebSite.isMobile(context) ? 12: 15,
                                       fontWeight: FontWeight.w500,
                                     )
                                   ],
@@ -187,9 +172,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 child: Text(
                                   "Main Menu",
                                   style: TextStyle(
-                                      color: cBlack.withOpacity(
-                                        0.4,
-                                      ),
+                                      color: cBlack.withOpacity(  0.4,),
                                       fontSize: 12),
                                 ),
                               ),
@@ -217,7 +200,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 List<Widget> pages = [
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
-  const CoursesDetails(), // index 1
+   CoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
   AllStudentListContainer(), // index 3
   AllTutorListContainer(), // index 4
@@ -227,7 +210,7 @@ List<Widget> pages = [
   const DrivingStudentListContainer(), // index 8
   const RoadTestStudentListContainer(), // index 9
   const PracticeSheduleStudentListContainer(), // index 10
-  const FeesAndBillsList(), // index 11
+   CreatedFeesStatus(), // index 11
   AllAdminListPage(), // index 12
   const StudyMaterialsList(), // index 13
   NoticeAllList(), // index 14

@@ -67,7 +67,7 @@ class LearnersDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: ' 22/05/2024'),
           ), //............................. Student joining Date
           const SizedBox(
             width: 01,
@@ -79,7 +79,7 @@ class LearnersDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: ' 27/07/2024'),
           ), //............................. Student test date
           const SizedBox(
             width: 01,
@@ -91,7 +91,7 @@ class LearnersDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: ' .....'),
           ), //............................. Student Result
           const SizedBox(
             width: 01,

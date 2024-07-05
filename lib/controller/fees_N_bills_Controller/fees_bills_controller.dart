@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
-import 'package:new_project_driving/controller/notification_controller/notification_Controller.dart';
+import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
+import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/model/fees_model/fees_model_controller.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
@@ -15,6 +18,8 @@ import 'package:new_project_driving/view/widget/notification_color/notification_
 import 'package:progress_state_button/progress_button.dart';
 
 class FeesAndBillsController extends GetxController {
+  RxList<CourseModel> allClassList = RxList<CourseModel>();
+  RxList<CourseModel> selectedClassList = RxList<CourseModel>();
   RxBool selectAllClass = false.obs;
   Rx<ButtonState> buttonstate = ButtonState.idle.obs;
   RxBool ontapCreateFees = false.obs;
@@ -22,10 +27,195 @@ class FeesAndBillsController extends GetxController {
   RxInt classinitalFee = 0.obs;
   RxInt studentClassWiseCount = 0.obs;
   List<StudentModel> studentData = [];
+  Future<int> fetchInitalClassFee(String courseDocID) async {
+    //print("fetchInitalClassFee ....$courseDocID");
+    await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Courses')
+        .doc(courseDocID)
+        .get()
+        .then((value) async {
+          int rate = int.parse(value.data()!['rate']);
+      classinitalFee.value = rate;
+    });
+    return classinitalFee.value;
+  }
+
+  Future<RxList<CourseModel>> fetchClass() async {
+    allClassList.clear();
+    selectedClassList.clear();
+
+    final firebase = await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Courses')
+        .get();
+
+    for (var i = 0; i < firebase.docs.length; i++) {
+      final list =
+          firebase.docs.map((e) => CourseModel.fromMap(e.data())).toList();
+      allClassList.add(list[i]);
+    }
+    return allClassList;
+  }
 
   TextEditingController feestypeNameContoller = TextEditingController();
   TextEditingController feesContoller = TextEditingController();
   TextEditingController feesDueContoller = TextEditingController();
+  Future<void> addCustomFessAsignToClass() async {
+    final String docid = '${feestypeNameContoller.text}${uuid.v1()}';
+
+    buttonstate.value = ButtonState.loading;
+    final ClassFeesModel feesDetail = ClassFeesModel(
+        docid: docid,
+        feestypeName: feestypeNameContoller.text,
+        fees: int.parse(feesContoller.text.trim()),
+        createdDate: DateTime.now(),
+        dueDate: DateTime.now()
+            .add(Duration(days: int.parse(feesDueContoller.text.trim()))));
+    try {
+      for (var i = 0; i < selectedClassList.length; i++) {
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Courses')
+            .doc(selectedClassList[i].courseId)
+            .collection("ClassFees")
+            .doc(selectedFeeMonthContoller.text.trim())
+            .set({'docid': selectedFeeMonthContoller.text.trim()}).then(
+                (value) async {
+          await feesCollection(
+                  data: feesDetail,
+                  docid: selectedFeeMonthContoller.text.trim(),
+                  feeDocid: docid)
+              .then((value) async {
+            await getStudentClassWiseCount(
+                selectedClassList[i].courseId,
+                selectedFeeMonthContoller.text.trim(),
+                int.parse(feesContoller.text.trim()),
+                docid);
+          });
+          await server
+              .collection('DrivingSchoolCollection')
+              .doc(UserCredentialsController.schoolId)
+              .collection('Courses')
+              .doc(selectedClassList[i].courseId)
+              .collection("ClassFees")
+              .doc(selectedFeeMonthContoller.text.trim())
+              .collection('StudentsFees')
+              .doc(docid)
+              .set(feesDetail.toMap());
+        });
+      }
+                  feestypeNameContoller.clear();
+            feesContoller.clear();
+            selectAllClass.value=false;
+            selectedClassList.clear();
+            feesDueContoller.clear();
+            seletedFeeDateContoller.clear();
+            selectedFeeMonthContoller.clear();
+            buttonstate.value = ButtonState.success;
+            await Future.delayed(const Duration(seconds: 2)).then((vazlue) {
+              buttonstate.value = ButtonState.idle;
+            });
+            Get.back();
+            Get.back();
+            selectedClassList.clear();
+            allClassList.clear();
+            showToast(msg: 'Fees Genrated Completed');
+    } catch (e) {
+      showToast(msg: 'Somthing went wrong please try again');
+      buttonstate.value = ButtonState.fail;
+      await Future.delayed(const Duration(seconds: 2)).then((value) {
+        buttonstate.value = ButtonState.idle;
+      });
+      if (kDebugMode) {}
+    }
+  }
+
+  Future<void> addFessAsignToClass() async {
+    final String docid = '${feestypeNameContoller.text}${uuid.v1()}';
+
+    buttonstate.value = ButtonState.loading;
+
+    try {
+      
+      for (var i = 0; i < selectedClassList.length; i++) {
+        final ClassFeesModel feesDetail = ClassFeesModel(
+            docid: docid,
+            feestypeName: feestypeNameContoller.text,
+            fees: classinitalFee.value,
+            createdDate: DateTime.now(),
+            dueDate: DateTime.now()
+                .add(Duration(days: int.parse(feesDueContoller.text.trim()))));
+
+        await fetchInitalClassFee(selectedClassList[i].courseId)
+            .then((value) async {
+          feesDetail.fees = classinitalFee.value;
+
+          await server
+              .collection('DrivingSchoolCollection')
+              .doc(UserCredentialsController.schoolId)
+              .collection('Courses')
+              .doc(selectedClassList[i].courseId)
+              .collection("ClassFees")
+              .doc(selectedFeeMonthContoller.text.trim())
+              .set({'docid': selectedFeeMonthContoller.text.trim()}).then(
+                  (value) async {
+            await server
+                .collection('DrivingSchoolCollection')
+                .doc(UserCredentialsController.schoolId)
+                .collection('Courses')
+                .doc(selectedClassList[i].courseId)
+                .collection("ClassFees")
+                .doc(selectedFeeMonthContoller.text.trim())
+                .collection('StudentsFees')
+                .doc(docid)
+                .set(feesDetail.toMap());
+          }).then((value) async {
+            await feesCollection(
+                    data: feesDetail,
+                    feeDocid: docid,
+                    docid: selectedFeeMonthContoller.text.trim())
+                .then((value) async {
+              await getStudentClassWiseCount(
+                  selectedClassList[i].courseId,
+                  selectedFeeMonthContoller.text.trim(),
+                  classinitalFee.value,
+                  docid);
+            });
+          });
+        });
+      }
+      feestypeNameContoller.clear();
+      feesContoller.clear();
+             selectAllClass.value=false;
+            selectedClassList.clear();
+      feesDueContoller.clear();
+      seletedFeeDateContoller.clear();
+      selectedFeeMonthContoller.clear();
+      buttonstate.value = ButtonState.success;
+      await Future.delayed(const Duration(seconds: 2)).then((vazlue) {
+        buttonstate.value = ButtonState.idle;
+      });
+      Get.back();
+      Get.back();
+      selectedClassList.clear();
+      allClassList.clear();
+
+      showToast(msg: 'Fees Genrated Completed');
+    } catch (e) {
+      showToast(msg: 'Somthing went wrong please try again');
+      buttonstate.value = ButtonState.fail;
+      await Future.delayed(const Duration(seconds: 2)).then((value) {
+        buttonstate.value = ButtonState.idle;
+      });
+      if (kDebugMode) {
+         print('Error in addFessAsignToClass(): $e');
+      }
+    }
+  }
 
   TextEditingController seletedFeeDateContoller = TextEditingController();
   TextEditingController selectedFeeMonthContoller = TextEditingController();
@@ -86,23 +276,43 @@ class FeesAndBillsController extends GetxController {
         .set(data.toMap(), SetOptions(merge: true));
   }
 
-  Future<void> getStudentClassWiseCount(String classDocID,
+  Future<void> getStudentClassWiseCount(String courseDocID,
       String feeCollectionID, int fee, String dataDocID) async {
-    studentData.clear();
+        studentData.clear();
+
+  try {
+    // Fetch the course name
+    DocumentSnapshot courseDoc = await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Courses')
+        .doc(courseDocID)
+        .get();
+        
+    if (!courseDoc.exists) {
+      throw Exception("Course document does not exist");
+    }
+     
+    final courseData = courseDoc.data() as Map<String, dynamic>;
+    final courseName = courseData['courseName'] ?? 'Unknown Course';
 
     await server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
-        .collection('classes')
-        .doc(classDocID)
+        .collection('Courses')
+        .doc(courseDocID)
         .collection('Students')
         .get()
         .then((value) async {
-      final list =
-          value.docs.map((e) => StudentModel.fromMap(e.data())).toList();
-      studentData.addAll(list);
+                  final list =
+            value.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+        studentData.addAll(list);
       for (var i = 0; i < value.docs.length; i++) {
-        print('Student names ${value.docs[i].data()['studentemail']}');
+        //print('Student names ${value.docs[i].data()['studentemail']}');
+       final studentDataMap = value.docs[i].data();
+      final courseID = studentDataMap['courseID']??"" ;
+      log("MaPPPPPPPPP$studentDataMap");
+    
 
         await server
             .collection('DrivingSchoolCollection')
@@ -118,6 +328,8 @@ class FeesAndBillsController extends GetxController {
           'StudentName': studentData[i].studentName,
           'fee': fee,
           'feepaid': false,
+          'courseID': courseID,
+            'courseName': courseName, 
           'paid': 0,
           'editFee': false,
         }, SetOptions(merge: true));
@@ -125,6 +337,9 @@ class FeesAndBillsController extends GetxController {
     }).then((value) async {
       await getFeeTotalAmount(feeCollectionID, fee, dataDocID);
     });
+      } catch (e) {
+    log("Error: $e");
+  }
   }
 
   Future<void> getFeeTotalAmount(
@@ -327,7 +542,7 @@ class FeesAndBillsController extends GetxController {
 
   RxString currentStudentFee = ''.obs;
   RxBool sendMessageForUnPaidStudentandParentsbool = false.obs;
-  Future<void> sendMessageForUnPaidStudents() async {
+  Future<void> sendMessageForUnPaidStudentandParents() async {
     await server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
@@ -354,10 +569,21 @@ class FeesAndBillsController extends GetxController {
                 icon: WarningNotifierSetup().icon,
                 messageText:
                     'Your ${Get.find<FeesAndBillsController>().feetypeName.value} rupees $studentFee /- is due on ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} ,Please pay on or before the due date.\nനിങ്ങളുടെ ${Get.find<FeesAndBillsController>().feetypeName.value} ആയ $studentFee /- രൂപ, ദയവായി ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} തിയതിക്കുള്ളിൽ അടക്കേണ്ടതാണ്',
+                // ,
                 headerText:
                     "${Get.find<FeesAndBillsController>().feetypeName.value} Due Fee",
                 whiteshadeColor: WarningNotifierSetup().whiteshadeColor,
                 containerColor: WarningNotifierSetup().containerColor);
+
+            // Get.find<NotificationController>().userparentNotification(
+            //     parentID: value['parentId'],
+            //     icon: WarningNotifierSetup().icon,
+            //     messageText:
+            //         'Your ${Get.find<FeesAndBillsController>().feetypeName.value} rupees $studentFee /- is due on ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} ,Please pay on or before the due date.\nനിങ്ങളുടെ ${Get.find<FeesAndBillsController>().feetypeName.value} ആയ $studentFee /- രൂപ, ദയവായി ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} തിയതിക്കുള്ളിൽ അടക്കേണ്ടതാണ്',
+            //     headerText:
+            //         "${Get.find<FeesAndBillsController>().feetypeName.value} Due Fee",
+            //     whiteshadeColor: WarningNotifierSetup().whiteshadeColor,
+            //     containerColor: WarningNotifierSetup().containerColor);
           });
         }
       }

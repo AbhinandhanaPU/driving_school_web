@@ -124,10 +124,10 @@ class AllTutorAttendance extends StatelessWidget {
                                    
                           return ListView.separated(
                             itemBuilder: (context, index) {
-                              final studentData = snaPS.data!.docs[index].data();
+                              final tutorData = snaPS.data!.docs[index].data();
                               return Container(
                                 color
-                                // : studentData['present'] == true
+                                // : tutorData['present'] == true
                                 //     ? Colors.green.withOpacity(0.1)
                                     : Colors.red.withOpacity(0.1),
                                 child: Row(
@@ -136,7 +136,7 @@ class AllTutorAttendance extends StatelessWidget {
                                       flex: 1,
                                       child: DataContainerMarksWidget(
                                           color
-                                          // : studentData['present'] == true
+                                          // : tutorData['present'] == true
                                           //     ? Colors.green.withOpacity(0.1)
                                               : Colors.red.withOpacity(0.1),
                                           wantColor: false,
@@ -151,12 +151,12 @@ class AllTutorAttendance extends StatelessWidget {
                                       flex: 6,
                                       child: DataContainerMarksWidget(
                                           color
-                                          // : studentData['present'] == true
+                                          // : tutorData['present'] == true
                                           //     ? Colors.green.withOpacity(0.1)
                                               : Colors.red.withOpacity(0.1),
                                           rowMainAccess: MainAxisAlignment.start,
                                           index: index,
-                                          headerTitle: //" ${studentData[
+                                          headerTitle: //" ${tutorData[
                                             'Tutor Name'
                                          //   ]}"
                                             ),
@@ -168,7 +168,7 @@ class AllTutorAttendance extends StatelessWidget {
                                     //   flex: 2,
                                     //   child: DataContainerMarksWidget(
                                     //       color
-                                    //       // : studentData['present'] == true
+                                    //       // : tutorData['present'] == true
                                     //       //     ? Colors.green.withOpacity(0.1)
                                     //           : Colors.red.withOpacity(0.1),
                                     //       rowMainAccess: MainAxisAlignment.start,
@@ -183,7 +183,7 @@ class AllTutorAttendance extends StatelessWidget {
                                       flex: 2,
                                       child: DataContainerMarksWidget(
                                           color
-                                          // : studentData['present'] == true
+                                          // : tutorData['present'] == true
                                           //     ? Colors.green.withOpacity(0.1)
                                               : Colors.red.withOpacity(0.1),
                                           rowMainAccess: MainAxisAlignment.start,
@@ -198,13 +198,13 @@ class AllTutorAttendance extends StatelessWidget {
                                       flex: 2,
                                       child: DataContainerMarksWidget(
                                           color
-                                          // : studentData['present'] == true
+                                          // : tutorData['present'] == true
                                           //     ? Colors.green.withOpacity(0.1)
                                               : Colors.red.withOpacity(0.1),
                                           rowMainAccess: MainAxisAlignment.start,
                                           index: index,
                                           headerTitle:
-                                            //  " ${stringTimeConvert(DateTime.parse(studentData[
+                                            //  " ${stringTimeConvert(DateTime.parse(tutorData[
                                                 'Date'
                                             //    ]))}"
                                                 ),
@@ -216,13 +216,13 @@ class AllTutorAttendance extends StatelessWidget {
                                     //   flex: 2,
                                     //   child: DataContainerMarksWidget(
                                     //       color
-                                    //       // : studentData['present'] == true
+                                    //       // : tutorData['present'] == true
                                     //       //     ? Colors.green.withOpacity(0.1)
                                     //           : Colors.red.withOpacity(0.1),
                                     //       rowMainAccess: MainAxisAlignment.start,
                                     //       index: index,
                                     //       headerTitle
-                                    //       // : studentData['present'] == true
+                                    //       // : tutorData['present'] == true
                                     //       //     ? ' Present'
                                     //           : ' Absent'),
                                     // ),
@@ -233,13 +233,13 @@ class AllTutorAttendance extends StatelessWidget {
                                       flex: 2,
                                       child: DataContainerMarksWidget(
                                           color
-                                          // : studentData['present'] == true
+                                          // : tutorData['present'] == true
                                           //     ? Colors.green.withOpacity(0.1)
                                               : Colors.red.withOpacity(0.1),
                                           rowMainAccess: MainAxisAlignment.start,
                                           index: index,
                                           headerTitle
-                                          // : studentData['present'] == true
+                                          // : tutorData['present'] == true
                                           //     ? ' Present'
                                               : ' Absent'),
                                     ),

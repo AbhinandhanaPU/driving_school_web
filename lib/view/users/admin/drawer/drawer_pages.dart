@@ -52,7 +52,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 25,
                 width: 25,
-                child: Image.asset('webassets/png/createadmin.png')),
+                child: Image.asset('webassets/png/driving-lessons.png')),
             onTap: () {
               index = 1;
               onTap.call(index);
@@ -82,12 +82,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 2;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Tutor Registration',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Tutor Registration',
             ),
           ),
         ),
@@ -104,12 +100,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 3;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'All Students',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'All Students',
             ),
           ),
         ), //////////////////////////.............................5
@@ -193,12 +185,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 7;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Learners Test',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Learners Test',
             ),
           ),
         ),
@@ -218,12 +206,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 8;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Driving Test',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Driving Test',
             ),
           ),
         ),
@@ -243,12 +227,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 9;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Road Test',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Road Test',
             ),
           ),
         ),
@@ -268,12 +248,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 10;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Practice Shedule',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Practice Shedule',
             ),
           ),
         ),
@@ -293,12 +269,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 11;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Fees and Bills',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Fees and Bills',
             ),
           ),
         ),
@@ -318,12 +290,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 12;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Create Admin',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Create Admin',
             ),
           ),
         ),
@@ -343,12 +311,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 13;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Study Materials',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Study Materials',
             ),
           ),
         ),
@@ -443,12 +407,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 17;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Notifications',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Notifications',
             ),
           ),
         ),
@@ -468,12 +428,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 18;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Login Histroy',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Login Histroy',
             ),
           ),
         ),
