@@ -269,3 +269,18 @@ Future<String> dateTimePicker(BuildContext context) async {
     return '';
   }
 }
+
+Future<String> timePicker(BuildContext context) async {
+  TimeOfDay? time = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+  );
+  if (time != null) {
+    final now = DateTime.now();
+    final formattedTime = DateFormat("h:mm a")
+        .format(DateTime(now.year, now.month, now.day, time.hour, time.minute));
+    return formattedTime;
+  } else {
+    return '';
+  }
+}
