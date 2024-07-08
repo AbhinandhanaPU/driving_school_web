@@ -15,7 +15,6 @@ import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_da
 import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/create_fees/view_fees_status.dart';
-import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
 import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
