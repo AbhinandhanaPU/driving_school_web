@@ -16,6 +16,10 @@ class StudyMaterialsController extends GetxController {
   TextEditingController desController = TextEditingController();
   TextEditingController cateController = TextEditingController();
 
+  TextEditingController titleEditController = TextEditingController();
+  TextEditingController desEditController = TextEditingController();
+  TextEditingController cateEditController = TextEditingController();
+
   RxBool isLoading = RxBool(false);
   Uuid uuid = const Uuid();
   String downloadUrl = '';
@@ -92,6 +96,31 @@ class StudyMaterialsController extends GetxController {
       });
     } catch (e) {
       log(e.toString(), name: "StudyMaterialsController");
+    }
+  }
+
+  Future<void> updateStudyMaterial(String docId, BuildContext context) async {
+    try {
+      server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('StudyMaterials')
+          .doc(docId)
+          .update({
+            'title': titleEditController.text,
+            'des': desEditController.text,
+            'category': cateEditController.text,
+          })
+          .then((value) {
+            titleEditController.clear();
+            desEditController.clear();
+            cateEditController.clear();
+          })
+          .then((value) => Navigator.pop(context))
+          .then((value) => showToast(msg: 'StudyMaterials Updated!'));
+    } catch (e) {
+      showToast(msg: 'StudyMaterials  Updation failed.Try Again');
+      log("StudyMaterials Updation failed $e");
     }
   }
 }
