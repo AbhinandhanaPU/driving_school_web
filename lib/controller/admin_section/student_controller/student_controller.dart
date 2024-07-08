@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
-import 'package:new_project_driving/controller/course_controller/course_controller.dart';
-import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';

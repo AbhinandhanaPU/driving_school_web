@@ -160,7 +160,8 @@ class AllCourseStudentDataList extends StatelessWidget {
                     onTap: () {
                       studentController
                           .deleteStudentsFromCourse(data)
-                          .then((value) => Navigator.pop(context));
+                          .then((value) { Navigator.pop(context);
+                          });
                     },
                   );
                 },

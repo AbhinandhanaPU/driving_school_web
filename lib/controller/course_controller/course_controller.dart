@@ -29,6 +29,11 @@ class CourseController extends GetxController {
   TextEditingController courseDesController = TextEditingController();
    TextEditingController courseDurationController = TextEditingController();
   TextEditingController courseRateController = TextEditingController();
+  
+  TextEditingController editcourseNameController = TextEditingController();
+  TextEditingController editcourseDesController = TextEditingController();
+   TextEditingController editcourseDurationController = TextEditingController();
+  TextEditingController editcourseRateController = TextEditingController();
   clearFields() {
     courseNameController.clear();
      courseDurationController.clear();
@@ -83,6 +88,28 @@ class CourseController extends GetxController {
       });
     } catch (e) {
       log("Courses delete$e");
+    }
+  }
+
+  
+  Future<void> updateCourse(String courseId, BuildContext context) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Courses')
+          .doc(courseId)
+          .update({
+        'courseName': editcourseNameController.text,
+        'courseDes': editcourseDesController.text,
+        'duration': editcourseDurationController.text,
+        'rate': editcourseRateController.text,
+      }).then((value) {
+        clearFields();
+        Navigator.pop(context);
+      }).then((value) => showToast(msg: 'Course Updated!'));
+    } catch (e) {
+      log("Course Updation failed");
     }
   }
 

@@ -8,7 +8,7 @@ import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/courses_data_list.dart';
-import 'package:new_project_driving/view/users/admin/screens/courses/create_courses.dart';
+import 'package:new_project_driving/view/users/admin/screens/courses/crud_functions/create_courses.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/on_click_course/course_std_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
