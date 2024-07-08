@@ -52,17 +52,17 @@ class AllCourseStudentDataList extends StatelessWidget {
               const SizedBox(
                 width: 01,
               ),
-              Expanded(
-                flex: 2,
-                child: DataContainerWidget(
-                    rowMainAccess: MainAxisAlignment.center,
-                    color: cWhite,
-                    index: index,
-                    headerTitle: data.licenceNumber),
-              ), //................................................. teacher ID
-              const SizedBox(
-                width: 01,
-              ),
+              // Expanded(
+              //   flex: 2,
+              //   child: DataContainerWidget(
+              //       rowMainAccess: MainAxisAlignment.center,
+              //       color: cWhite,
+              //       index: index,
+              //       headerTitle: data. place),
+              // ), //................................................. teacher ID
+              // const SizedBox(
+              //   width: 01,
+              // ),
               Expanded(
                 flex: 4,
                 child: Row(
@@ -80,7 +80,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
                     index: index,
-                    headerTitle: data.licenceNumber),
+                    headerTitle: data.studentName),
                     ),
                   ],
                 ),
@@ -129,7 +129,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
                     index: index,
-                    headerTitle: data.licenceNumber),
+                    headerTitle: data.phoneNumber),
                     ),
                   ],
                 ),
@@ -159,7 +159,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                     context: context,
                     onTap: () {
                       studentController
-                          .deleteStudents(data)
+                          .deleteStudentsFromCourse(data)
                           .then((value) => Navigator.pop(context));
                     },
                   );

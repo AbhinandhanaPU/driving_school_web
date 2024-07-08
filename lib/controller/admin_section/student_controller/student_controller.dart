@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
+import 'package:new_project_driving/controller/course_controller/course_controller.dart';
+import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
@@ -36,6 +38,37 @@ class StudentController extends GetxController {
           .doc(studentModel.docid)
           .delete()
           .then((value) => log("Student deleted"));
+    } catch (e) {
+      log("Student deletion error:$e");
+    }
+  }
+
+   Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
+    try {
+     final docidofcourse= await server
+           .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection("Courses")
+          .get();
+
+  if (docidofcourse.docs.isNotEmpty) {
+      for (var courseDoc in docidofcourse.docs) {
+        final courseDocid = courseDoc.id;
+
+        // Delete the student from each course
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection("Courses")
+            .doc(courseDocid)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .delete()
+            .then((value) => log("Student deleted from course: $courseDocid"));
+      }
+    } else {
+      log("No courses found");
+    }
     } catch (e) {
       log("Student deletion error:$e");
     }
