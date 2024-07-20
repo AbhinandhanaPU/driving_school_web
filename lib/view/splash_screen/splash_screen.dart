@@ -4,13 +4,14 @@ import 'package:adaptive_ui_layout/flutter_responsive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:new_project_driving/info/info.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/school_controller/school_controller.dart';
 import 'package:new_project_driving/controller/user_auth/user_auth_controller.dart';
 import 'package:new_project_driving/controller/user_login_Controller/user_login_controller.dart';
 import 'package:new_project_driving/fonts/google_monstre.dart';
+import 'package:new_project_driving/info/info.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
 class SplashScreen extends StatelessWidget {
   final UserAuthController userLoginController = Get.put(UserAuthController());
@@ -73,13 +74,13 @@ class SplashScreen extends StatelessWidget {
                     children: [
                       GoogleMonstserratWidgets(
                         text: separate,
-                        fontsize: 25,
+                        fontsize: ResponsiveWebSite.isMobile(context)?20: 25,
                         color: const Color.fromARGB(255, 230, 18, 3),
                         fontWeight: FontWeight.bold,
                       ),
                       GoogleMonstserratWidgets(
                         text: separatetwo,
-                        fontsize: 25,
+                        fontsize: ResponsiveWebSite.isMobile(context)?20:25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
