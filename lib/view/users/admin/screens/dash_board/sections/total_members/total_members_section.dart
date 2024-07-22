@@ -24,7 +24,7 @@ class TotalMembersSection extends StatelessWidget {
             builder: (context, snapStCount) {
               return TotalMemberContainerWidget(
                   imageradius: 20,
-                  imagepath: 'assets/images/students.png',
+                  imagepath: 'webassets/images/students.png',
                   imageColor: const Color.fromARGB(255, 60, 184, 120),
                   color: const Color.fromARGB(255, 209, 243, 224),
                   count: snapStCount.data?.docs.length??0,
@@ -42,7 +42,7 @@ class TotalMembersSection extends StatelessWidget {
               builder: (context, snapTutorCount) {
                 return TotalMemberContainerWidget(
                     imageradius: 18,
-                    imagepath: 'assets/images/teachers.png',
+                    imagepath: 'webassets/images/teachers.png',
                     imageColor: const Color.fromARGB(255, 63, 122, 252),
                     color: const Color.fromARGB(255, 225, 241, 255),
                     count: snapTutorCount.data?.docs.length??0,
