@@ -216,7 +216,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 List<Widget> pages = [
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
-  const CoursesDetails(), // index 1
+  CoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
   AllStudentListContainer(), // index 3
   AllTutorListContainer(), // index 4
@@ -228,9 +228,9 @@ List<Widget> pages = [
   const FeesAndBillsList(), // index 10
   AllAdminListPage(), // index 11
   const StudyMaterialsList(), // index 12
-  NoticeAllList(), // index 14
-  const AllEventsList(), // index 15
-  const VideosList(), // index 16
+  NoticeAllList(), // index 13
+  const AllEventsList(), // index 14
+  const VideosList(), // index 15
   AdminNotificationCreate(), // index 16
   LoginHistroyContainer(), // index 17
 ];
