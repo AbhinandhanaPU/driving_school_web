@@ -6,9 +6,7 @@ import 'package:new_project_driving/controller/course_controller/course_controll
 import 'package:new_project_driving/model/student_model/student_model.dart';
 
 class AllStudentDropDown extends StatelessWidget {
-  AllStudentDropDown({
-    Key? key,
-  }) : super(key: key);
+  AllStudentDropDown({super.key});
 
   final courseCntrl = Get.put(CourseController());
 
@@ -23,7 +21,6 @@ class AllStudentDropDown extends StatelessWidget {
           return null;
         }
       },
-      // autoValidateMode: AutovalidateMode.always,
       asyncItems: (value) {
         courseCntrl.allstudentList.clear();
 

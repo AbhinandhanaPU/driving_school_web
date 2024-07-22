@@ -106,7 +106,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                           width: 02,
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: CatrgoryTableHeaderWidget(headerTitle: 'Name'),
                         ),
                         SizedBox(
@@ -123,7 +123,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 3,
                           child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Completes Days'),
+                              headerTitle: 'Completed Days'),
                         ),
                         SizedBox(
                           width: 02,
@@ -131,15 +131,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 3,
                           child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Test Date'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Review'),
+                              headerTitle: 'Number of Attempt'),
                         ),
                         SizedBox(
                           width: 02,
@@ -147,7 +139,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Result'),
+                              CatrgoryTableHeaderWidget(headerTitle: 'Remove'),
                         ),
                         SizedBox(
                           width: 02,
@@ -173,8 +165,9 @@ class DrivingStudentListContainer extends StatelessWidget {
                         stream: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
+                            .collection('DrivingTest')
+                            .doc(testController.testId.value)
                             .collection('Students')
-                            .orderBy('studentName')
                             .snapshots(),
                         builder: (context, snaPS) {
                           if (snaPS.hasData) {
@@ -183,7 +176,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                                     child: Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Please create Students",
+                                        "Please add Students",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400),
                                       ),
