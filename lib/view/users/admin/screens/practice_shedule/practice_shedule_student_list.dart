@@ -4,6 +4,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/create_practice.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
@@ -17,8 +18,7 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection:
-          ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+      scrollDirection: ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
       child: Container(
         color: screenContainerbackgroundColor,
         height: 650,
@@ -48,6 +48,27 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                     width: 200,
                   ),
                   const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      createPracticeAdmin(context);
+                    },
+                    child: ButtonContainerWidget(
+                        curving: 30,
+                        colorindex: 0,
+                        height: 35,
+                        width: 120,
+                        child: const Center(
+                          child: TextFontWidgetRouter(
+                            text: 'Create Slot',
+                            fontsize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: cWhite,
+                          ),
+                        )),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   ButtonContainerWidget(
                     curving: 0,
                     colorindex: 6,
@@ -85,58 +106,35 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 3,
-                          child: CatrgoryTableHeaderWidget(headerTitle: 'Name'),
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'Slot Name'),
                         ),
                         SizedBox(
                           width: 02,
                         ),
                         Expanded(
                           flex: 3,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Joining Date'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Completed Days'),
+                          child: CatrgoryTableHeaderWidget(headerTitle: ' Start Time'),
                         ),
                         SizedBox(
                           width: 02,
                         ),
                         Expanded(
                           flex: 3,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Practice Status'),
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'End Time'),
                         ),
                         SizedBox(
                           width: 02,
                         ),
                         Expanded(
                           flex: 3,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Sheduled Date'),
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'Edit'),
                         ),
                         SizedBox(
                           width: 02,
                         ),
                         Expanded(
                           flex: 3,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Sheduled Time'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Pending'),
-                        ),
-                        SizedBox(
-                          width: 02,
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'Delete'),
                         ),
                       ],
                     ),
@@ -170,15 +168,14 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
                                         "Please create Students",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400),
+                                        style: TextStyle(fontWeight: FontWeight.w400),
                                       ),
                                     ),
                                   )
                                 : ListView.separated(
                                     itemBuilder: (context, index) {
-                                      final data = StudentModel.fromMap(
-                                          snaPS.data!.docs[index].data());
+                                      final data =
+                                          StudentModel.fromMap(snaPS.data!.docs[index].data());
                                       return PracticeSheduleDataList(
                                         data: data,
                                         index: index,
@@ -189,7 +186,7 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                                         height: 02,
                                       );
                                     },
-                                    itemCount: snaPS.data!.docs.length);
+                                    itemCount: 1);
                           } else if (snaPS.data == null) {
                             return const LoadingWidget();
                           } else {
