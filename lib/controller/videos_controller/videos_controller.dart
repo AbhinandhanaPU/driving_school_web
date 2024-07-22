@@ -16,6 +16,10 @@ class VideosController extends GetxController {
   TextEditingController videoDesController = TextEditingController();
   TextEditingController videoCateController = TextEditingController();
 
+  TextEditingController videoEditTitleController = TextEditingController();
+  TextEditingController videoEditDesController = TextEditingController();
+  TextEditingController videoEditCateController = TextEditingController();
+
   RxBool isLoading = RxBool(false);
   Uuid uuid = const Uuid();
   String downloadUrl = '';
@@ -92,6 +96,31 @@ class VideosController extends GetxController {
       });
     } catch (e) {
       log(e.toString(), name: "VideosController");
+    }
+  }
+
+  Future<void> updateVideo(String docId, BuildContext context) async {
+    try {
+      server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Videos')
+          .doc(docId)
+          .update({
+            'videoTitle': videoEditTitleController.text,
+            'videoDes': videoEditDesController.text,
+            'videoCategory': videoEditCateController.text,
+          })
+          .then((value) {
+            videoEditTitleController.clear();
+            videoEditDesController.clear();
+            videoEditCateController.clear();
+          })
+          .then((value) => Navigator.pop(context))
+          .then((value) => showToast(msg: 'Videos Updated!'));
+    } catch (e) {
+      showToast(msg: 'Videos  Updation failed.Try Again');
+      log("Videos Updation failed $e");
     }
   }
 }

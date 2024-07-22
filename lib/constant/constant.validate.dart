@@ -270,43 +270,17 @@ Future<String> dateTimePicker(BuildContext context) async {
   }
 }
 
-// Future<String> setStartTime(BuildContext context) async {
-//   TimeOfDay? timeData = await showTimePicker(
-//     context: context,
-//     initialTime: TimeOfDay.now(),
-//   );
-
-//   if (timeData != null) {
-//     final now = DateTime.now();
-//     final dateTime = DateTime(
-//       now.year,
-//       now.month,
-//       now.day,
-//       timeData.hour,
-//       timeData.minute,
-//     );
-//     return DateFormat('hh:mm a').format(dateTime);
-//   } else {
-//     return '';
-//   }
-// }
-// Future<String> setEndTime(BuildContext context) async {
-//   TimeOfDay? timeData = await showTimePicker(
-//     context: context,
-//     initialTime: TimeOfDay.now(),
-//   );
-
-//   if (timeData != null) {
-//     final now = DateTime.now();
-//     final dateTime = DateTime(
-//       now.year,
-//       now.month,
-//       now.day,
-//       timeData.hour,
-//       timeData.minute,
-//     );
-//     return DateFormat('hh:mm a').format(dateTime);
-//   } else {
-//     return '';
-//   }
-// }
+Future<String> timePicker(BuildContext context) async {
+  TimeOfDay? time = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+  );
+  if (time != null) {
+    final now = DateTime.now();
+    final formattedTime = DateFormat("h:mm a")
+        .format(DateTime(now.year, now.month, now.day, time.hour, time.minute));
+    return formattedTime;
+  } else {
+    return '';
+  }
+}

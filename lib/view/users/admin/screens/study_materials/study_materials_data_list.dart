@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/videos_controller/videos_controller.dart';
+import 'package:new_project_driving/controller/study_materials/study_materials_controller.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/study_materials_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
@@ -15,7 +16,8 @@ class StudyMaterialsDataList extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    VideosController videosController = Get.put(VideosController());
+    StudyMaterialsController studyMaterialsController =
+        Get.put(StudyMaterialsController());
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -79,13 +81,12 @@ class StudyMaterialsDataList extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  // videoController.editnameController.text = data.videoName;
-                  // videoController.editvideodateController.text = data.videoDate;
-                  // videoController.editvenueController.text = data.venue;
-                  // videoController.editdescriptionController.text =
-                  //     data.videoDescription;
-                  // videoController.editsignedByController.text = data.signedBy;
-                  // editFunctionOfvideo(context, data);
+                  studyMaterialsController.titleEditController.text =
+                      data['title'];
+                  studyMaterialsController.desEditController.text = data['des'];
+                  studyMaterialsController.cateEditController.text =
+                      data['category'];
+                  editFunctionOfStudyMaterials(context, data);
                 },
                 child: DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
@@ -106,9 +107,9 @@ class StudyMaterialsDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () async {
-                      await videosController
-                          .deletevideo(docId: data['docId'])
-                          .then((value) => Navigator.pop(context));
+                      await studyMaterialsController.deleteStudyMaterial(
+                          docId: data['docId']);
+                      //  .then((value) => Navigator.pop(context));
                     },
                   );
                 },

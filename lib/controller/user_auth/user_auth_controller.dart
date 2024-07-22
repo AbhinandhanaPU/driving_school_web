@@ -12,7 +12,7 @@ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/home/main_screen.dart';
 import 'package:new_project_driving/view/splash_screen/splash_screen.dart';
-import 'package:new_project_driving/view/users/admin/home/admin_home.dart';
+import 'package:new_project_driving/view/users/admin/admin_home.dart';
 import 'package:new_project_driving/view/users/student/home/student_home.dart';
 import 'package:new_project_driving/view/users/tutor/home/tutor_home.dart';
 

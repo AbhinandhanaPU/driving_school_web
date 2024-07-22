@@ -101,8 +101,8 @@ createCoursesAdmin(BuildContext context) {
                                 if (courseController.formKey.currentState!
                                     .validate()) {
                                   courseController
-                                      .createCourses()
-                                      .then((value) => Navigator.pop(context));
+                                      .createCourses();
+                                     // .then((value) => Navigator.pop(context));
                                 }
                               },
                               buttonstate: courseController.buttonstate.value,

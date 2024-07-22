@@ -52,7 +52,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 25,
                 width: 25,
-                child: Image.asset('webassets/png/createadmin.png')),
+                child: Image.asset('webassets/png/driving-lessons.png')),
             onTap: () {
               index = 1;
               onTap.call(index);
@@ -82,12 +82,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 2;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Tutor Registration',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Tutor Registration',
             ),
           ),
         ),
@@ -104,12 +100,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 3;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'All Students',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'All Students',
             ),
           ),
         ), //////////////////////////.............................5
@@ -193,12 +185,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 7;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Learners Test',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Learners Test',
             ),
           ),
         ),
@@ -218,12 +206,8 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               index = 8;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Driving Test',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Driving Test',
             ),
           ),
         ),
@@ -238,17 +222,13 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/road-trip.png')),
+                child: Image.asset('webassets/png/calendar.png')),
             onTap: () {
               index = 9;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Road Test',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Practice Shedule',
             ),
           ),
         ),
@@ -263,17 +243,13 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/calendar.png')),
+                child: Image.asset('webassets/png/hand.png')),
             onTap: () {
               index = 10;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Practice Shedule',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Fees and Bills',
             ),
           ),
         ),
@@ -288,17 +264,13 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/hand.png')),
+                child: Image.asset('webassets/png/createadmin.png')),
             onTap: () {
               index = 11;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Fees and Bills',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Create Admin',
             ),
           ),
         ),
@@ -313,17 +285,13 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/createadmin.png')),
+                child: Image.asset('webassets/png/books.png')),
             onTap: () {
               index = 12;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Create Admin',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Study Materials',
             ),
           ),
         ),
@@ -338,7 +306,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/books.png')),
+                child: Image.asset('webassets/png/notice.png')),
             onTap: () {
               index = 13;
               onTap.call(index);
@@ -346,7 +314,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Study Materials',
+                  title: 'Notices',
                 ),
               ],
             ),
@@ -363,7 +331,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/notice.png')),
+                child: Image.asset('webassets/png/banner.png')),
             onTap: () {
               index = 14;
               onTap.call(index);
@@ -371,7 +339,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Notices',
+                  title: 'Events',
                 ),
               ],
             ),
@@ -388,7 +356,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/banner.png')),
+                child: Image.asset('webassets/png/video.png')),
             onTap: () {
               index = 15;
               onTap.call(index);
@@ -396,7 +364,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             title: Row(
               children: [
                 DashboardTextFontWidget(
-                  title: 'Events',
+                  title: 'Videos',
                 ),
               ],
             ),
@@ -413,17 +381,13 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/video.png')),
+                child: Image.asset('webassets/png/notification.png')),
             onTap: () {
               index = 16;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Videos',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Notifications',
             ),
           ),
         ),
@@ -438,42 +402,13 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
             leading: SizedBox(
                 height: 20,
                 width: 20,
-                child: Image.asset('webassets/png/notification.png')),
+                child: Image.asset('webassets/png/logout.png')),
             onTap: () {
               index = 17;
               onTap.call(index);
             },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Notifications',
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          color: selectedIndex == 18
-              ? themeColorBlue.withOpacity(0.1)
-              : Colors.transparent,
-          child: ListTile(
-            leading: SizedBox(
-                height: 20,
-                width: 20,
-                child: Image.asset('webassets/png/logout.png')),
-            onTap: () {
-              index = 18;
-              onTap.call(index);
-            },
-            title: Row(
-              children: [
-                DashboardTextFontWidget(
-                  title: 'Login Histroy',
-                ),
-              ],
+            title: DashboardTextFontWidget(
+              title: 'Login Histroy',
             ),
           ),
         ),

@@ -4,7 +4,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/admin_section/Tutor_controller/tutor_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/widgets/detail_tile_container.dart';
+import 'package:new_project_driving/view/widget/profile_detail_widget/detail_tile_container.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';

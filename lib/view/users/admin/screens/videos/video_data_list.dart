@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/videos_controller/videos_controller.dart';
+import 'package:new_project_driving/view/users/admin/screens/videos/video_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
@@ -79,13 +80,13 @@ class VideoDataList extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  // videoController.editnameController.text = data.videoName;
-                  // videoController.editvideodateController.text = data.videoDate;
-                  // videoController.editvenueController.text = data.venue;
-                  // videoController.editdescriptionController.text =
-                  //     data.videoDescription;
-                  // videoController.editsignedByController.text = data.signedBy;
-                  // editFunctionOfvideo(context, data);
+                  videosController.videoEditTitleController.text =
+                      data['videoTitle'];
+                  videosController.videoEditDesController.text =
+                      data['videoDes'];
+                  videosController.videoEditCateController.text =
+                      data['videoCategory'];
+                  editFunctionOfVideo(context, data);
                 },
                 child: DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
@@ -106,9 +107,7 @@ class VideoDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () async {
-                      await videosController
-                          .deletevideo(docId: data['docId'])
-                          .then((value) => Navigator.pop(context));
+                      await videosController.deletevideo(docId: data['docId']);
                     },
                   );
                 },

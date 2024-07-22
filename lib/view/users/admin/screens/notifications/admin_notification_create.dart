@@ -137,16 +137,16 @@ class AdminNotificationCreate extends StatelessWidget {
         child: Obx(
           () => ProgressButtonWidget(
               function: () async {
-                // if (notificationCntrl.formKey.currentState!.validate()) {
-                //   notificationCntrl
-                //       .sendMessageSelectedUSers()
-                //       .then((value) async {
-                //     await notificationCntrl.sendNotificationSelectedUsers(
-                //         icon: Icons.warning_rounded,
-                //         whiteshadeColor: InfoNotification().whiteshadeColor,
-                //         containerColor: InfoNotification().containerColor);
-                //   });
-                // }
+                if (notificationCntrl.formKey.currentState!.validate()) {
+                  notificationCntrl
+                      .sendMessageSelectedUSers()
+                      .then((value) async {
+                    await notificationCntrl.sendNotificationSelectedUsers(
+                        icon: Icons.warning_rounded,
+                        whiteshadeColor: InfoNotification().whiteshadeColor,
+                        containerColor: InfoNotification().containerColor);
+                  });
+                }
               },
               buttonstate: notificationCntrl.buttonstate.value,
               text: 'Send Message'),
