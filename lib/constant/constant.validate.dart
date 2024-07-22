@@ -269,3 +269,44 @@ Future<String> dateTimePicker(BuildContext context) async {
     return '';
   }
 }
+
+// Future<String> setStartTime(BuildContext context) async {
+//   TimeOfDay? timeData = await showTimePicker(
+//     context: context,
+//     initialTime: TimeOfDay.now(),
+//   );
+
+//   if (timeData != null) {
+//     final now = DateTime.now();
+//     final dateTime = DateTime(
+//       now.year,
+//       now.month,
+//       now.day,
+//       timeData.hour,
+//       timeData.minute,
+//     );
+//     return DateFormat('hh:mm a').format(dateTime);
+//   } else {
+//     return '';
+//   }
+// }
+// Future<String> setEndTime(BuildContext context) async {
+//   TimeOfDay? timeData = await showTimePicker(
+//     context: context,
+//     initialTime: TimeOfDay.now(),
+//   );
+
+//   if (timeData != null) {
+//     final now = DateTime.now();
+//     final dateTime = DateTime(
+//       now.year,
+//       now.month,
+//       now.day,
+//       timeData.hour,
+//       timeData.minute,
+//     );
+//     return DateFormat('hh:mm a').format(dateTime);
+//   } else {
+//     return '';
+//   }
+// }
