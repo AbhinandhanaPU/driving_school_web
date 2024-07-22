@@ -48,48 +48,41 @@ createPracticeAdmin(BuildContext context) {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, left: 10, right: 10),
+                            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
                               width: 500,
-                              controller:
-                                  noticeController.noticeHeadingController,
+                              controller: noticeController.noticeHeadingController,
                               validator: checkFieldEmpty,
                               title: 'Slot Name',
-                              hintText:
-                                  'Slot Name', /////////////////////////////////////////0
+                              hintText: 'Slot Name', /////////////////////////////////////////0
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, left: 10, right: 10),
+                            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
                               onTap: () async {
-                                noticeController.noticePublishedDateController
-                                    .text = await dateTimePicker(context);
+                                noticeController.noticePublishedDateController.text =
+                                    await timePicker(context);
                               },
                               width: 500,
-                              controller: noticeController
-                                  .noticePublishedDateController,
+                              controller: noticeController.noticePublishedDateController,
                               validator: checkFieldDateIsValid,
                               title: 'Start Time',
-                              hintText:
-                                  'Start Time', /////////////////////////////////////////0
+                              hintText: 'Start Time', /////////////////////////////////////////0
                             ),
                           ), ////////////////////////////////////////////////////////2
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, left: 10, right: 10),
+                            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
+
                               width: 500,
                               validator: checkFieldEmpty,
-                              controller:
-                                  noticeController.noticeSubjectController,
+                              controller: noticeController.noticeSubjectController,
                               title: 'End Time',
                               hintText: 'End Time',
                             ),
                           ), ///////////////////////////////////////////////3
-                         ////////////////////////////////////7
+                          ////////////////////////////////////7
                         ],
                       ),
                     ),
@@ -98,8 +91,7 @@ createPracticeAdmin(BuildContext context) {
                       child: Center(
                           child: Obx(() => ProgressButtonWidget(
                               function: () async {
-                                if (noticeController.formKey.currentState!
-                                    .validate()) {
+                                if (noticeController.formKey.currentState!.validate()) {
                                   noticeController
                                       .createNotice()
                                       .then((value) => Navigator.pop(context));
