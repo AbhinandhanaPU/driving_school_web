@@ -12,9 +12,9 @@ import 'package:new_project_driving/view/users/admin/screens/attendance/student_
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/course_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
-import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/create_fees/view_fees_status.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
 import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
@@ -154,16 +154,21 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       color: Colors.white,
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: EdgeInsets.only(
+                              left:
+                                  ResponsiveWebSite.isMobile(context) ? 0 : 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(0),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      height: 60,
+                                      height:
+                                          ResponsiveWebSite.isMobile(context)
+                                              ? 40
+                                              : 60,
                                       child: Image.asset(
                                         logoImage,
                                         fit: BoxFit.fill,
@@ -173,8 +178,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       text: institutionName,
                                       fontsize:
                                           ResponsiveWebSite.isMobile(context)
-                                              ? 18
-                                              : 20,
+                                              ? 12
+                                              : 15,
                                       fontWeight: FontWeight.w500,
                                     )
                                   ],
@@ -223,14 +228,14 @@ List<Widget> pages = [
   const AllStudentsAttendance(), // index 5
   const AllTutorAttendance(), // index 6
   const LearnersStudentListContainer(), // index 7
-  TestDetails(), // index 8
-  const PracticeSheduleStudentListContainer(), // index 9
-  const FeesAndBillsList(), // index 10
-  AllAdminListPage(), // index 11
-  const StudyMaterialsList(), // index 12
-  NoticeAllList(), // index 13
-  const AllEventsList(), // index 14
-  const VideosList(), // index 15
-  AdminNotificationCreate(), // index 16
-  LoginHistroyContainer(), // index 17
+  DrivingStudentListContainer(), // index 8
+  const PracticeSheduleStudentListContainer(), // index 10
+  CreatedFeesStatus(), // index 11
+  AllAdminListPage(), // index 12
+  const StudyMaterialsList(), // index 13
+  NoticeAllList(), // index 14
+  const AllEventsList(), // index 15
+  const VideosList(), // index 16
+  AdminNotificationCreate(), // index 17
+  LoginHistroyContainer(), // index 18////////////////////////////////
 ];

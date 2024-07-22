@@ -2,11 +2,10 @@ import 'package:awesome_side_sheet/Enums/sheet_position.dart';
 import 'package:awesome_side_sheet/side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
+import 'package:new_project_driving/view/widget/dropdown_widget/student_dropdown/all_students.dart';
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
-import 'package:new_project_driving/view/widget/text_formfiled_container/textformfiled_blue_container.dart';
 
 addStudents(BuildContext context) {
   final TestController testController = Get.put(TestController());
@@ -43,21 +42,18 @@ addStudents(BuildContext context) {
                   Form(
                     key: testController.formKey,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                              top: 5, left: 10, right: 10, bottom: 5),
+                          child: TextFontWidget(
+                              text: 'Select Student *', fontsize: 12.5),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 5, left: 10, right: 10),
-                          child: TextFormFiledHeightnoColor(
-                            width: 500,
-                            controller: testController.testDateController,
-                            validator: checkFieldDateIsValid,
-                            title: 'Date',
-                            hintText: 'Date',
-                            onTap: () async {
-                              testController.testDateController.text =
-                                  await dateTimePicker(context);
-                            },
-                          ),
+                              top: 5, left: 10, right: 10, bottom: 15),
+                          child: AllStudentDropDown(),
                         ),
                       ],
                     ),
@@ -71,12 +67,12 @@ addStudents(BuildContext context) {
                             if (testController.formKey.currentState!
                                 .validate()) {
                               testController
-                                  .addTestDate()
+                                  .addStudent()
                                   .then((value) => Navigator.pop(context));
                             }
                           },
                           buttonstate: testController.buttonstate.value,
-                          text: 'Add Schudele',
+                          text: 'Add Student',
                         ),
                       ),
                     ),

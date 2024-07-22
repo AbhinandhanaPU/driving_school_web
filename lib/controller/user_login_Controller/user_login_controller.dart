@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
-import 'package:new_project_driving/controller/class_controller/class_controller.dart';
 import 'package:new_project_driving/model/admin_model/admin_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/model/teacher_model/teacher_model.dart';
@@ -17,7 +16,6 @@ import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/splash_screen/splash_screen.dart';
 
 class UserLoginController extends GetxController {
-  final classCtrl = Get.put(ClassController());
   late AnimationController animationctr;
   late Animation colorAnimation;
 
