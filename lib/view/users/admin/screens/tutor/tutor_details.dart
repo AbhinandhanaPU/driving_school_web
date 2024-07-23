@@ -151,6 +151,18 @@ class TutorDetailsContainer extends StatelessWidget {
                                                   subtitle:
                                                       '${data.teacheremail}',
                                                 ),
+                                                 ProfileDetailTileContainer(
+                                                  flex: 1,
+                                                  title: 'Place',
+                                                  subtitle:
+                                                      '${data.place}',
+                                                ),
+                                                 ProfileDetailTileContainer(
+                                                  flex: 1,
+                                                  title: 'DOB',
+                                                  subtitle:
+                                                      '${data.dateofBirth}',
+                                                ),
                                               ],
                                             ),
                                           ),
