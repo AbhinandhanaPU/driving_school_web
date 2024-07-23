@@ -12,7 +12,7 @@ import 'package:new_project_driving/view/users/admin/screens/attendance/student_
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/course_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/create_fees/view_fees_status.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
@@ -228,7 +228,7 @@ List<Widget> pages = [
   const AllStudentsAttendance(), // index 5
   const AllTutorAttendance(), // index 6
   const LearnersStudentListContainer(), // index 7
-  DrivingStudentListContainer(), // index 8
+  TestDetails(), // index 8
   const PracticeSheduleStudentListContainer(), // index 10
   CreatedFeesStatus(), // index 11
   AllAdminListPage(), // index 12

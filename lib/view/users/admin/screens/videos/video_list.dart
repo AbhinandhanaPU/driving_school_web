@@ -11,6 +11,7 @@ import 'package:new_project_driving/view/widget/loading_widget/loading_widget.da
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
+import 'package:new_project_driving/view/widget/video_player/play_video.dart';
 
 class VideosList extends StatelessWidget {
   const VideosList({super.key});
@@ -110,6 +111,14 @@ class VideosList extends StatelessWidget {
                           width: 02,
                         ),
                         Expanded(
+                          flex: 3,
+                          child: CatrgoryTableHeaderWidget(
+                              headerTitle: 'Video Type'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
+                        Expanded(
                           flex: 2,
                           child: CatrgoryTableHeaderWidget(headerTitle: 'Edit'),
                         ),
@@ -169,9 +178,22 @@ class VideosList extends StatelessWidget {
                             return ListView.separated(
                                 itemBuilder: (context, index) {
                                   final data = snaPS.data!.docs[index].data();
-                                  return VideoDataList(
-                                    data: data,
-                                    index: index,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PlayVideoFlicker(
+                                                  videoUrl:
+                                                      data['downloadUrl']),
+                                        ),
+                                      );
+                                    },
+                                    child: VideoDataList(
+                                      data: data,
+                                      index: index,
+                                    ),
                                   );
                                 },
                                 separatorBuilder: (context, index) {

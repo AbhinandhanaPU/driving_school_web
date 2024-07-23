@@ -17,6 +17,9 @@ class VideoDataList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VideosController videosController = Get.put(VideosController());
+    String fileName = data['fileName'];
+    String fileExtension = fileName.split('.').last;
+
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -62,6 +65,7 @@ class VideoDataList extends StatelessWidget {
           const SizedBox(
             width: 02,
           ),
+
           Expanded(
             flex: 4,
             child: DataContainerWidget(
@@ -72,6 +76,19 @@ class VideoDataList extends StatelessWidget {
               headerTitle: data['videoCategory'],
             ),
           ), // ...................................Video Category
+          const SizedBox(
+            width: 02,
+          ),
+          Expanded(
+            flex: 3,
+            child: DataContainerWidget(
+              rowMainAccess: MainAxisAlignment.center,
+              color: cWhite,
+              // width: 150,
+              index: index,
+              headerTitle: fileExtension,
+            ),
+          ), // ...................................Video type
           const SizedBox(
             width: 02,
           ),

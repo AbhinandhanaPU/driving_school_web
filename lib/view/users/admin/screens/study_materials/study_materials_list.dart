@@ -110,6 +110,13 @@ class StudyMaterialsList extends StatelessWidget {
                           width: 02,
                         ),
                         Expanded(
+                          flex: 3,
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'Type'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
+                        Expanded(
                           flex: 2,
                           child: CatrgoryTableHeaderWidget(headerTitle: 'Edit'),
                         ),
@@ -169,9 +176,23 @@ class StudyMaterialsList extends StatelessWidget {
                             return ListView.separated(
                                 itemBuilder: (context, index) {
                                   final data = snaPS.data!.docs[index].data();
-                                  return StudyMaterialsDataList(
-                                    data: data,
-                                    index: index,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         PDFSectionScreen(
+                                      //       urlPdf: snaPS.data!.docs[index]
+                                      //           ['downloadUrl'],
+                                      //     ),
+                                      //   ),
+                                      // );
+                                    },
+                                    child: StudyMaterialsDataList(
+                                      data: data,
+                                      index: index,
+                                    ),
                                   );
                                 },
                                 separatorBuilder: (context, index) {
