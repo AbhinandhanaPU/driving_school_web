@@ -11,6 +11,7 @@ import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route
 
 class StudentDetailsContainer extends StatelessWidget {
   final StudentController studentController = Get.put(StudentController());
+  final ClassController classController = Get.put(ClassController());
   StudentDetailsContainer({super.key});
 
   @override
@@ -53,7 +54,7 @@ class StudentDetailsContainer extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 0),
                           child: Column(
                             children: [
-                              Get.find<ClassController>()
+                             classController
                                           .ontapStudentsDetail
                                           .value ==
                                       true
@@ -68,10 +69,10 @@ class StudentDetailsContainer extends StatelessWidget {
                                             ),
                                             child: GestureDetector(
                                               onTap: () {
-                                                Get.find<ClassController>()
+                                               classController
                                                     .ontapStudentsDetail
                                                     .value = false;
-                                                Get.find<ClassController>()
+                                               classController
                                                     .ontapClassStudents
                                                     .value = false;
                                                 studentController
@@ -89,7 +90,7 @@ class StudentDetailsContainer extends StatelessWidget {
                                             ),
                                             child: GestureDetector(
                                               onTap: () {
-                                                Get.find<ClassController>()
+                                               classController
                                                     .ontapStudentsDetail
                                                     .value = false;
                                               },
@@ -115,10 +116,10 @@ class StudentDetailsContainer extends StatelessWidget {
                                             ),
                                             child: GestureDetector(
                                               onTap: () {
-                                                Get.find<ClassController>()
+                                               classController
                                                     .ontapStudentsDetail
                                                     .value = false;
-                                                Get.find<ClassController>()
+                                               classController
                                                     .ontapClassStudents
                                                     .value = false;
                                                 studentController
