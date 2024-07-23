@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/add_students.dart';
+import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
 class DrivingStudentListContainer extends StatelessWidget {
-  const DrivingStudentListContainer({super.key});
+  DrivingStudentListContainer({super.key});
+  final TestController testController = Get.put(TestController());
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +46,48 @@ class DrivingStudentListContainer extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              const Row(
+              Row(
                 children: [
-                  RouteSelectedTextContainer(
-                    title: 'All Students',
+                  GestureDetector(
+                    onTap: () {
+                      testController.onTapTest.value = false;
+                    },
+                    child: const RouteSelectedTextContainer(
+                      title: 'Back',
+                      width: 100,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const RouteSelectedTextContainer(
+                    title: 'Students List',
                     width: 200,
                   ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      addStudents(context);
+                    },
+                    child: ButtonContainerWidget(
+                      curving: 30,
+                      colorindex: 0,
+                      height: 40,
+                      width: 180,
+                      child: const Center(
+                        child: TextFontWidgetRouter(
+                          text: 'Add Students',
+                          fontsize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: cWhite,
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               Container(
                 color: cWhite,
@@ -68,7 +106,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                           width: 02,
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: CatrgoryTableHeaderWidget(headerTitle: 'Name'),
                         ),
                         SizedBox(
@@ -85,7 +123,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 3,
                           child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Completes Days'),
+                              headerTitle: 'Completed Days'),
                         ),
                         SizedBox(
                           width: 02,
@@ -93,15 +131,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 3,
                           child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Test Date'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Review'),
+                              headerTitle: 'Number of Attempt'),
                         ),
                         SizedBox(
                           width: 02,
@@ -109,7 +139,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Result'),
+                              CatrgoryTableHeaderWidget(headerTitle: 'Remove'),
                         ),
                         SizedBox(
                           width: 02,
@@ -135,8 +165,9 @@ class DrivingStudentListContainer extends StatelessWidget {
                         stream: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
+                            .collection('DrivingTest')
+                            .doc(testController.testId.value)
                             .collection('Students')
-                            .orderBy('studentName')
                             .snapshots(),
                         builder: (context, snaPS) {
                           if (snaPS.hasData) {
@@ -145,7 +176,7 @@ class DrivingStudentListContainer extends StatelessWidget {
                                     child: Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Please create Students",
+                                        "Please add Students",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400),
                                       ),

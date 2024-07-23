@@ -18,40 +18,34 @@ class PracticeSheduleDataList extends StatelessWidget {
     return Container(
       height: 45,
       decoration: BoxDecoration(
-        color: index % 2 == 0
-            ? const Color.fromARGB(255, 246, 246, 246)
-            : Colors.blue[50],
+        color: index % 2 == 0 ? const Color.fromARGB(255, 246, 246, 246) : Colors.blue[50],
       ),
       child: Row(
         children: [
           Expanded(
             flex: 1,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: '  ${index + 1}'), //....................No
+            child: Center(
+              child: DataContainerWidget(
+                  rowMainAccess: MainAxisAlignment.center,
+                  color: cWhite,
+                  index: index,
+                  headerTitle: '1'),
+            ), //....................No
           ),
           const SizedBox(
             width: 01,
           ),
-          Expanded(
+          const Expanded(
             flex: 3,
             child: Row(
               children: [
-                SizedBox(
-                  width: 20,
-                  child: Center(
-                    child: Image.asset(
-                      'webassets/stickers/icons8-student-100 (1).png',
-                    ),
-                  ),
-                ),
                 Expanded(
-                  child: TextFontWidget(
-                    text: '  ${data.studentName}',
-                    fontsize: 12,
-                    overflow: TextOverflow.ellipsis,
+                  child: Center(
+                    child: TextFontWidget(
+                      text: '--',
+                      fontsize: 12,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],
@@ -62,76 +56,57 @@ class PracticeSheduleDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: '--'),
+            child: Center(
+              child: DataContainerWidget(
+                  rowMainAccess: MainAxisAlignment.center,
+                  color: cWhite,
+                  // width: 150,
+                  index: index,
+                  headerTitle: '--'),
+            ),
           ), //............................. Student joining Date
           const SizedBox(
             width: 01,
           ),
           Expanded(
-            flex: 2,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: '--'),
+            flex: 3,
+            child: Center(
+              child: DataContainerWidget(
+                  rowMainAccess: MainAxisAlignment.center,
+                  color: cWhite,
+                  // width: 150,
+                  index: index,
+                  headerTitle: '--'),
+            ),
           ), //............................. Student Completed days
           const SizedBox(
             width: 01,
           ),
           Expanded(
             flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: '--'),
+            child: Center(
+              child: DataContainerWidget(
+                  rowMainAccess: MainAxisAlignment.center,
+                  color: cWhite,
+                  // width: 150,
+                  index: index,
+                  headerTitle: ' Update 🖋️'),
+            ),
           ), //............................. Student Practce Status
           const SizedBox(
             width: 01,
           ),
           Expanded(
             flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: '--'),
+            child: Center(
+              child: DataContainerWidget(
+                  rowMainAccess: MainAxisAlignment.center,
+                  color: cWhite,
+                  // width: 150,
+                  index: index,
+                  headerTitle: ' Remove 🗑️'),
+            ),
           ), //............................. Student Sheduled Practce
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
-            flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: '--'),
-          ), //............................. Student Sheduled time
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
-            flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: '--'),
-          ), //............................. Student pending
-          const SizedBox(
-            width: 01,
-          ),
         ],
       ),
     );

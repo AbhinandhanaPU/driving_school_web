@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
@@ -21,7 +20,6 @@ class TutorController extends GetxController {
   RxString dobSelectedDate = ''.obs;
   RxString joiningSelectedDate = ''.obs;
   RxBool ontapviewTutor = false.obs;
-
   RxBool tutorEditDetail = false.obs;
   Rxn<TeacherModel> tutorModelData = Rxn<TeacherModel>();
   final formKey = GlobalKey<FormState>();

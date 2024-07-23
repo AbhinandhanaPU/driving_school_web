@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
-import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/model/student_model/student_model.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
-class DrivingDataList extends StatelessWidget {
-  final StudentModel data;
+class TestDataList extends StatelessWidget {
+  final Map<String, dynamic> data;
   final int index;
-  DrivingDataList({
+  TestDataList({
     required this.data,
     required this.index,
     super.key,
   });
-
+  final CourseController courseController = Get.put(CourseController());
   final TestController testController = Get.put(TestController());
 
   @override
@@ -41,65 +41,80 @@ class DrivingDataList extends StatelessWidget {
             width: 01,
           ),
           Expanded(
-            flex: 4,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 20,
-                  child: Center(
-                    child: Image.asset(
-                      'webassets/stickers/icons8-student-100 (1).png',
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TextFontWidget(
-                    text: '  ${data.studentName}',
-                    fontsize: 12,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+            flex: 3,
+            child: DataContainerWidget(
+                rowMainAccess: MainAxisAlignment.center,
+                color: cWhite,
+                // width: 150,
+                index: index,
+                headerTitle: '${data['testDate']}'),
+          ), //.............................test Date
+          const SizedBox(
+            width: 01,
+          ),
+          Expanded(
+            flex: 3,
+            child: DataContainerWidget(
+                rowMainAccess: MainAxisAlignment.center,
+                color: cWhite,
+                // width: 150,
+                index: index,
+                headerTitle: '${data['testTime']}'),
+          ), //.............................test Time
+          const SizedBox(
+            width: 01,
+          ),
+          Expanded(
+            flex: 3,
+            child: DataContainerWidget(
+                rowMainAccess: MainAxisAlignment.center,
+                color: cWhite,
+                // width: 150,
+                index: index,
+                headerTitle: '${data['location']}'),
+          ), //............................. test place
+          const SizedBox(
+            width: 02,
+          ),
+          Expanded(
+            flex: 3,
+            child: StreamBuilder<int>(
+                stream: courseController.fetchTotalStudents(data['docId']),
+                builder: (context, snapshot) {
+                  return DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    // width: 150,
+                    index: index,
+                    headerTitle:
+                        snapshot.hasData ? snapshot.data.toString() : '0',
+                  );
+                }),
+          ), //............................. Student count
+          const SizedBox(
+            width: 02,
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  testController.testDateEditController.text = data['testDate'];
+                  testController.testTimeEditController.text = data['testTime'];
+                  testController.testLocationEditController.text =
+                      data['location'];
+                  editFunctionOfTest(context, data);
+                },
+                child: DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    index: index,
+                    headerTitle: ' Update 🖋️'),
+              ),
             ),
-          ), //........................................... Student Name
+          ), //....................................... Edit
           const SizedBox(
-            width: 01,
-          ),
-          Expanded(
-            flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: ' '),
-          ), //............................. Student joining Date
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
-            flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: ' '),
-          ), //............................. Student Completed days
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
-            flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: ' '),
-          ), //............................. Student no. of attempt
-          const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 2,
@@ -109,7 +124,7 @@ class DrivingDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () async {
-                      await testController.deleteStudent(docId: data.docid);
+                      await testController.deleteTest(docId: data['docId']);
                     },
                   );
                 },
@@ -121,6 +136,7 @@ class DrivingDataList extends StatelessWidget {
               ),
             ),
           ), //....................Delete
+
           const SizedBox(
             width: 01,
           ),

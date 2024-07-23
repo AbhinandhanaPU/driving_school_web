@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
@@ -14,29 +15,28 @@ class CourseController extends GetxController {
   final formKey = GlobalKey<FormState>();
   Rx<ButtonState> buttonstate = ButtonState.idle.obs;
 
-  
   RxBool ontapStudentDetail = false.obs;
-    RxString studentDocID = ''.obs;
-      RxString studentName = ''.obs;
-     List<StudentModel> allstudentList = [];
-      Rxn<CourseModel> courseModelData = Rxn<CourseModel>();
+  RxString studentDocID = ''.obs;
+  RxString studentName = ''.obs;
+  List<StudentModel> allstudentList = [];
+  Rxn<CourseModel> courseModelData = Rxn<CourseModel>();
 
-       void setCourseData(CourseModel course) {
+  void setCourseData(CourseModel course) {
     courseModelData.value = course;
   }
 
   TextEditingController courseNameController = TextEditingController();
   TextEditingController courseDesController = TextEditingController();
-   TextEditingController courseDurationController = TextEditingController();
+  TextEditingController courseDurationController = TextEditingController();
   TextEditingController courseRateController = TextEditingController();
-  
+
   TextEditingController editcourseNameController = TextEditingController();
   TextEditingController editcourseDesController = TextEditingController();
-   TextEditingController editcourseDurationController = TextEditingController();
+  TextEditingController editcourseDurationController = TextEditingController();
   TextEditingController editcourseRateController = TextEditingController();
   clearFields() {
     courseNameController.clear();
-     courseDurationController.clear();
+    courseDurationController.clear();
     courseRateController.clear();
   }
 
@@ -46,7 +46,7 @@ class CourseController extends GetxController {
     final courseDetails = CourseModel(
         courseName: courseNameController.text,
         courseDes: courseDesController.text,
-         duration: courseDurationController.text,
+        duration: courseDurationController.text,
         rate: courseRateController.text,
         courseId: uuid);
 
@@ -91,7 +91,6 @@ class CourseController extends GetxController {
     }
   }
 
-  
   Future<void> updateCourse(String courseId, BuildContext context) async {
     try {
       await server
@@ -113,7 +112,7 @@ class CourseController extends GetxController {
     }
   }
 
- Future<List<StudentModel>> fetchAllStudents() async {
+  Future<List<StudentModel>> fetchAllStudents() async {
     final firebase = await server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
@@ -127,7 +126,7 @@ class CourseController extends GetxController {
     }
     return allstudentList;
   }
-  
+
   Future<void> addStudentToCourseController(String courseID) async {
     try {
       log("studentDocID.value ${studentDocID.value}");
@@ -165,5 +164,16 @@ class CourseController extends GetxController {
       showToast(msg: 'Somthing went wrong please try again');
       allstudentList.clear();
     }
+  }
+
+  Stream<int> fetchTotalStudents(String courseId) {
+    CollectionReference coursesRef = server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('DrivingTest')
+        .doc(courseId)
+        .collection('Students');
+
+    return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
   }
 }
