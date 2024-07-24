@@ -3,7 +3,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/info/info.dart';
 import 'package:new_project_driving/view/users/admin/screens/registration/teachers_regi_container.dart';
-import 'package:new_project_driving/view/users/tutor/appbar/tutor_appBar.dart';
+import 'package:new_project_driving/view/users/tutor/appbar/tutor_appbar.dart';
 import 'package:new_project_driving/view/users/tutor/drawer/drawer_pages_tutor.dart';
 import 'package:sidebar_drawer/sidebar_drawer.dart';
 

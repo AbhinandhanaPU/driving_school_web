@@ -6,7 +6,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/info/info.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/app_bar/admin_appBar.dart';
+import 'package:new_project_driving/view/users/admin/app_bar/admin_appbar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/student_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';

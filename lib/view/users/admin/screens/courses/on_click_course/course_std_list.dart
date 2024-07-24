@@ -7,7 +7,7 @@ import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/add_student/add_studentfunction.dart';
-import 'package:new_project_driving/view/users/admin/screens/courses/on_click_course/student_dataList.dart';
+import 'package:new_project_driving/view/users/admin/screens/courses/on_click_course/student_datalist.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';

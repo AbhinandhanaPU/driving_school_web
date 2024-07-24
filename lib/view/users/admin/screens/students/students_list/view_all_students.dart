@@ -6,7 +6,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/search_students/search_studentName.dart';
+import 'package:new_project_driving/view/users/admin/screens/students/search_students/search_student_name.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_details.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
