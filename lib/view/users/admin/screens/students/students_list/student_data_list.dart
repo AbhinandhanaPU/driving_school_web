@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
@@ -92,73 +93,72 @@ class AllStudentDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child:StreamBuilder(
-                  stream: server
+            child: StreamBuilder(
+              stream: server
                   .collection('DrivingSchoolCollection')
                   .doc(UserCredentialsController.schoolId)
                   .collection('Students')
                   .doc(data.docid)
                   .snapshots(),
-                  builder: (context, snap) {
-                   if (snap.hasError) {
-                    return Text('Error: ${snap.error}');
-                   }
-                   if (!snap.hasData || !snap.data!.exists) {
-                    return const CircularProgressIndicator();
-                   }
+              builder: (context, snap) {
+                if (snap.hasError) {
+                  return Text('Error: ${snap.error}');
+                }
+                if (!snap.hasData || !snap.data!.exists) {
+                  return const CircularProgressIndicator();
+                }
 
-                  final studentData = snap.data?.data();
-                   if (studentData == null ) {
-                    return DataContainerWidget(
+                final studentData = snap.data?.data();
+                if (studentData == null) {
+                  return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
                     index: index,
                     headerTitle: 'Course Not Found',
-                   );
-                  }
+                  );
+                }
 
-                  final courseId = studentData['courseId'];
-                  return StreamBuilder(
-                   stream: server
-                   .collection('DrivingSchoolCollection')
-                   .doc(UserCredentialsController.schoolId)
-                   .collection('Courses')
-                   .doc(courseId)
-                   .snapshots(),
-                    builder: (context, snapshot) {
-                     if (snapshot.hasError) {
+                final courseId = studentData['courseId'];
+                return StreamBuilder(
+                  stream: server
+                      .collection('DrivingSchoolCollection')
+                      .doc(UserCredentialsController.schoolId)
+                      .collection('Courses')
+                      .doc(courseId)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
-                   
 
                     final courseData = snapshot.data?.data();
                     final courseName = courseData?['courseName'] ?? 'Not Found';
 
-                   return DataContainerWidget(
-                     rowMainAccess: MainAxisAlignment.center,
-                     color: cWhite,
-                     index: index,
-                     headerTitle: courseName,
-                   );
+                    return DataContainerWidget(
+                      rowMainAccess: MainAxisAlignment.center,
+                      color: cWhite,
+                      index: index,
+                      headerTitle: courseName,
+                    );
                   },
-                  );
-                  },
-                )
-
+                );
+              },
+            ),
           ), //............................. Student courses type
           const SizedBox(
             width: 01,
           ),
           Expanded(
             flex: 2,
-            child: DataContainerWidget(
+            child: Center(
+              child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                // width: 150,
                 index: index,
-                headerTitle: ' '),
+                headerTitle: stringTimeToDateConvert(data.joiningDate),
+              ),
+            ),
           ), //............................. Student join date
-
           const SizedBox(
             width: 01,
           ),

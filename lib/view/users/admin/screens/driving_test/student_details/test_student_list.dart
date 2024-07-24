@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -7,8 +9,8 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_std_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/add_students.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_std_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
@@ -21,6 +23,7 @@ class DrivingStudentListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(testController.testId.value);
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -152,7 +155,6 @@ class DrivingStudentListContainer extends StatelessWidget {
               Expanded(
                 child: Container(
                   height: 400,
-                  // width: 1200,
                   decoration: BoxDecoration(
                     color: cWhite,
                     border: Border.all(color: cWhite),
@@ -160,7 +162,6 @@ class DrivingStudentListContainer extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5, left: 5),
                     child: SizedBox(
-                      // width: 1100,
                       child: StreamBuilder(
                         stream: server
                             .collection('DrivingSchoolCollection')
@@ -169,39 +170,68 @@ class DrivingStudentListContainer extends StatelessWidget {
                             .doc(testController.testId.value)
                             .collection('Students')
                             .snapshots(),
-                        builder: (context, snaPS) {
-                          if (snaPS.hasData) {
-                            return snaPS.data!.docs.isEmpty
-                                ? const Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Please add Students",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    ),
-                                  )
-                                : ListView.separated(
-                                    itemBuilder: (context, index) {
-                                      final data = StudentModel.fromMap(
-                                          snaPS.data!.docs[index].data());
-                                      return DrivingDataList(
-                                        data: data,
-                                        index: index,
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return const SizedBox(
-                                        height: 02,
-                                      );
-                                    },
-                                    itemCount: snaPS.data!.docs.length);
-                          } else if (snaPS.data == null) {
-                            return const LoadingWidget();
-                          } else {
+                        builder: (context, studentSnapshot) {
+                          if (studentSnapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const LoadingWidget();
                           }
+                          if (studentSnapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${studentSnapshot.error}'));
+                          }
+                          if (studentSnapshot.data == null ||
+                              studentSnapshot.data!.docs.isEmpty) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Please add Students",
+                                  style: TextStyle(fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            );
+                          }
+                          return ListView.separated(
+                            itemBuilder: (context, index) {
+                              final stdData =
+                                  studentSnapshot.data!.docs[index].data();
+                              return StreamBuilder(
+                                stream: server
+                                    .collection('DrivingSchoolCollection')
+                                    .doc(UserCredentialsController.schoolId)
+                                    .collection('Students')
+                                    .doc(stdData['studentDocId'])
+                                    .snapshots(),
+                                builder: (context, detailSnapshot) {
+                                  if (detailSnapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const LoadingWidget();
+                                  }
+                                  if (detailSnapshot.hasError) {
+                                    return Center(
+                                        child: Text(
+                                            'Error: ${detailSnapshot.error}'));
+                                  }
+                                  if (!detailSnapshot.hasData ||
+                                      detailSnapshot.data == null) {
+                                    return const LoadingWidget();
+                                  }
+                                  final data = StudentModel.fromMap(
+                                      detailSnapshot.data!.data()!);
+                                  return DrivingDataList(
+                                    data: data,
+                                    index: index,
+                                  );
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 2,
+                              );
+                            },
+                            itemCount: studentSnapshot.data!.docs.length,
+                          );
                         },
                       ),
                     ),
