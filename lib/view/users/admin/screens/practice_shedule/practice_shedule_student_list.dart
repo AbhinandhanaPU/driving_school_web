@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
+import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
+ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/create_practice.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_data_list.dart';
@@ -157,8 +157,7 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                         stream: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
-                            .collection('Students')
-                            .orderBy('studentName')
+                            .collection('PracticeSchedule')
                             .snapshots(),
                         builder: (context, snaPS) {
                           if (snaPS.hasData) {
@@ -175,7 +174,7 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                                 : ListView.separated(
                                     itemBuilder: (context, index) {
                                       final data =
-                                          StudentModel.fromMap(snaPS.data!.docs[index].data());
+                                          PracticeSheduleModel.fromMap(snaPS.data!.docs[index].data());
                                       return PracticeSheduleDataList(
                                         data: data,
                                         index: index,
@@ -186,7 +185,7 @@ class PracticeSheduleStudentListContainer extends StatelessWidget {
                                         height: 02,
                                       );
                                     },
-                                    itemCount: 1);
+                                    itemCount: snaPS.data!.docs.length);
                           } else if (snaPS.data == null) {
                             return const LoadingWidget();
                           } else {

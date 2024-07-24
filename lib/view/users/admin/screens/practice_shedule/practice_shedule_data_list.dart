@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/model/student_model/student_model.dart';
+import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class PracticeSheduleDataList extends StatelessWidget {
-  final StudentModel data;
+  final PracticeSheduleModel data;
   final int index;
   const PracticeSheduleDataList({
     required this.data,
@@ -29,20 +29,20 @@ class PracticeSheduleDataList extends StatelessWidget {
                   rowMainAccess: MainAxisAlignment.center,
                   color: cWhite,
                   index: index,
-                  headerTitle: '1'),
+                  headerTitle: '${index + 1}'),
             ), //....................No
           ),
           const SizedBox(
             width: 01,
           ),
-          const Expanded(
+          Expanded(
             flex: 3,
             child: Row(
               children: [
                 Expanded(
                   child: Center(
                     child: TextFontWidget(
-                      text: '--',
+                      text: data.practiceName,
                       fontsize: 12,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -62,7 +62,7 @@ class PracticeSheduleDataList extends StatelessWidget {
                   color: cWhite,
                   // width: 150,
                   index: index,
-                  headerTitle: '--'),
+                  headerTitle: data.startTime),
             ),
           ), //............................. Student joining Date
           const SizedBox(
@@ -76,7 +76,7 @@ class PracticeSheduleDataList extends StatelessWidget {
                   color: cWhite,
                   // width: 150,
                   index: index,
-                  headerTitle: '--'),
+                  headerTitle: data.endTime),
             ),
           ), //............................. Student Completed days
           const SizedBox(

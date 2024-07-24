@@ -3,13 +3,13 @@ import 'package:awesome_side_sheet/side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
-import 'package:new_project_driving/controller/notice_controller/notice_controller.dart';
+import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
 import 'package:new_project_driving/view/widget/text_formfiled_container/textformfiled_blue_container.dart';
 
 createPracticeAdmin(BuildContext context) {
-  final NoticeController noticeController = Get.put(NoticeController());
+  final PracticeSheduleController practiceshedulecontroller = Get.put(PracticeSheduleController());
   aweSideSheet(
       context: context,
       sheetPosition: SheetPosition.right,
@@ -44,52 +44,48 @@ createPracticeAdmin(BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Form(
-                      key: noticeController.formKey,
+                      key: practiceshedulecontroller.formKey,
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, left: 10, right: 10),
+                            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
                               width: 500,
-                              controller:
-                                  noticeController.noticeHeadingController,
+                              controller: practiceshedulecontroller.practiceNameController,
                               validator: checkFieldEmpty,
                               title: 'Slot Name',
-                              hintText:
-                                  'Slot Name', /////////////////////////////////////////0
+                              hintText: 'Slot Name', /////////////////////////////////////////0
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, left: 10, right: 10),
+                            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
                               onTap: () async {
-                                noticeController.noticePublishedDateController
-                                    .text = await dateTimePicker(context);
+                                practiceshedulecontroller.startTimeController.text =
+                                    await timePicker(context);
                               },
                               width: 500,
-                              controller: noticeController
-                                  .noticePublishedDateController,
-                              validator: checkFieldDateIsValid,
+                              controller: practiceshedulecontroller.startTimeController,
+                              validator: checkFieldTimeIsValid,
                               title: 'Start Time',
-                              hintText:
-                                  'Start Time', /////////////////////////////////////////0
+                              hintText: 'Start Time', /////////////////////////////////////////0
                             ),
                           ), ////////////////////////////////////////////////////////2
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 5, left: 10, right: 10),
+                            padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                             child: TextFormFiledHeightnoColor(
+                              onTap: () async {
+                                practiceshedulecontroller.endTimeController.text =
+                                    await timePicker(context);
+                              },
                               width: 500,
-                              validator: checkFieldEmpty,
-                              controller:
-                                  noticeController.noticeSubjectController,
+                              validator: checkFieldTimeIsValid,
+                              controller: practiceshedulecontroller.endTimeController,
                               title: 'End Time',
                               hintText: 'End Time',
                             ),
                           ), ///////////////////////////////////////////////3
-                         ////////////////////////////////////7
+                          ////////////////////////////////////7
                         ],
                       ),
                     ),
@@ -98,14 +94,12 @@ createPracticeAdmin(BuildContext context) {
                       child: Center(
                           child: Obx(() => ProgressButtonWidget(
                               function: () async {
-                                if (noticeController.formKey.currentState!
-                                    .validate()) {
-                                  noticeController
-                                      .createNotice()
-                                      .then((value) => Navigator.pop(context));
+                                if (practiceshedulecontroller.formKey.currentState!.validate()) {
+                                  practiceshedulecontroller.createPracticeShedule() 
+                                  .then((value) => Navigator.pop(context));
                                 }
                               },
-                              buttonstate: noticeController.buttonstate.value,
+                              buttonstate: practiceshedulecontroller.buttonstate.value,
                               text: 'Create Practice'))),
                     )
                   ],
