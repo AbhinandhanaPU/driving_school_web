@@ -71,4 +71,38 @@ class StudentController extends GetxController {
       log("Student deletion error:$e");
     }
   }
+
+
+   Future<void> updateStudentStatus(
+      StudentModel studentModel, String newStatus) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Students')
+          .doc(studentModel.docid)
+          .update({'status': newStatus}).then((value) {
+        studentModel.status = newStatus;
+        update(); 
+        log("Student status updated to $newStatus");
+      });
+    } catch (e) {
+      log("Student status update error: $e");
+    }
+  }
+
+  //   Future<void> updateStudentCourse(StudentModel student, String newCourseId) async {
+  //   try {
+  //     await server
+  //         .collection('DrivingSchoolCollection')
+  //         .doc(UserCredentialsController.schoolId)
+  //         .collection('Students')
+  //         .doc(student.docid)
+  //         .update({'courseId': newCourseId});
+  //     showToast(msg: 'Course Updated Successfully');
+  //   } catch (e) {
+  //     log("Error updating course: $e");
+  //     showToast(msg: 'Failed to update course');
+  //   }
+  // }
 }
