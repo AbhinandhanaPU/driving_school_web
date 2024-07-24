@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class TeacherModel {
@@ -14,6 +15,7 @@ class TeacherModel {
   String? profileImageUrl;
   String? rtoName;
   String? licenceNumber;
+  String? joiningDate;
   String userRole;
 
   TeacherModel({
@@ -30,6 +32,7 @@ class TeacherModel {
     this.profileImageUrl,
     this.rtoName,
     this.licenceNumber,
+    this.joiningDate,
     this.userRole = 'teacher',
   });
 
@@ -47,6 +50,7 @@ class TeacherModel {
     String? profileImageUrl,
     String? rtoName,
     String? licenceNumber,
+    String? joiningDate,
     String? userRole,
   }) {
     return TeacherModel(
@@ -63,6 +67,7 @@ class TeacherModel {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       rtoName: rtoName ?? this.rtoName,
       licenceNumber: licenceNumber ?? this.licenceNumber,
+      joiningDate: joiningDate ?? this.joiningDate,
       userRole: userRole ?? this.userRole,
     );
   }
@@ -82,26 +87,39 @@ class TeacherModel {
       'profileImageUrl': profileImageUrl,
       'rtoName': rtoName,
       'licenceNumber': licenceNumber,
+      'joiningDate': joiningDate,
       'userRole': userRole,
     };
   }
 
   factory TeacherModel.fromMap(Map<String, dynamic> map) {
     return TeacherModel(
-      docid: map['docid'] as String?,
-      password: map['password'] as String?,
-      teacheremail: map['teacheremail'] as String?,
-      teacherName: map['teacherName'] as String?,
-      phoneNumber: map['phoneNumber'] as String?,
-      dateofBirth: map['dateofBirth'] as String?,
-      guardianName: map['guardianName'] as String?,
-      address: map['address'] as String?,
-      place: map['place'] as String?,
-      profileImageId: map['profileImageId'] as String?,
-      profileImageUrl: map['profileImageUrl'] as String?,
-      rtoName: map['rtoName'] as String?,
-      licenceNumber: map['licenceNumber'] as String?,
-      userRole: map['userRole'] as String? ?? 'teacher',
+      docid: map['docid'] != null ? map['docid'] as String : null,
+      password: map['password'] != null ? map['password'] as String : null,
+      teacheremail:
+          map['teacheremail'] != null ? map['teacheremail'] as String : null,
+      teacherName:
+          map['teacherName'] != null ? map['teacherName'] as String : null,
+      phoneNumber:
+          map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
+      dateofBirth:
+          map['dateofBirth'] != null ? map['dateofBirth'] as String : null,
+      guardianName:
+          map['guardianName'] != null ? map['guardianName'] as String : null,
+      address: map['address'] != null ? map['address'] as String : null,
+      place: map['place'] != null ? map['place'] as String : null,
+      profileImageId: map['profileImageId'] != null
+          ? map['profileImageId'] as String
+          : null,
+      profileImageUrl: map['profileImageUrl'] != null
+          ? map['profileImageUrl'] as String
+          : null,
+      rtoName: map['rtoName'] != null ? map['rtoName'] as String : null,
+      licenceNumber:
+          map['licenceNumber'] != null ? map['licenceNumber'] as String : null,
+      joiningDate:
+          map['joiningDate'] != null ? map['joiningDate'] as String : null,
+      userRole: map['userRole'] as String,
     );
   }
 
@@ -112,7 +130,7 @@ class TeacherModel {
 
   @override
   String toString() {
-    return 'teacherModel(docid: $docid, password: $password, teacheremail: $teacheremail, teacherName: $teacherName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, userRole: $userRole)';
+    return 'TeacherModel(docid: $docid, password: $password, teacheremail: $teacheremail, teacherName: $teacherName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, userRole: $userRole)';
   }
 
   @override
@@ -132,6 +150,7 @@ class TeacherModel {
         other.profileImageUrl == profileImageUrl &&
         other.rtoName == rtoName &&
         other.licenceNumber == licenceNumber &&
+        other.joiningDate == joiningDate &&
         other.userRole == userRole;
   }
 
@@ -150,6 +169,7 @@ class TeacherModel {
         profileImageUrl.hashCode ^
         rtoName.hashCode ^
         licenceNumber.hashCode ^
+        joiningDate.hashCode ^
         userRole.hashCode;
   }
 }

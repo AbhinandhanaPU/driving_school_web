@@ -5,7 +5,7 @@ import 'package:new_project_driving/controller/test_controller/test_controller.d
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/driving_student_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/schedule_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';

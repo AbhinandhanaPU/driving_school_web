@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
@@ -68,11 +69,12 @@ class DrivingDataList extends StatelessWidget {
           Expanded(
             flex: 3,
             child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: ' '),
+              rowMainAccess: MainAxisAlignment.center,
+              color: cWhite,
+              // width: 150,
+              index: index,
+              headerTitle: stringTimeToDateConvert(data.joiningDate),
+            ),
           ), //............................. Student joining Date
           const SizedBox(
             width: 01,

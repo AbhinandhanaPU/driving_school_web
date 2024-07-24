@@ -67,6 +67,7 @@ class TeacherSignUpController extends GetxController {
             profileImageUrl: downloadUrl.value,
             rtoName: rtoNameController.text,
             licenceNumber: licenceController.text,
+            joiningDate: DateTime.now().toString(),
             userRole: "teacher");
         await server
             .collection('DrivingSchoolCollection')
