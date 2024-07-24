@@ -51,4 +51,42 @@ class PracticeSheduleController extends GetxController {
       log("Error .... $e", name: "PracticeSchedule");
     }
   }
+
+
+  Future<void> updatePractice(String practiceId, BuildContext context) async {
+    try {
+      server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('PracticeSchedule')
+          .doc(practiceId)
+          .update({
+            'practiceName': practiceNameController.text,
+            'startTime': startTimeController.text,
+            'endTime': endTimeController.text, 
+          })
+          .then((value) {
+            practiceNameController.clear();
+            startTimeController.clear();
+            endTimeController.clear(); 
+          })
+          .then((value) => Navigator.pop(context))
+          .then((value) => showToast(msg: 'Practice Updated!'));
+    } catch (e) {
+      showToast(msg: 'Practice  Updation failed.Try Again');
+      log("Practice Updation failed $e");
+    }
+  }
+
+  Future<void> deletePractice(String practiceId, BuildContext context) async {
+    log("noticeId -----------$practiceId");
+    server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('PracticeSchedule')
+        .doc(practiceId)
+        .delete();
+  }
+
+
 }
