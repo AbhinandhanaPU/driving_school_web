@@ -68,7 +68,9 @@ class StudentSignUpController extends GetxController {
             rtoName: rtoNameController.text,
             licenceNumber: licenceController.text,
             joiningDate: DateTime.now().toString(),
-            userRole: "student");
+            userRole: "student", 
+            status: 'Inactive'//change
+            );
         await server
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)

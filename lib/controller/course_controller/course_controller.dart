@@ -14,10 +14,13 @@ import 'package:uuid/uuid.dart';
 class CourseController extends GetxController {
   final formKey = GlobalKey<FormState>();
   Rx<ButtonState> buttonstate = ButtonState.idle.obs;
-
+//  List<CourseModel> courselist = [];
   RxBool ontapStudentDetail = false.obs;
   RxString studentDocID = ''.obs;
   RxString studentName = ''.obs;
+    // RxString newCourseId = ''.obs;
+    //    RxString courseId = ''.obs;
+    //       RxString courseName = ''.obs;
   List<StudentModel> allstudentList = [];
   Rxn<CourseModel> courseModelData = Rxn<CourseModel>();
 
@@ -176,4 +179,34 @@ class CourseController extends GetxController {
 
     return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
   }
+
+  //   Future<List<CourseModel>> updateCoursestudent( ) async {
+  //   try {
+  //     await server
+  //         .collection('DrivingSchoolCollection')
+  //         .doc(UserCredentialsController.schoolId)
+  //         .collection('Courses')
+  //         .doc(studentDocID.value)
+  //         .update({'courseId': courseName.value});
+  //     showToast(msg: 'Course Updated Successfully');
+  //   } catch (e) {
+  //     log("Error updating course: $e");
+  //     showToast(msg: 'Failed to update course');
+  //   }
+  //   return courselist;
+  // }
+//   Future<List<CourseModel>> updateStudentCourse() async {
+//   try {
+//     final snapshot = await server
+//         .collection('DrivingSchoolCollection')
+//         .doc(UserCredentialsController.schoolId)
+//         .collection('Courses')
+//         .get();
+//     return snapshot.docs.map((doc) => CourseModel.fromMap(doc.data())).toList();
+//   } catch (e) {
+//     log("Error fetching courses: $e");
+//     return [];
+//   }
+// }
+
 }

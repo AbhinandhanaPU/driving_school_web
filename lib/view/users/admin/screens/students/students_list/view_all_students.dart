@@ -129,13 +129,13 @@ class AllStudentListContainer extends StatelessWidget {
                                 SizedBox(
                                   width: 02,
                                 ),
-                                Expanded(
-                                    flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Permission Status')),
-                                SizedBox(
-                                  width: 02,
-                                ),
+                                // Expanded(
+                                //     flex: 2,
+                                //     child: CatrgoryTableHeaderWidget(
+                                //         headerTitle: 'Permission Status')),
+                                // SizedBox(
+                                //   width: 02,
+                                // ),
                                 Expanded(
                                     flex: 2,
                                     child: CatrgoryTableHeaderWidget(

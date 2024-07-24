@@ -21,6 +21,7 @@ class AllStudentDataList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudentController studentController = Get.put(StudentController());
+    //  CourseController courseController = Get.put(CourseController());
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -91,7 +92,7 @@ class AllStudentDataList extends StatelessWidget {
           const SizedBox(
             width: 01,
           ),
-          Expanded(
+         Expanded(
             flex: 3,
             child: StreamBuilder(
               stream: server
@@ -134,11 +135,42 @@ class AllStudentDataList extends StatelessWidget {
                     final courseData = snapshot.data?.data();
                     final courseName = courseData?['courseName'] ?? 'Not Found';
 
-                    return DataContainerWidget(
-                      rowMainAccess: MainAxisAlignment.center,
-                      color: cWhite,
-                      index: index,
-                      headerTitle: courseName,
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: DataContainerWidget(
+                            rowMainAccess: MainAxisAlignment.center,
+                            color: cWhite,
+                            index: index,
+                            headerTitle: courseName,
+                          ),
+                        ),
+        //                 IconButton(
+        //                   icon: const Icon(Icons.edit),
+        //                   onPressed: () {
+        //                     showDialog(
+        //                       context: context,
+        //                       builder: (context) {
+        //                         return AlertDialog(actions: [ Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: [
+        //     TextButton(
+        //       onPressed: () {
+        //         courseController.updateCoursestudent();
+        //         Navigator.pop(context);
+        //       },
+        //       child: const Text('Ok'),
+        //     ),
+        //   ],
+        // ),],
+        //                           title: const Text('Select Course'),
+        //                           content:  SelectClassWiseSubjectDropDown(),);
+                                
+        //                       },
+        //                     );
+        //                   },
+        //                 ),
+                      ],
                     );
                   },
                 );
@@ -162,31 +194,35 @@ class AllStudentDataList extends StatelessWidget {
           const SizedBox(
             width: 01,
           ),
-          Expanded(
-            flex: 2,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: ' '),
-          ), //............................. Student Permission Status
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
+          // Expanded(
+          //   flex: 2,
+          //   child: DataContainerWidget(
+          //       rowMainAccess: MainAxisAlignment.center,
+          //       color: cWhite,
+          //       // width: 150,
+          //       index: index,
+          //       headerTitle: ' '),
+          // ), //............................. Student Permission Status
+          // const SizedBox(
+          //   width: 01,
+          // ),
+           Expanded(
             flex: 2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: 15,
-                  child: Image.asset(
-                    'webassets/png/active.png',
+                Transform.scale(
+                       scale: 0.65,
+                  child: Switch(activeColor: Colors.green,
+                    value: data.status == 'active',
+                    onChanged: (value) {
+                      final newStatus = value ? 'active' : 'inactive';
+                      studentController.updateStudentStatus(data, newStatus);
+                    },
                   ),
                 ),
-                const TextFontWidget(
-                  text: "  Active",
+                TextFontWidget(
+                  text: data.status == 'active' ? "  Active" : "  Inactive",
                   fontsize: 12,
                   overflow: TextOverflow.ellipsis,
                 ),
