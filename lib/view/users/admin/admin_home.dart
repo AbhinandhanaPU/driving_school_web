@@ -229,7 +229,7 @@ List<Widget> pages = [
   const AllTutorAttendance(), // index 6
   const LearnersStudentListContainer(), // index 7
   TestDetails(), // index 8
-  const PracticeSheduleStudentListContainer(), // index 10
+  PracticeSheduleDetails(), // index 10
   CreatedFeesStatus(), // index 11
   AllAdminListPage(), // index 12
   const StudyMaterialsList(), // index 13

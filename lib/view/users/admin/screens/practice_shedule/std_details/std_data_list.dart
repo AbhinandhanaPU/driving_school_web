@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
-import 'package:new_project_driving/controller/test_controller/test_controller.dart';
+import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
-class TestStdDataList extends StatelessWidget {
+class PracticeStdDataList extends StatelessWidget {
   final StudentModel data;
   final int index;
-  TestStdDataList({
+  PracticeStdDataList({
     required this.data,
     required this.index,
     super.key,
   });
 
-  final TestController testController = Get.put(TestController());
+  final PracticeSheduleController practiceSheduleController =
+      Get.put(PracticeSheduleController());
 
   @override
   Widget build(BuildContext context) {
@@ -92,18 +93,6 @@ class TestStdDataList extends StatelessWidget {
             width: 01,
           ),
           Expanded(
-            flex: 3,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: ' '),
-          ), //............................. Student no. of attempt
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
             flex: 2,
             child: Center(
               child: GestureDetector(
@@ -111,7 +100,8 @@ class TestStdDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () async {
-                      await testController.deleteStudent(docId: data.docid);
+                      await practiceSheduleController.deleteStudent(
+                          docId: data.docid);
                     },
                   );
                 },

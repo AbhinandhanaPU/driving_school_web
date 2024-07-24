@@ -21,7 +21,7 @@ class TestDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => testController.onTapTest.value == true
-          ? DrivingStudentListContainer()
+          ? TestStudentListContainer()
           : SingleChildScrollView(
               scrollDirection: ResponsiveWebSite.isMobile(context)
                   ? Axis.horizontal

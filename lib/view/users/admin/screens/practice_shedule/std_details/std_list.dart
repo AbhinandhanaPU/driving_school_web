@@ -4,26 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/test_controller/test_controller.dart';
+import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/add_students.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_std_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/add_students.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/std_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class TestStudentListContainer extends StatelessWidget {
-  TestStudentListContainer({super.key});
-  final TestController testController = Get.put(TestController());
+class PracticeStudentListContainer extends StatelessWidget {
+  PracticeStudentListContainer({super.key});
+  final PracticeSheduleController practiceSheduleController =
+      Get.put(PracticeSheduleController());
 
   @override
   Widget build(BuildContext context) {
-    log(testController.testId.value);
+    log(practiceSheduleController.scheduleId.value);
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -40,7 +41,7 @@ class TestStudentListContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextFontWidget(
-                    text: 'Driving Test',
+                    text: 'Practice Schedule',
                     fontsize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -53,7 +54,7 @@ class TestStudentListContainer extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      testController.onTapTest.value = false;
+                      practiceSheduleController.onTapSchedule.value = false;
                     },
                     child: const RouteSelectedTextContainer(
                       title: 'Back',
@@ -70,7 +71,7 @@ class TestStudentListContainer extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      addStudents(context);
+                      addStudentsPractice(context);
                     },
                     child: ButtonContainerWidget(
                       curving: 30,
@@ -86,7 +87,24 @@ class TestStudentListContainer extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ButtonContainerWidget(
+                    curving: 0,
+                    colorindex: 6,
+                    height: 35,
+                    width: 220,
+                    child: const Center(
+                      child: TextFontWidgetRouter(
+                        text: 'Send practice shedule to Students',
+                        fontsize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: cWhite,
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(
@@ -132,14 +150,6 @@ class TestStudentListContainer extends StatelessWidget {
                           width: 02,
                         ),
                         Expanded(
-                          flex: 3,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Number of Attempt'),
-                        ),
-                        SizedBox(
-                          width: 02,
-                        ),
-                        Expanded(
                           flex: 2,
                           child:
                               CatrgoryTableHeaderWidget(headerTitle: 'Remove'),
@@ -166,8 +176,8 @@ class TestStudentListContainer extends StatelessWidget {
                         stream: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
-                            .collection('DrivingTest')
-                            .doc(testController.testId.value)
+                            .collection('PracticeSchedule')
+                            .doc(practiceSheduleController.scheduleId.value)
                             .collection('Students')
                             .snapshots(),
                         builder: (context, studentSnapshot) {
@@ -218,7 +228,7 @@ class TestStudentListContainer extends StatelessWidget {
                                   }
                                   final data = StudentModel.fromMap(
                                       detailSnapshot.data!.data()!);
-                                  return TestStdDataList(
+                                  return PracticeStdDataList(
                                     data: data,
                                     index: index,
                                   );
