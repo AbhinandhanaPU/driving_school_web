@@ -131,6 +131,14 @@ class StudyMaterialsList extends StatelessWidget {
                         SizedBox(
                           width: 02,
                         ),
+                        Expanded(
+                          flex: 2,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'View'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
                       ],
                     ),
                   ),

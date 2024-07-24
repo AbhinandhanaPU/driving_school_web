@@ -123,4 +123,5 @@ class StudyMaterialsController extends GetxController {
       log("StudyMaterials Updation failed $e");
     }
   }
+   
 }
