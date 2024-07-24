@@ -18,7 +18,11 @@ class CourseController extends GetxController {
   RxBool ontapStudentDetail = false.obs;
   RxString studentDocID = ''.obs;
   RxString studentName = ''.obs;
+  RxString courseName = ''.obs;
+   RxString courseId = ''.obs;
+    RxString courseDocID = 'dd'.obs;
   List<StudentModel> allstudentList = [];
+   List<CourseModel> allcourseList = [];
   Rxn<CourseModel> courseModelData = Rxn<CourseModel>();
 
   void setCourseData(CourseModel course) {
@@ -38,6 +42,23 @@ class CourseController extends GetxController {
     courseNameController.clear();
     courseDurationController.clear();
     courseRateController.clear();
+  }
+
+
+    Future<List<CourseModel>> fetchCourse() async {
+    final firebase = await server
+        .collection('SchoolListCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Courses')
+        .get();
+
+    for (var i = 0; i < firebase.docs.length; i++) {
+      final list =
+          firebase.docs.map((e) => CourseModel.fromMap(e.data())).toList();
+      allcourseList.add(list[i]);
+      allcourseList.sort((a, b) => a.courseName.compareTo(b.courseName));
+    }
+    return allcourseList;
   }
 
   Future<void> createCourses() async {

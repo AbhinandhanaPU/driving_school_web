@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
@@ -7,6 +9,7 @@ import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
+import 'package:new_project_driving/view/widget/dropdown_widget/select_class.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class AllStudentDataList extends StatelessWidget {
@@ -92,58 +95,79 @@ class AllStudentDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child:StreamBuilder(
-                  stream: server
-                  .collection('DrivingSchoolCollection')
-                  .doc(UserCredentialsController.schoolId)
-                  .collection('Students')
-                  .doc(data.docid)
-                  .snapshots(),
-                  builder: (context, snap) {
-                   if (snap.hasError) {
-                    return Text('Error: ${snap.error}');
-                   }
-                   if (!snap.hasData || !snap.data!.exists) {
-                    return const CircularProgressIndicator();
-                   }
-
-                  final studentData = snap.data?.data();
-                   if (studentData == null ) {
-                    return DataContainerWidget(
-                    rowMainAccess: MainAxisAlignment.center,
-                    color: cWhite,
-                    index: index,
-                    headerTitle: 'Course Not Found',
-                   );
-                  }
-
-                  final courseId = studentData['courseId'];
-                  return StreamBuilder(
-                   stream: server
-                   .collection('DrivingSchoolCollection')
-                   .doc(UserCredentialsController.schoolId)
-                   .collection('Courses')
-                   .doc(courseId)
-                   .snapshots(),
-                    builder: (context, snapshot) {
-                     if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                   
-
-                    final courseData = snapshot.data?.data();
-                    final courseName = courseData?['courseName'] ?? 'Not Found';
-
-                   return DataContainerWidget(
-                     rowMainAccess: MainAxisAlignment.center,
-                     color: cWhite,
-                     index: index,
-                     headerTitle: courseName,
-                   );
-                  },
-                  );
-                  },
-                )
+            child:Row(
+              children: [
+                StreamBuilder(
+                      stream: server
+                      .collection('DrivingSchoolCollection')
+                      .doc(UserCredentialsController.schoolId)
+                      .collection('Students')
+                      .doc(data.docid)
+                      .snapshots(),
+                      builder: (context, snap) {
+                       if (snap.hasError) {
+                        return Text('Error: ${snap.error}');
+                       }
+                       if (!snap.hasData || !snap.data!.exists) {
+                        return const CircularProgressIndicator();
+                       }
+                
+                      final studentData = snap.data?.data();
+                       if (studentData == null ) {
+                        return DataContainerWidget(
+                        rowMainAccess: MainAxisAlignment.center,
+                        color: cWhite,
+                        index: index,
+                        headerTitle: 'Course Not Found',
+                       );
+                      }
+                
+                      final courseId = studentData['courseId'];
+                      return StreamBuilder(
+                       stream: server
+                       .collection('DrivingSchoolCollection')
+                       .doc(UserCredentialsController.schoolId)
+                       .collection('Courses')
+                       .doc(courseId)
+                       .snapshots(),
+                        builder: (context, snapshot) {
+                         if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                       
+                
+                        final courseData = snapshot.data?.data();
+                        final courseName = courseData?['courseName'] ?? 'Not Found';
+                
+                       return DataContainerWidget(
+                         rowMainAccess: MainAxisAlignment.center,
+                         color: cWhite,
+                         index: index,
+                         headerTitle: courseName,
+                       );
+                      },
+                      );
+                      },
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                         showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Course'),
+          content: SelectCourseDropDown(),
+        );
+      },
+    );
+                        log("message");
+                        SelectCourseDropDown();
+                      },
+                      child: const Icon(Icons.edit,color: cgreen,size: 20,))
+                    
+              ],
+            )
 
           ), //............................. Student courses type
           const SizedBox(
