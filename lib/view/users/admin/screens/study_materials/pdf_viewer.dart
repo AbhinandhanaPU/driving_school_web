@@ -69,6 +69,7 @@ class _PDFViewerState extends State<PDFViewer> {
   void _saveAndLaunchWebFile(Uint8List bytes, String fileName) {
     final blob = html.Blob([bytes]);
     final url = html.Url.createObjectUrlFromBlob(blob);
+    // ignore: unused_local_variable
     final anchor = html.AnchorElement(href: url)
       ..setAttribute("download", fileName)
       ..click();
