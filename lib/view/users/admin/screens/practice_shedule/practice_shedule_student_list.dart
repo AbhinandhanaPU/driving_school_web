@@ -125,6 +125,15 @@ class PracticeSheduleDetails extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
+                                  flex: 2,
+                                  child: CatrgoryTableHeaderWidget(
+                                    headerTitle: 'Total Students',
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
                                       headerTitle: 'Edit'),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_edit.dart';
@@ -10,6 +9,7 @@ import 'package:new_project_driving/view/widget/reusable_table_widgets/data_cont
 
 class TestDataList extends StatelessWidget {
   final TestModel data;
+
   ///Map<String, dynamic>
   final int index;
   TestDataList({
@@ -17,7 +17,6 @@ class TestDataList extends StatelessWidget {
     required this.index,
     super.key,
   });
-  final CourseController courseController = Get.put(CourseController());
   final TestController testController = Get.put(TestController());
 
   @override
@@ -50,7 +49,7 @@ class TestDataList extends StatelessWidget {
                 // width: 150,
                 index: index,
                 headerTitle: data.testDate
-               // '${data['testDate']}'
+                // '${data['testDate']}'
                 ),
           ), //.............................test Date
           const SizedBox(
@@ -64,7 +63,7 @@ class TestDataList extends StatelessWidget {
                 // width: 150,
                 index: index,
                 headerTitle: data.testTime
-               // '${data['testTime']}'
+                // '${data['testTime']}'
                 ),
           ), //.............................test Time
           const SizedBox(
@@ -78,24 +77,26 @@ class TestDataList extends StatelessWidget {
                 // width: 150,
                 index: index,
                 headerTitle: data.location
-               // '${data['location']}'
+                // '${data['location']}'
                 ),
           ), //............................. test place
           const SizedBox(
             width: 02,
           ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: StreamBuilder<int>(
-                stream: courseController.fetchTotalStudents(data.docId),
+                stream: testController.fetchTotalStudents(data.docId),
                 builder: (context, snapshot) {
-                  return DataContainerWidget(
-                    rowMainAccess: MainAxisAlignment.center,
-                    color: cWhite,
-                    // width: 150,
-                    index: index,
-                    headerTitle:
-                        snapshot.hasData ? snapshot.data.toString() : '0',
+                  return Center(
+                    child: DataContainerWidget(
+                      rowMainAccess: MainAxisAlignment.center,
+                      color: cWhite,
+                      // width: 150,
+                      index: index,
+                      headerTitle:
+                          snapshot.hasData ? snapshot.data.toString() : '0',
+                    ),
                   );
                 }),
           ), //............................. Student count

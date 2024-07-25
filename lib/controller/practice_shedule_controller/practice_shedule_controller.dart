@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
+import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -94,27 +96,31 @@ class PracticeSheduleController extends GetxController {
   }
 
   Future<void> addStudent() async {
-    final uuid = const Uuid().v1();
     try {
-      await server
+      final studentResult = await server
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
-          .collection('PracticeSchedule')
-          .doc(scheduleId.value)
           .collection('Students')
-          .doc(uuid)
-          .set({
-        'studentDocId': courseCtrl.studentDocID.value,
-        'studentName': courseCtrl.studentName.value,
-        'docId': uuid,
-      }).then((value) async {
-        buttonstate.value = ButtonState.success;
-
-        showToast(msg: "Student added Successfully");
-        await Future.delayed(const Duration(seconds: 2)).then((vazlue) {
-          buttonstate.value = ButtonState.idle;
+          .doc(courseCtrl.studentDocID.value)
+          .get();
+      if (courseCtrl.studentDocID.value != '') {
+        final data = StudentModel.fromMap(studentResult.data()!);
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('PracticeSchedule')
+            .doc(scheduleId.value)
+            .collection('Students')
+            .doc(courseCtrl.studentDocID.value)
+            .set(data.toMap())
+            .then((value) async {
+          buttonstate.value = ButtonState.success;
+          showToast(msg: "Student added Successfully");
+          await Future.delayed(const Duration(seconds: 2)).then((vazlue) {
+            buttonstate.value = ButtonState.idle;
+          });
         });
-      });
+      }
     } catch (e) {
       buttonstate.value = ButtonState.fail;
       await Future.delayed(const Duration(seconds: 2)).then((value) {
@@ -142,5 +148,16 @@ class PracticeSheduleController extends GetxController {
     } catch (e) {
       log(e.toString(), name: "PracticeSchedule");
     }
+  }
+
+  Stream<int> fetchTotalStudents(String courseId) {
+    CollectionReference coursesRef = server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('PracticeSchedule')
+        .doc(courseId)
+        .collection('Students');
+
+    return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
   }
 }
