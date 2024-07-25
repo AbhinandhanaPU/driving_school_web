@@ -23,7 +23,14 @@ class TestStudentListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(testController.testId.value);
+     final data = testController.testModelData.value;
+   // log(testController.testId.value);
+    print('Test ID: ${data?.docId}');
+
+    if (data == null) {
+      return const Center(child: Text('Test data is not available'));
+    }
+
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -70,7 +77,7 @@ class TestStudentListContainer extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      addStudents(context);
+                      addStudents(context,data.docId);
                     },
                     child: ButtonContainerWidget(
                       curving: 30,
@@ -167,7 +174,7 @@ class TestStudentListContainer extends StatelessWidget {
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
                             .collection('DrivingTest')
-                            .doc(testController.testId.value)
+                            .doc(data.docId)
                             .collection('Students')
                             .snapshots(),
                         builder: (context, studentSnapshot) {

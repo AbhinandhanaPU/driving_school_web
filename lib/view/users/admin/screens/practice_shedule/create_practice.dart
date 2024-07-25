@@ -96,7 +96,8 @@ createPracticeAdmin(BuildContext context) {
                               function: () async {
                                 if (practiceshedulecontroller.formKey.currentState!.validate()) {
                                   practiceshedulecontroller.createPracticeShedule() 
-                                  .then((value) => Navigator.pop(context));
+                                //  .then((value) => Navigator.pop(context))
+                                  ;
                                 }
                               },
                               buttonstate: practiceshedulecontroller.buttonstate.value,

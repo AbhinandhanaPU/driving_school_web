@@ -98,7 +98,8 @@ sheduleTestDate(BuildContext context) {
                                 .validate()) {
                               testController
                                   .addTestDate()
-                                  .then((value) => Navigator.pop(context));
+                                 // .then((value) => Navigator.pop(context))
+                                  ;
                             }
                           },
                           buttonstate: testController.buttonstate.value,
