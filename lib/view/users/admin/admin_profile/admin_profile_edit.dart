@@ -42,6 +42,36 @@ editFunctionOfAdminProfile(BuildContext context) {
                   controller: adminProfileEditController.phoneNumberController,
                   hintText: UserCredentialsController.adminModel!.phoneNumber,
                   title: 'Phone Number'),
+              TextFormFiledHeightnoColor(
+                  validator: checkFieldEmpty,
+                  controller: adminProfileEditController.schoolNameController,
+                  hintText: UserCredentialsController.adminModel!.schoolName,
+                  title: 'school name'),
+              TextFormFiledHeightnoColor(
+                  validator: checkFieldEmpty,
+                  controller: adminProfileEditController.lisenceNumberController,
+                  hintText: UserCredentialsController.adminModel!.schoolLicenceNumber,
+                  title: 'Licence Number'),
+              TextFormFiledHeightnoColor(
+                  validator: checkFieldEmpty,
+                  controller: adminProfileEditController.schoolCodeController,
+                  hintText: UserCredentialsController.adminModel!.schoolCode,
+                  title: 'schoolCode'),
+              TextFormFiledHeightnoColor(
+                  validator: checkFieldEmpty,
+                  controller: adminProfileEditController.cityController,
+                  hintText: UserCredentialsController.adminModel!.city,
+                  title: 'city'),
+              TextFormFiledHeightnoColor(
+                  validator: checkFieldEmpty,
+                  controller: adminProfileEditController.stateController,
+                  hintText: UserCredentialsController.adminModel!.state,
+                  title: 'state'),
+              TextFormFiledHeightnoColor(
+                  validator: checkFieldEmpty,
+                  controller: adminProfileEditController.countryController,
+                  hintText: UserCredentialsController.adminModel!.country,
+                  title: 'country'),
             ],
           ),
         ),

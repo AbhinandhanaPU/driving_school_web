@@ -72,7 +72,16 @@ adminProfileshowlist(BuildContext context) {
                     profileCtl.placeController.text = UserCredentialsController.adminModel!.place;
                     profileCtl.phoneNumberController.text =
                         UserCredentialsController.adminModel!.phoneNumber;
-
+                    profileCtl.lisenceNumberController.text =
+                        UserCredentialsController.adminModel!.schoolLicenceNumber;
+                    profileCtl.schoolNameController.text =
+                        UserCredentialsController.adminModel!.schoolName;
+                    profileCtl.schoolCodeController.text =
+                        UserCredentialsController.adminModel!.schoolCode;
+                    profileCtl.cityController.text = UserCredentialsController.adminModel!.city;
+                    profileCtl.stateController.text = UserCredentialsController.adminModel!.state;
+                    profileCtl.countryController.text =
+                        UserCredentialsController.adminModel!.country;
                     editFunctionOfAdminProfile(context);
                   },
                   child: BlueContainerWidget(

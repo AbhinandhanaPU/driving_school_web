@@ -18,6 +18,12 @@ class AdminProfileEditController extends GetxController {
   TextEditingController placeController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController adminNameController = TextEditingController();
+  TextEditingController schoolNameController = TextEditingController();
+  TextEditingController lisenceNumberController = TextEditingController();
+  TextEditingController schoolCodeController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
 
   clearFeilds() {
     phoneNumberController.clear();
@@ -25,6 +31,12 @@ class AdminProfileEditController extends GetxController {
     placeController.clear();
     addressController.clear();
     adminNameController.clear();
+    schoolNameController.clear();
+    lisenceNumberController.clear();
+    schoolCodeController.clear();
+    cityController.clear();
+    stateController.clear();
+    countryController.clear();
   }
 
   Future<void> updateAdminProfile(BuildContext context) async {
@@ -33,7 +45,13 @@ class AdminProfileEditController extends GetxController {
       'designation': designationController.text,
       'address': placeController.text,
       'place': addressController.text,
-      'adminName': adminNameController.text
+      'adminName': adminNameController.text,
+      'schoolName': schoolNameController.text,
+      'schoolLicenceNumber':lisenceNumberController.text,
+      'schoolCode':schoolCodeController.text,
+      'city': cityController.text,
+      'state':stateController.text,
+      'country':countryController.text
     };
     try {
       server
