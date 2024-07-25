@@ -203,36 +203,11 @@ class PracticeStudentListContainer extends StatelessWidget {
                           }
                           return ListView.separated(
                             itemBuilder: (context, index) {
-                              final stdData =
-                                  studentSnapshot.data!.docs[index].data();
-                              return StreamBuilder(
-                                stream: server
-                                    .collection('DrivingSchoolCollection')
-                                    .doc(UserCredentialsController.schoolId)
-                                    .collection('Students')
-                                    .doc(stdData['studentDocId'])
-                                    .snapshots(),
-                                builder: (context, detailSnapshot) {
-                                  if (detailSnapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const LoadingWidget();
-                                  }
-                                  if (detailSnapshot.hasError) {
-                                    return Center(
-                                        child: Text(
-                                            'Error: ${detailSnapshot.error}'));
-                                  }
-                                  if (!detailSnapshot.hasData ||
-                                      detailSnapshot.data == null) {
-                                    return const LoadingWidget();
-                                  }
-                                  final data = StudentModel.fromMap(
-                                      detailSnapshot.data!.data()!);
-                                  return PracticeStdDataList(
-                                    data: data,
-                                    index: index,
-                                  );
-                                },
+                              final data = StudentModel.fromMap(
+                                  studentSnapshot.data!.docs[index].data());
+                              return PracticeStdDataList(
+                                data: data,
+                                index: index,
                               );
                             },
                             separatorBuilder: (context, index) {

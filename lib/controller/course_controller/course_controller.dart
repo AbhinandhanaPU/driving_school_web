@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
@@ -19,10 +18,10 @@ class CourseController extends GetxController {
   RxString studentDocID = ''.obs;
   RxString studentName = ''.obs;
   RxString courseName = ''.obs;
-   RxString courseId = ''.obs;
-    RxString courseDocID = 'dd'.obs;
+  RxString courseId = ''.obs;
+  RxString courseDocID = 'dd'.obs;
   List<StudentModel> allstudentList = [];
-   List<CourseModel> allcourseList = [];
+  List<CourseModel> allcourseList = [];
   Rxn<CourseModel> courseModelData = Rxn<CourseModel>();
 
   void setCourseData(CourseModel course) {
@@ -44,8 +43,7 @@ class CourseController extends GetxController {
     courseRateController.clear();
   }
 
-
-    Future<List<CourseModel>> fetchCourse() async {
+  Future<List<CourseModel>> fetchCourse() async {
     final firebase = await server
         .collection('SchoolListCollection')
         .doc(UserCredentialsController.schoolId)
@@ -185,16 +183,5 @@ class CourseController extends GetxController {
       showToast(msg: 'Somthing went wrong please try again');
       allstudentList.clear();
     }
-  }
-
-  Stream<int> fetchTotalStudents(String courseId) {
-    CollectionReference coursesRef = server
-        .collection('DrivingSchoolCollection')
-        .doc(UserCredentialsController.schoolId)
-        .collection('DrivingTest')
-        .doc(courseId)
-        .collection('Students');
-
-    return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
   }
 }

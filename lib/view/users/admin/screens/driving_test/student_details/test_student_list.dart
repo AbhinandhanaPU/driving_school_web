@@ -21,11 +21,11 @@ class TestStudentListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final data = testController.testModelData.value;
-   // log(testController.testId.value);
-    print('Test ID: ${data?.docId}');
+    final testData = testController.testModelData.value;
+    // log(testController.testId.value);
+    print('Test ID: ${testData?.docId}');
 
-    if (data == null) {
+    if (testData == null) {
       return const Center(child: Text('Test data is not available'));
     }
 
@@ -75,7 +75,7 @@ class TestStudentListContainer extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      addStudents(context,data.docId);
+                      addStudents(context, testData.docId);
                     },
                     child: ButtonContainerWidget(
                       curving: 30,
@@ -172,7 +172,7 @@ class TestStudentListContainer extends StatelessWidget {
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
                             .collection('DrivingTest')
-                            .doc(data.docId)
+                            .doc(testData.docId)
                             .collection('Students')
                             .snapshots(),
                         builder: (context, studentSnapshot) {
@@ -198,36 +198,11 @@ class TestStudentListContainer extends StatelessWidget {
                           }
                           return ListView.separated(
                             itemBuilder: (context, index) {
-                              final stdData =
-                                  studentSnapshot.data!.docs[index].data();
-                              return StreamBuilder(
-                                stream: server
-                                    .collection('DrivingSchoolCollection')
-                                    .doc(UserCredentialsController.schoolId)
-                                    .collection('Students')
-                                    .doc(stdData['studentDocId'])
-                                    .snapshots(),
-                                builder: (context, detailSnapshot) {
-                                  if (detailSnapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const LoadingWidget();
-                                  }
-                                  if (detailSnapshot.hasError) {
-                                    return Center(
-                                        child: Text(
-                                            'Error: ${detailSnapshot.error}'));
-                                  }
-                                  if (!detailSnapshot.hasData ||
-                                      detailSnapshot.data == null) {
-                                    return const LoadingWidget();
-                                  }
-                                  final data = StudentModel.fromMap(
-                                      detailSnapshot.data!.data()!);
-                                  return TestStdDataList(
-                                    data: data,
-                                    index: index,
-                                  );
-                                },
+                              final data = StudentModel.fromMap(
+                                  studentSnapshot.data!.docs[index].data());
+                              return TestStdDataList(
+                                data: data,
+                                index: index,
                               );
                             },
                             separatorBuilder: (context, index) {

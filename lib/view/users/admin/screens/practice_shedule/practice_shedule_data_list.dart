@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; 
+import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
@@ -9,11 +9,12 @@ import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class PracticeSheduleDataList extends StatelessWidget {
-  final PracticeSheduleController practiceshedulecontroller = Get.put(PracticeSheduleController());
+  final PracticeSheduleController practiceshedulecontroller =
+      Get.put(PracticeSheduleController());
 
   final PracticeSheduleModel data;
   final int index;
-    PracticeSheduleDataList({
+  PracticeSheduleDataList({
     required this.data,
     required this.index,
     super.key,
@@ -24,7 +25,9 @@ class PracticeSheduleDataList extends StatelessWidget {
     return Container(
       height: 45,
       decoration: BoxDecoration(
-        color: index % 2 == 0 ? const Color.fromARGB(255, 246, 246, 246) : Colors.blue[50],
+        color: index % 2 == 0
+            ? const Color.fromARGB(255, 246, 246, 246)
+            : Colors.blue[50],
       ),
       child: Row(
         children: [
@@ -39,7 +42,7 @@ class PracticeSheduleDataList extends StatelessWidget {
             ), //....................No
           ),
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 3,
@@ -56,9 +59,9 @@ class PracticeSheduleDataList extends StatelessWidget {
                 ),
               ],
             ),
-          ), //........................................... Student Name
+          ), //........................................... practiceName
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 3,
@@ -70,9 +73,9 @@ class PracticeSheduleDataList extends StatelessWidget {
                   index: index,
                   headerTitle: data.startTime),
             ),
-          ), //............................. Student joining Date
+          ), //............................. Student startTime
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 3,
@@ -84,19 +87,42 @@ class PracticeSheduleDataList extends StatelessWidget {
                   index: index,
                   headerTitle: data.endTime),
             ),
-          ), //............................. Student Completed days
+          ), //............................. Student endTime
           const SizedBox(
-            width: 01,
+            width: 02,
+          ),
+          Expanded(
+            flex: 2,
+            child: StreamBuilder<int>(
+                stream: practiceshedulecontroller
+                    .fetchTotalStudents(data.practiceId),
+                builder: (context, snapshot) {
+                  return Center(
+                    child: DataContainerWidget(
+                      rowMainAccess: MainAxisAlignment.center,
+                      color: cWhite,
+                      // width: 150,
+                      index: index,
+                      headerTitle:
+                          snapshot.hasData ? snapshot.data.toString() : '0',
+                    ),
+                  );
+                }),
+          ), //............................. Student count
+          const SizedBox(
+            width: 02,
           ),
           Expanded(
             flex: 3,
             child: Center(
               child: GestureDetector(
-                 onTap: () {
-                  practiceshedulecontroller.practiceNameController.text = data.practiceName;
+                onTap: () {
+                  practiceshedulecontroller.practiceNameController.text =
+                      data.practiceName;
                   practiceshedulecontroller.startTimeController.text =
                       data.startTime;
-                  practiceshedulecontroller.endTimeController.text = data.endTime; 
+                  practiceshedulecontroller.endTimeController.text =
+                      data.endTime;
                   editFunctionOfPractice(context, data);
                 },
                 child: DataContainerWidget(
@@ -115,7 +141,7 @@ class PracticeSheduleDataList extends StatelessWidget {
             flex: 3,
             child: Center(
               child: GestureDetector(
-                  onTap: () {
+                onTap: () {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () {
