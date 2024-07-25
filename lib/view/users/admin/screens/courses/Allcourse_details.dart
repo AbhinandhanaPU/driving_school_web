@@ -124,6 +124,14 @@ class CoursesDetails extends StatelessWidget {
                               Expanded(
                                 flex: 2,
                                 child: CatrgoryTableHeaderWidget(
+                                    headerTitle: 'Total Students'),
+                              ),
+                              SizedBox(
+                                width: 02,
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CatrgoryTableHeaderWidget(
                                     headerTitle: 'Edit'),
                               ),
                               SizedBox(

@@ -4,6 +4,8 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/course_model/course_model.dart';
+import 'package:new_project_driving/utils/firebase/firebase.dart';
+import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/crud_functions/edit_course.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
@@ -75,6 +77,28 @@ class AllCoursesDataList extends StatelessWidget {
 
           const SizedBox(
             width: 02,
+          ),
+           const SizedBox(
+            width: 02,
+          ),
+          StreamBuilder(
+            stream:  server
+                     .collection('DrivingSchoolCollection')
+                     .doc(UserCredentialsController.schoolId)
+                     .collection('Courses')
+                     .doc(data.courseId)
+                     .collection("Students")
+                     .snapshots(),
+            builder: (context, snapCount) {
+              return Expanded(
+                flex: 2,
+                child: TextFontWidget(
+                  text: '${snapCount.data?.docs.length}',
+                  fontsize: 12,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            }
           ),
           Expanded(
             flex: 2,
