@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
+import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:progress_state_button/progress_button.dart';
@@ -22,7 +23,12 @@ class TestController extends GetxController {
   TextEditingController testDateEditController = TextEditingController();
   TextEditingController testTimeEditController = TextEditingController();
   TextEditingController testLocationEditController = TextEditingController();
-  RxString testId = ''.obs;
+
+  
+  Rxn<TestModel> testModelData = Rxn<TestModel>();
+  RxString docId = ''.obs;
+  
+ 
 
   clearFields() {
     testDateController.clear();
@@ -36,19 +42,27 @@ class TestController extends GetxController {
 
   Future<void> addTestDate() async {
     final uuid = const Uuid().v1();
+     final testDetails = TestModel(
+      testDate: testDateController.text, 
+      testTime: testTimeController.text, 
+      location: testLocationController.text, 
+      docId: uuid);
 
     try {
       await server
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
           .collection('DrivingTest')
-          .doc(uuid)
-          .set({
-        'testDate': testDateController.text,
-        'testTime': testTimeController.text,
-        'location': testLocationController.text,
-        'docId': uuid,
-      }).then((value) async {
+          .doc( testDetails.docId)
+          .set(testDetails.toMap()
+      //       {
+      //   'testDate': testDateController.text,
+      //   'testTime': testTimeController.text,
+      //   'location': testLocationController.text,
+      //   'docId': uuid,
+      // }
+      )
+      .then((value) async {
         clearFields();
         buttonstate.value = ButtonState.success;
 
@@ -107,14 +121,14 @@ class TestController extends GetxController {
     }
   }
 
-  Future<void> addStudent() async {
+  Future<void> addStudent(String textID) async {
     final uuid = const Uuid().v1();
     try {
       await server
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
           .collection('DrivingTest')
-          .doc(testId.value)
+          .doc(textID)
           .collection('Students')
           .doc(uuid)
           .set({
@@ -141,11 +155,20 @@ class TestController extends GetxController {
 
   Future<void> deleteStudent({required String docId}) async {
     try {
+      final docidoftest= await server
+           .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection("DrivingTest")
+          .get();
+
+  if (docidoftest.docs.isNotEmpty) {
+      for (var testDoc in docidoftest.docs) {
+        final testDocid = testDoc.id;
       await server
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
           .collection('DrivingTest')
-          .doc(testId.value)
+          .doc(testDocid)
           .collection('Students')
           .doc(docId)
           .delete()
@@ -154,8 +177,12 @@ class TestController extends GetxController {
         log("Deleted Successfully");
         Get.back();
       });
+     }
+    } else {
+      log("No Test found");
+    }
     } catch (e) {
-      log(e.toString(), name: "TestController");
+      log("Student deletion error:$e");
     }
   }
 }

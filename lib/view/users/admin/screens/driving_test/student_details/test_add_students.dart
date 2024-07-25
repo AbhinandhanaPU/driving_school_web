@@ -7,7 +7,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/student_dropdown/all_students.dart';
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
 
-addStudents(BuildContext context) {
+addStudents(BuildContext context,String textID) {
   final TestController testController = Get.put(TestController());
   aweSideSheet(
     context: context,
@@ -67,8 +67,9 @@ addStudents(BuildContext context) {
                             if (testController.formKey.currentState!
                                 .validate()) {
                               testController
-                                  .addStudent()
-                                  .then((value) => Navigator.pop(context));
+                                  .addStudent(textID)
+                                  //.then((value) => Navigator.pop(context))
+                                  ;
                             }
                           },
                           buttonstate: testController.buttonstate.value,

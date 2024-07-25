@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
+import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_student_list.dart';
@@ -190,15 +191,15 @@ class TestDetails extends StatelessWidget {
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
-                                              final data = snaPS
+                                              final data = TestModel.fromMap(snaPS
                                                   .data!.docs[index]
-                                                  .data();
+                                                  .data());
                                               return GestureDetector(
                                                 onTap: () {
                                                   testController
                                                       .onTapTest.value = true;
-                                                  testController.testId.value =
-                                                      data['docId'];
+                                                  testController.testModelData.value =
+                                                      data;
                                                 },
                                                 child: TestDataList(
                                                   data: data,

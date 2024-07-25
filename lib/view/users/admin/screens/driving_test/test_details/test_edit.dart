@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
+import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/view/widget/custom_showdialouge/custom_showdialouge.dart';
 import 'package:new_project_driving/view/widget/text_formfiled_container/textformfiled_blue_container.dart';
 
-editFunctionOfTest(BuildContext context, Map<String, dynamic> data) {
+editFunctionOfTest(BuildContext context, TestModel data) {
   final TestController testController = Get.put(TestController());
   customShowDilogBox(
       context: context,
@@ -22,7 +23,7 @@ editFunctionOfTest(BuildContext context, Map<String, dynamic> data) {
                     testController.testDateEditController.text =
                         await dateTimePicker(context);
                   },
-                  hintText: data['testDate'],
+                  hintText: data.testDate,
                   title: 'Date'),
               TextFormFiledHeightnoColor(
                   validator: checkFieldTimeIsValid,
@@ -31,12 +32,12 @@ editFunctionOfTest(BuildContext context, Map<String, dynamic> data) {
                     testController.testTimeEditController.text =
                         await timePicker(context);
                   },
-                  hintText: data['testTime'],
+                  hintText: data.testTime,
                   title: 'Time'),
               TextFormFiledHeightnoColor(
                   validator: checkFieldEmpty,
                   controller: testController.testLocationEditController,
-                  hintText: data['location'],
+                  hintText: data.location,
                   title: 'Location'),
             ],
           ),
@@ -46,7 +47,7 @@ editFunctionOfTest(BuildContext context, Map<String, dynamic> data) {
       actiononTapfuction: () {
         if (testController.formKey.currentState!.validate()) {
           testController.editTest(
-            data['docId'],
+            data.docId,
             context,
           );
         }

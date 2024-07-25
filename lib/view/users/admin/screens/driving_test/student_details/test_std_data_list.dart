@@ -73,7 +73,7 @@ class TestStdDataList extends StatelessWidget {
               color: cWhite,
               // width: 150,
               index: index,
-              headerTitle: stringTimeToDateConvert(data.joiningDate),
+              headerTitle:  stringTimeToDateConvert(data.joiningDate),
             ),
           ), //............................. Student joining Date
           const SizedBox(

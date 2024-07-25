@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
+import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class TestDataList extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final TestModel data;
+  ///Map<String, dynamic>
   final int index;
   TestDataList({
     required this.data,
@@ -47,7 +49,9 @@ class TestDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: '${data['testDate']}'),
+                headerTitle: data.testDate
+               // '${data['testDate']}'
+                ),
           ), //.............................test Date
           const SizedBox(
             width: 01,
@@ -59,7 +63,9 @@ class TestDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: '${data['testTime']}'),
+                headerTitle: data.testTime
+               // '${data['testTime']}'
+                ),
           ), //.............................test Time
           const SizedBox(
             width: 01,
@@ -71,7 +77,9 @@ class TestDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: '${data['location']}'),
+                headerTitle: data.location
+               // '${data['location']}'
+                ),
           ), //............................. test place
           const SizedBox(
             width: 02,
@@ -79,7 +87,7 @@ class TestDataList extends StatelessWidget {
           Expanded(
             flex: 3,
             child: StreamBuilder<int>(
-                stream: courseController.fetchTotalStudents(data['docId']),
+                stream: courseController.fetchTotalStudents(data.docId),
                 builder: (context, snapshot) {
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
@@ -99,10 +107,10 @@ class TestDataList extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  testController.testDateEditController.text = data['testDate'];
-                  testController.testTimeEditController.text = data['testTime'];
+                  testController.testDateEditController.text = data.testDate;
+                  testController.testTimeEditController.text = data.testTime;
                   testController.testLocationEditController.text =
-                      data['location'];
+                      data.location;
                   editFunctionOfTest(context, data);
                 },
                 child: DataContainerWidget(
@@ -124,7 +132,7 @@ class TestDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () async {
-                      await testController.deleteTest(docId: data['docId']);
+                      await testController.deleteTest(docId: data.docId);
                     },
                   );
                 },
