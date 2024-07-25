@@ -172,12 +172,12 @@ class StudentsInCoursesDetails extends StatelessWidget {
                 child: StreamBuilder(
                     stream: server
                          .collection('DrivingSchoolCollection')
-                                        .doc(UserCredentialsController.schoolId)
-                                        .collection('Courses')
-                                        .doc(data.courseId)
-                                        .collection("Students")
+                         .doc(UserCredentialsController.schoolId)
+                         .collection('Courses')
+                         .doc(data.courseId)
+                         .collection("Students")
                                       //  .orderBy('studentName')
-                                        .snapshots(),
+                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());

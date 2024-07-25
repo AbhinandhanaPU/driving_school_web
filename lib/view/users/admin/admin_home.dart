@@ -10,7 +10,7 @@ import 'package:new_project_driving/view/users/admin/app_bar/admin_appbar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/student_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
-import 'package:new_project_driving/view/users/admin/screens/courses/course_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/courses/Allcourse_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';

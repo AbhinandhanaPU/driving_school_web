@@ -170,6 +170,7 @@ customViewShowDialog({
   required Map<String, dynamic> data,
 }) {
   final String downloadUrl = data['downloadUrl'] ?? '';
+  // ignore: unused_local_variable
   final String fileName = data['fileName'] ?? '';
 
   return showDialog(
