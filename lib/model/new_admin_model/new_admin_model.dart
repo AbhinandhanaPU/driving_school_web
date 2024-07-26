@@ -44,11 +44,11 @@ class AdminDetailsModel {
 
   factory AdminDetailsModel.fromMap(Map<String, dynamic> map) {
     return AdminDetailsModel(
-      docid: map['docid'] as String,
-      username: map['username'] as String,
-      email: map['email'] as String,
-      phoneNumber: map['phoneNumber'] as String,
-      active: map['active'] as bool,
+      docid: map['docid'] ??"",
+      username: map['username'] ??"",
+      email: map['email'] ??"",
+      phoneNumber: map['phoneNumber'] ??"",
+      active: map['active'] ??false,
     );
   }
 

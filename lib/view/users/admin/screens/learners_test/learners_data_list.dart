@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
@@ -15,6 +16,13 @@ class LearnersDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  String formattedDate;
+    try {
+      formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.parse(data.joiningDate));
+    } catch (e) {
+      formattedDate = "Invalid Date";
+    }
+   
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -67,7 +75,7 @@ class LearnersDataList extends StatelessWidget {
                 color: cWhite,
                 // width: 150,
                 index: index,
-                headerTitle: ' 22/05/2024'),
+                headerTitle: formattedDate),
           ), //............................. Student joining Date
           const SizedBox(
             width: 01,
