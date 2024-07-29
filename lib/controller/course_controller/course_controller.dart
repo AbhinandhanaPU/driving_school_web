@@ -41,6 +41,12 @@ class CourseController extends GetxController {
     courseNameController.clear();
     courseDurationController.clear();
     courseRateController.clear();
+    courseDesController.clear();
+
+    editcourseNameController.clear();
+    editcourseDesController.clear();
+    editcourseDurationController.clear();
+    editcourseRateController.clear();
   }
 
   Future<List<CourseModel>> fetchCourse() async {

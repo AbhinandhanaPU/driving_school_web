@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/admin_section/Tutor_controller/tutor_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
@@ -16,6 +17,22 @@ class TutorDetailsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = teacherController.tutorModelData.value;
+    
+
+ String formatDate(String? dateTimeString) {
+      if (dateTimeString == null) {
+        return "Not Found";
+      }
+      try {
+        DateTime dateTime = DateTime.parse(dateTimeString);
+        return DateFormat('yyyy-MM-dd').format(dateTime);
+      } catch (e) {
+        return "Invalid Date";
+      }
+    }
+
+    String joiningDate = formatDate(data?.joiningDate);
+
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -162,6 +179,12 @@ class TutorDetailsContainer extends StatelessWidget {
                                                   title: 'DOB',
                                                   subtitle:
                                                       '${data.dateofBirth}',
+                                                ),
+                                                  ProfileDetailTileContainer(
+                                                  flex: 1,
+                                                  title: 'Joining Date',
+                                                  subtitle: joiningDate
+                                                  //data.joiningDate??"Not Found",
                                                 ),
                                               ],
                                             ),
