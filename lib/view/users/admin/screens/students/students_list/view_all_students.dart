@@ -102,7 +102,7 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 4,
+                                    flex: 3,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'Name')),
                                 SizedBox(
@@ -116,7 +116,7 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 3,
+                                    flex: 4,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'courses type')),
                                 SizedBox(

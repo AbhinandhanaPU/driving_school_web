@@ -41,39 +41,39 @@ class StudentController extends GetxController {
     }
   }
 
-   Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
+  Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
     try {
-     final docidofcourse= await server
-           .collection('DrivingSchoolCollection')
+      final docidofcourse = await server
+          .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
           .collection("Courses")
           .get();
 
-  if (docidofcourse.docs.isNotEmpty) {
-      for (var courseDoc in docidofcourse.docs) {
-        final courseDocid = courseDoc.id;
+      if (docidofcourse.docs.isNotEmpty) {
+        for (var courseDoc in docidofcourse.docs) {
+          final courseDocid = courseDoc.id;
 
-        // Delete the student from each course
-        await server
-            .collection('DrivingSchoolCollection')
-            .doc(UserCredentialsController.schoolId)
-            .collection("Courses")
-            .doc(courseDocid)
-            .collection('Students')
-            .doc(studentModel.docid)
-            .delete()
-            .then((value) => log("Student deleted from course: $courseDocid"));
+          // Delete the student from each course
+          await server
+              .collection('DrivingSchoolCollection')
+              .doc(UserCredentialsController.schoolId)
+              .collection("Courses")
+              .doc(courseDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .delete()
+              .then(
+                  (value) => log("Student deleted from course: $courseDocid"));
+        }
+      } else {
+        log("No courses found");
       }
-    } else {
-      log("No courses found");
-    }
     } catch (e) {
       log("Student deletion error:$e");
     }
   }
 
-
-   Future<void> updateStudentStatus(
+  Future<void> updateStudentStatus(
       StudentModel studentModel, String newStatus) async {
     try {
       await server
@@ -83,7 +83,7 @@ class StudentController extends GetxController {
           .doc(studentModel.docid)
           .update({'status': newStatus}).then((value) {
         studentModel.status = newStatus;
-        update(); 
+        update();
         log("Student status updated to $newStatus");
       });
     } catch (e) {
@@ -105,4 +105,53 @@ class StudentController extends GetxController {
   //     showToast(msg: 'Failed to update course');
   //   }
   // }
+
+  Stream<List<String>> fetchStudentsCourse(StudentModel studentModel) async* {
+    List<String> courseNames = [];
+
+    try {
+      final docidofcourse = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection("Courses")
+          .get();
+
+      if (docidofcourse.docs.isNotEmpty) {
+        for (var courseDoc in docidofcourse.docs) {
+          final courseDocid = courseDoc.id;
+
+          // fetch the student from each course
+          final std = await server
+              .collection('DrivingSchoolCollection')
+              .doc(UserCredentialsController.schoolId)
+              .collection("Courses")
+              .doc(courseDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (std.exists) {
+            // fetch the course document to get the course name
+            final courseDocument = await server
+                .collection('DrivingSchoolCollection')
+                .doc(UserCredentialsController.schoolId)
+                .collection("Courses")
+                .doc(courseDocid)
+                .get();
+
+            if (courseDocument.exists) {
+              final courseName = courseDocument.data()?['courseName'];
+              if (courseName != null) {
+                courseNames.add(courseName);
+                log("courseNames : $courseNames");
+                yield courseNames;
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      log("Student course fetching error: $e");
+    }
+  }
 }

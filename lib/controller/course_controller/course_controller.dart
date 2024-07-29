@@ -167,21 +167,14 @@ class CourseController extends GetxController {
         await server
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)
+            .collection('Courses')
+            .doc(courseID)
             .collection('Students')
             .doc(studentDocID.value)
-            .update({'courseId': courseID}).then((value) async {
-          await server
-              .collection('DrivingSchoolCollection')
-              .doc(UserCredentialsController.schoolId)
-              .collection('Courses')
-              .doc(courseID)
-              .collection('Students')
-              .doc(studentDocID.value)
-              .set(data.toMap())
-              .then((value) async {
-            showToast(msg: 'Added');
-            allstudentList.clear();
-          });
+            .set(data.toMap())
+            .then((value) async {
+          showToast(msg: 'Added');
+          allstudentList.clear();
         });
       }
     } catch (e) {

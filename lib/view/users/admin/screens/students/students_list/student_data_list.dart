@@ -5,8 +5,6 @@ import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
@@ -21,7 +19,6 @@ class AllStudentDataList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudentController studentController = Get.put(StudentController());
-    //  CourseController courseController = Get.put(CourseController());
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -43,7 +40,7 @@ class AllStudentDataList extends StatelessWidget {
             width: 01,
           ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Row(
               children: [
                 SizedBox(
@@ -92,88 +89,31 @@ class AllStudentDataList extends StatelessWidget {
           const SizedBox(
             width: 01,
           ),
-         Expanded(
-            flex: 3,
-            child: StreamBuilder(
-              stream: server
-                  .collection('DrivingSchoolCollection')
-                  .doc(UserCredentialsController.schoolId)
-                  .collection('Students')
-                  .doc(data.docid)
-                  .snapshots(),
-              builder: (context, snap) {
-                if (snap.hasError) {
-                  return Text('Error: ${snap.error}');
-                }
-                if (!snap.hasData || !snap.data!.exists) {
-                  return const CircularProgressIndicator();
-                }
-
-                final studentData = snap.data?.data();
-                if (studentData == null) {
+          Expanded(
+            flex: 4,
+            child: StreamBuilder<List<String>>(
+              stream: studentController.fetchStudentsCourse(data),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
                     index: index,
                     headerTitle: 'Course Not Found',
                   );
+                } else {
+                  String courses = snapshot.data!.join(', ');
+                  return DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    index: index,
+                    headerTitle: courses,
+                  );
                 }
-
-                final courseId = studentData['courseId'];
-                return StreamBuilder(
-                  stream: server
-                      .collection('DrivingSchoolCollection')
-                      .doc(UserCredentialsController.schoolId)
-                      .collection('Courses')
-                      .doc(courseId)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    final courseData = snapshot.data?.data();
-                    final courseName = courseData?['courseName'] ?? 'Not Found';
-
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: DataContainerWidget(
-                            rowMainAccess: MainAxisAlignment.center,
-                            color: cWhite,
-                            index: index,
-                            headerTitle: courseName,
-                          ),
-                        ),
-        //                 IconButton(
-        //                   icon: const Icon(Icons.edit),
-        //                   onPressed: () {
-        //                     showDialog(
-        //                       context: context,
-        //                       builder: (context) {
-        //                         return AlertDialog(actions: [ Row(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: [
-        //     TextButton(
-        //       onPressed: () {
-        //         courseController.updateCoursestudent();
-        //         Navigator.pop(context);
-        //       },
-        //       child: const Text('Ok'),
-        //     ),
-        //   ],
-        // ),],
-        //                           title: const Text('Select Course'),
-        //                           content:  SelectClassWiseSubjectDropDown(),);
-                                
-        //                       },
-        //                     );
-        //                   },
-        //                 ),
-                      ],
-                    );
-                  },
-                );
               },
             ),
           ), //............................. Student courses type
@@ -206,14 +146,15 @@ class AllStudentDataList extends StatelessWidget {
           // const SizedBox(
           //   width: 01,
           // ),
-           Expanded(
+          Expanded(
             flex: 2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Transform.scale(
-                       scale: 0.65,
-                  child: Switch(activeColor: Colors.green,
+                  scale: 0.65,
+                  child: Switch(
+                    activeColor: Colors.green,
                     value: data.status == 'active',
                     onChanged: (value) {
                       final newStatus = value ? 'active' : 'inactive';
