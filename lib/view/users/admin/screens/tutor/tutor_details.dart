@@ -17,9 +17,8 @@ class TutorDetailsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = teacherController.tutorModelData.value;
-    
 
- String formatDate(String? dateTimeString) {
+    String formatDate(String? dateTimeString) {
       if (dateTimeString == null) {
         return "Not Found";
       }
@@ -30,8 +29,6 @@ class TutorDetailsContainer extends StatelessWidget {
         return "Invalid Date";
       }
     }
-
-    String joiningDate = formatDate(data?.joiningDate);
 
     return SingleChildScrollView(
       scrollDirection:
@@ -168,23 +165,16 @@ class TutorDetailsContainer extends StatelessWidget {
                                                   subtitle:
                                                       '${data.teacheremail}',
                                                 ),
-                                                 ProfileDetailTileContainer(
+                                                ProfileDetailTileContainer(
                                                   flex: 1,
                                                   title: 'Place',
-                                                  subtitle:
-                                                      '${data.place}',
+                                                  subtitle: '${data.place}',
                                                 ),
-                                                 ProfileDetailTileContainer(
+                                                ProfileDetailTileContainer(
                                                   flex: 1,
                                                   title: 'DOB',
                                                   subtitle:
                                                       '${data.dateofBirth}',
-                                                ),
-                                                  ProfileDetailTileContainer(
-                                                  flex: 1,
-                                                  title: 'Joining Date',
-                                                  subtitle: joiningDate
-                                                  //data.joiningDate??"Not Found",
                                                 ),
                                               ],
                                             ),
