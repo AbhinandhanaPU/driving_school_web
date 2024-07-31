@@ -98,7 +98,7 @@ class PracticeStudentListContainer extends StatelessWidget {
                     width: 220,
                     child: const Center(
                       child: TextFontWidgetRouter(
-                        text: 'Send practice shedule to Students',
+                        text: 'Send practice schedule to Students',
                         fontsize: 12,
                         fontWeight: FontWeight.bold,
                         color: cWhite,

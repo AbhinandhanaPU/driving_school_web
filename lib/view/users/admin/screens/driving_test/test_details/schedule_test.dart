@@ -26,7 +26,7 @@ sheduleTestDate(BuildContext context) {
                   width: 20,
                 ),
                 TextFontWidget(
-                  text: 'Test Shedule',
+                  text: 'Test Schedule',
                   fontsize: 17,
                   fontWeight: FontWeight.bold,
                 ),

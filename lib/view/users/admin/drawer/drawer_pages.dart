@@ -228,7 +228,7 @@ class DrawerSelectedPagesSectionAdmin extends StatelessWidget {
               onTap.call(index);
             },
             title: DashboardTextFontWidget(
-              title: 'Practice Shedule',
+              title: 'Practice Schedule',
             ),
           ),
         ),

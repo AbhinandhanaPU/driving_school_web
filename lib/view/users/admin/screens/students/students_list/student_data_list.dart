@@ -145,31 +145,6 @@ class AllStudentDataList extends StatelessWidget {
                             headerTitle: courseName,
                           ),
                         ),
-        //                 IconButton(
-        //                   icon: const Icon(Icons.edit),
-        //                   onPressed: () {
-        //                     showDialog(
-        //                       context: context,
-        //                       builder: (context) {
-        //                         return AlertDialog(actions: [ Row(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: [
-        //     TextButton(
-        //       onPressed: () {
-        //         courseController.updateCoursestudent();
-        //         Navigator.pop(context);
-        //       },
-        //       child: const Text('Ok'),
-        //     ),
-        //   ],
-        // ),],
-        //                           title: const Text('Select Course'),
-        //                           content:  SelectClassWiseSubjectDropDown(),);
-                                
-        //                       },
-        //                     );
-        //                   },
-        //                 ),
                       ],
                     );
                   },

@@ -69,7 +69,7 @@ class TestDetails extends StatelessWidget {
                               width: 180,
                               child: const Center(
                                 child: TextFontWidgetRouter(
-                                  text: 'Add Test Shedule',
+                                  text: 'Add Test Schedule',
                                   fontsize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: cWhite,
@@ -182,7 +182,7 @@ class TestDetails extends StatelessWidget {
                                             child: Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
-                                                "Please shedule test",
+                                                "Please schedule test",
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.w400),

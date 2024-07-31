@@ -41,7 +41,7 @@ class StudentController extends GetxController {
     }
   }
 
-   Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
+   Future<void>deleteStudentsFromCourse(StudentModel studentModel) async {
     try {
      final docidofcourse= await server
            .collection('DrivingSchoolCollection')
