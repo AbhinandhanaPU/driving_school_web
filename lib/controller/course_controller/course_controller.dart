@@ -183,4 +183,29 @@ class CourseController extends GetxController {
       allstudentList.clear();
     }
   }
+
+  Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
+    try {
+      final data = courseModelData.value;
+      if (data!.courseId != '') {
+        // Delete the student from each course
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection("Courses")
+            .doc(data.courseId)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .delete()
+            .then((value) {
+          log("Student deleted from course: ${data.courseId}");
+          Get.back();
+        });
+      } else {
+        log("No courses found");
+      }
+    } catch (e) {
+      log("Student deletion error:$e");
+    }
+  }
 }
