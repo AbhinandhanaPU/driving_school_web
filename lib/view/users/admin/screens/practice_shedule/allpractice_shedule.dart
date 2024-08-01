@@ -6,8 +6,8 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/create_practice.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practise_functions/create_practice.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/practice_shedule_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/std_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
@@ -15,8 +15,8 @@ import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class PracticeSheduleDetails extends StatelessWidget {
-  PracticeSheduleDetails({super.key});
+class AllPracticeShedules extends StatelessWidget {
+  AllPracticeShedules({super.key});
 
   final PracticeSheduleController practiceSheduleController =
       Get.put(PracticeSheduleController());

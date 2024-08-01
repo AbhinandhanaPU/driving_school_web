@@ -15,8 +15,8 @@ import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class TestDetails extends StatelessWidget {
-  TestDetails({super.key});
+class AllDrivingTestDetails extends StatelessWidget {
+  AllDrivingTestDetails({super.key});
   final TestController testController = Get.put(TestController());
   @override
   Widget build(BuildContext context) {

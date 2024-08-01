@@ -4,17 +4,16 @@ import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/videos/upload_videos.dart';
-import 'package:new_project_driving/view/users/admin/screens/videos/video_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/data_list_studymaterials/study_materials_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/function_studymaterial/upload_materials.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
-import 'package:new_project_driving/view/widget/video_player/play_video.dart';
 
-class VideosList extends StatelessWidget {
-  const VideosList({super.key});
+class AllStudyMaterialsList extends StatelessWidget {
+  const AllStudyMaterialsList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class VideosList extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 20, top: 20),
               child: GooglePoppinsWidgets(
-                text: 'Videos ',
+                text: 'Study Materials ',
                 fontsize: ResponsiveWebSite.isMobile(context) ? 18 : 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -41,11 +40,11 @@ class VideosList extends StatelessWidget {
               child: Row(
                 children: [
                   const RouteSelectedTextContainer(
-                      width: 180, title: 'All Videos'),
+                      width: 180, title: 'Study Materials'),
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      uploadVideos(context);
+                      uploadStudyMaterials(context);
                     },
                     child: ButtonContainerWidget(
                       curving: 30,
@@ -54,7 +53,7 @@ class VideosList extends StatelessWidget {
                       width: 180,
                       child: const Center(
                         child: TextFontWidgetRouter(
-                          text: 'Upload Videos',
+                          text: 'Upload Study Material',
                           fontsize: 14,
                           fontWeight: FontWeight.bold,
                           color: cWhite,
@@ -88,8 +87,8 @@ class VideosList extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 4,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Video Name'),
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Title'),
                         ),
                         SizedBox(
                           width: 02,
@@ -97,7 +96,7 @@ class VideosList extends StatelessWidget {
                         Expanded(
                           flex: 4,
                           child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Video Description'),
+                              headerTitle: 'Description'),
                         ),
                         SizedBox(
                           width: 02,
@@ -112,8 +111,7 @@ class VideosList extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 3,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Video Type'),
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'Type'),
                         ),
                         SizedBox(
                           width: 02,
@@ -129,6 +127,14 @@ class VideosList extends StatelessWidget {
                           flex: 2,
                           child:
                               CatrgoryTableHeaderWidget(headerTitle: 'Delete'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'View'),
                         ),
                         SizedBox(
                           width: 02,
@@ -157,7 +163,7 @@ class VideosList extends StatelessWidget {
                         stream: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
-                            .collection('Videos')
+                            .collection('StudyMaterials')
                             .snapshots(),
                         builder: (context, snaPS) {
                           if (snaPS.connectionState ==
@@ -168,7 +174,7 @@ class VideosList extends StatelessWidget {
                           if (snaPS.data!.docs.isEmpty) {
                             return const Center(
                               child: Text(
-                                'No Videos',
+                                'No Study Materials',
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w500),
                               ),
@@ -180,17 +186,18 @@ class VideosList extends StatelessWidget {
                                   final data = snaPS.data!.docs[index].data();
                                   return GestureDetector(
                                     onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PlayVideoFlicker(
-                                                  videoUrl:
-                                                      data['downloadUrl']),
-                                        ),
-                                      );
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         PDFSectionScreen(
+                                      //       urlPdf: snaPS.data!.docs[index]
+                                      //           ['downloadUrl'],
+                                      //     ),
+                                      //   ),
+                                      // );
                                     },
-                                    child: VideoDataList(
+                                    child: StudyMaterialsDataList(
                                       data: data,
                                       index: index,
                                     ),

@@ -5,7 +5,7 @@ import 'package:new_project_driving/model/teacher_model/teacher_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/tutor/create_tutor/create_new_tutor.dart';
-import 'package:new_project_driving/view/users/admin/screens/tutor/tutor_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/tutor/details_datalist_tutor/tutor_data_list.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';

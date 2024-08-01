@@ -9,7 +9,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/add_students.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practise_functions/add_students.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/std_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
