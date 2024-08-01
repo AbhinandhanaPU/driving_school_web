@@ -20,6 +20,8 @@ class CourseController extends GetxController {
   RxString courseName = ''.obs;
   RxString courseId = ''.obs;
   RxString courseDocID = 'dd'.obs;
+    RxString ontapCourseName= 'dd'.obs;
+  RxString ontapCourseDocID = 'dd'.obs;
   List<StudentModel> allstudentList = [];
   List<CourseModel> allcourseList = [];
   Rxn<CourseModel> courseModelData = Rxn<CourseModel>();

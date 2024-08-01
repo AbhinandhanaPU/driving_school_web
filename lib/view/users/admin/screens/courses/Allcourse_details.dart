@@ -192,6 +192,8 @@ class CoursesDetails extends StatelessWidget {
                                         courseController
                                                 .ontapStudentDetail
                                                 .value = true;
+                                        courseController.ontapCourseName.value=data.courseName;
+                                        courseController.ontapCourseDocID.value=data.courseId;
                                     },
                                     child: AllCoursesDataList(
                                         data: data, index: index),

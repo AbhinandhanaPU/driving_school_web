@@ -20,13 +20,14 @@ class StudentsInCoursesDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = courseController.courseModelData.value;
+    //final data = courseController.courseModelData.value;
+    final courseid=courseController.ontapCourseDocID.value;
 
-     print('Course ID: ${data?.courseId}');
+    //  print('Course ID: ${data?.courseId}');
 
-    if (data == null) {
-      return const Center(child: Text('Course data is not available'));
-    }
+    // if (data == null) {
+    //   return const Center(child: Text('Course data is not available'));
+    // }
 
     return SingleChildScrollView(
       scrollDirection:
@@ -51,11 +52,11 @@ class StudentsInCoursesDetails extends StatelessWidget {
               child: Row(
                 children: [
                    RouteSelectedTextContainer(
-                      width: 180, title: data.courseName),
+                      width: 180, title: courseController.ontapCourseName.toString()),
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      addStudentToCourse(context,data.courseId);
+                      addStudentToCourse(context,courseController.ontapCourseDocID.value);
                     },
                     child: ButtonContainerWidget(
                         curving: 30,
@@ -174,7 +175,7 @@ class StudentsInCoursesDetails extends StatelessWidget {
                          .collection('DrivingSchoolCollection')
                          .doc(UserCredentialsController.schoolId)
                          .collection('Courses')
-                         .doc(data.courseId)
+                         .doc(courseid)
                          .collection("Students")
                                       //  .orderBy('studentName')
                          .snapshots(),
