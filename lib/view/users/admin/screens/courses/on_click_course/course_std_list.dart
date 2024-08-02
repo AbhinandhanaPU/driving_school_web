@@ -145,6 +145,13 @@ class StudentsInCoursesDetails extends StatelessWidget {
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
                                       headerTitle: 'Ph.No')),
+                                      SizedBox(
+                                width: 01,
+                              ),
+                              Expanded(
+                                  flex: 2,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Level')),
                               SizedBox(
                                 width: 02,
                               ),

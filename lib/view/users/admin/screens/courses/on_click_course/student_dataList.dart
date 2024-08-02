@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
+import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
@@ -16,6 +17,8 @@ class AllCourseStudentDataList extends StatelessWidget {
     super.key,
   });
  final StudentController studentController = Get.put(StudentController());
+ final CourseController courseController=Get.put(CourseController());
+     
   @override
   Widget build(BuildContext context) {
     return 
@@ -137,19 +140,47 @@ class AllCourseStudentDataList extends StatelessWidget {
               const SizedBox(
                 width: 01,
               ),
-              // Expanded(
-              //   flex: 2,
-              //   child: DataContainerWidget(
-              //       rowMainAccess: MainAxisAlignment.center,
-              //       color: cWhite,
-              //       // width: 150,
-              //       index: index,
-              //       headerTitle: 'Class '),
-              // ), //............................. Student Class
-
-              // const SizedBox(
-              //   width: 01,
-              // ),
+              Expanded(
+                flex: 2,
+                child: Obx(
+              () => Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blueAccent, width: 1),
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.white,
+                ),
+                child:   DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  isExpanded: true,
+                  value: courseController.level.value,
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      courseController.level.value = newValue;
+                      // Here you should update the student data in your model or database as needed.
+                      // Example:
+                      // studentController.updateStudentLevel(data.id, newValue);
+                    }
+                  },
+                  items: <String>[
+                    'Select Level',
+                    'Beginner',
+                    'Intermediate',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+          ),//................................................. dropdwn
+              const SizedBox(
+                width: 01,
+              ),
               Expanded(
             flex: 2,
             child: Center(

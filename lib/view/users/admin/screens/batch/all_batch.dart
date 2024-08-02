@@ -161,6 +161,7 @@ class AllBatchsListContainer extends StatelessWidget {
                                     .collection('DrivingSchoolCollection')
                                     .doc(UserCredentialsController.schoolId)
                                     .collection('Batch')
+                                    .orderBy('date',descending: true)
                                     .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {

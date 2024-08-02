@@ -22,6 +22,8 @@ class CourseController extends GetxController {
   RxString courseDocID = 'dd'.obs;
     RxString ontapCourseName= 'dd'.obs;
   RxString ontapCourseDocID = 'dd'.obs;
+  
+  RxString level = 'Select Level'.obs;
   List<StudentModel> allstudentList = [];
   List<CourseModel> allcourseList = [];
   Rxn<CourseModel> courseModelData = Rxn<CourseModel>();
@@ -166,6 +168,10 @@ class CourseController extends GetxController {
           .get();
       if (studentDocID.value != '') {
         final data = StudentModel.fromMap(studentResult.data()!);
+
+              final studentData = data.toMap();
+      studentData['level'] = level.value;
+
         await server
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)
@@ -173,7 +179,7 @@ class CourseController extends GetxController {
             .doc(courseID)
             .collection('Students')
             .doc(studentDocID.value)
-            .set(data.toMap())
+            .set(studentData)
             .then((value) async {
           showToast(msg: 'Added');
           allstudentList.clear();
