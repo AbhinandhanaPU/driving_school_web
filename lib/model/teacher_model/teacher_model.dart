@@ -15,7 +15,6 @@ class TeacherModel {
   String? profileImageUrl;
   String? rtoName;
   String? licenceNumber;
-  String? joiningDate;
   String userRole;
 
   TeacherModel({
@@ -32,7 +31,6 @@ class TeacherModel {
     this.profileImageUrl,
     this.rtoName,
     this.licenceNumber,
-    this.joiningDate,
     this.userRole = 'teacher',
   });
 
@@ -50,7 +48,6 @@ class TeacherModel {
     String? profileImageUrl,
     String? rtoName,
     String? licenceNumber,
-    String? joiningDate,
     String? userRole,
   }) {
     return TeacherModel(
@@ -67,7 +64,6 @@ class TeacherModel {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       rtoName: rtoName ?? this.rtoName,
       licenceNumber: licenceNumber ?? this.licenceNumber,
-      joiningDate: joiningDate ?? this.joiningDate,
       userRole: userRole ?? this.userRole,
     );
   }
@@ -87,7 +83,6 @@ class TeacherModel {
       'profileImageUrl': profileImageUrl,
       'rtoName': rtoName,
       'licenceNumber': licenceNumber,
-      'joiningDate': joiningDate,
       'userRole': userRole,
     };
   }
@@ -117,8 +112,6 @@ class TeacherModel {
       rtoName: map['rtoName'] != null ? map['rtoName'] as String : null,
       licenceNumber:
           map['licenceNumber'] != null ? map['licenceNumber'] as String : null,
-      joiningDate:
-          map['joiningDate'] != null ? map['joiningDate'] as String : null,
       userRole: map['userRole'] as String,
     );
   }
@@ -130,7 +123,7 @@ class TeacherModel {
 
   @override
   String toString() {
-    return 'TeacherModel(docid: $docid, password: $password, teacheremail: $teacheremail, teacherName: $teacherName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, userRole: $userRole)';
+    return 'TeacherModel(docid: $docid, password: $password, teacheremail: $teacheremail, teacherName: $teacherName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber,  userRole: $userRole)';
   }
 
   @override
@@ -150,7 +143,6 @@ class TeacherModel {
         other.profileImageUrl == profileImageUrl &&
         other.rtoName == rtoName &&
         other.licenceNumber == licenceNumber &&
-        other.joiningDate == joiningDate &&
         other.userRole == userRole;
   }
 
@@ -169,7 +161,6 @@ class TeacherModel {
         profileImageUrl.hashCode ^
         rtoName.hashCode ^
         licenceNumber.hashCode ^
-        joiningDate.hashCode ^
         userRole.hashCode;
   }
 }

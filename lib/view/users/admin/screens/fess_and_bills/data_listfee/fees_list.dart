@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/fees_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/data_listfee/fees_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';

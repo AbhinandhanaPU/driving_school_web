@@ -1,34 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/admin_section/Tutor_controller/tutor_controller.dart';
+import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/model/teacher_model/teacher_model.dart';
+import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/tutor/details_datalist_tutor/tutor_data_list.dart';
-import 'package:new_project_driving/view/users/admin/screens/tutor/details_datalist_tutor/tutor_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practise_functions/create_practice.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/practice_shedule_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/std_list.dart';
+import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class AllTutorListContainer extends StatelessWidget {
-  final TutorController teacherController = Get.put(TutorController());
-  AllTutorListContainer({super.key});
+class AllPracticeShedules extends StatelessWidget {
+  AllPracticeShedules({super.key});
 
+  final PracticeSheduleController practiceSheduleController =
+      Get.put(PracticeSheduleController());
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => teacherController.ontapviewTutor.value == true
-          ? TutorDetailsContainer()
+      () => practiceSheduleController.onTapSchedule.value == true
+          ? PracticeStudentListContainer()
           : SingleChildScrollView(
               scrollDirection: ResponsiveWebSite.isMobile(context)
                   ? Axis.horizontal
                   : Axis.vertical,
               child: Container(
                 color: screenContainerbackgroundColor,
-                height: 700,
+                height: 650,
                 width: ResponsiveWebSite.isDesktop(context)
                     ? double.infinity
                     : 1200,
@@ -37,19 +40,44 @@ class AllTutorListContainer extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TextFontWidget(
-                        text: 'All Teachers List',
-                        fontsize: 18,
-                        fontWeight: FontWeight.bold,
+                      const Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextFontWidget(
+                            text: 'Practice Shedule',
+                            fontsize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: 30,
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          RouteSelectedTextContainer(
-                              width: 150, title: 'All Teachers'),
-                          Spacer(),
+                          const RouteSelectedTextContainer(
+                            title: 'All Students',
+                            width: 200,
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              createPracticeAdmin(context);
+                            },
+                            child: ButtonContainerWidget(
+                                curving: 30,
+                                colorindex: 0,
+                                height: 35,
+                                width: 120,
+                                child: const Center(
+                                  child: TextFontWidgetRouter(
+                                    text: 'Create Slot',
+                                    fontsize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: cWhite,
+                                  ),
+                                )),
+                          ),
                         ],
                       ),
                       const SizedBox(
@@ -65,53 +93,58 @@ class AllTutorListContainer extends StatelessWidget {
                             child: const Row(
                               children: [
                                 Expanded(
-                                    flex: 1,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'No')),
-                                SizedBox(
-                                  width: 01,
+                                  flex: 1,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'No'),
                                 ),
-                                Expanded(
-                                    flex: 4,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Name')),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 4,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'E mail')),
+                                  flex: 3,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Slot Name'),
+                                ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 3,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Ph.No')),
+                                  flex: 3,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: ' Start Time'),
+                                ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 3,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Licence Number')),
+                                  flex: 3,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'End Time'),
+                                ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Status')),
+                                  flex: 2,
+                                  child: CatrgoryTableHeaderWidget(
+                                    headerTitle: 'Total Students',
+                                  ),
+                                ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Delete')),
+                                  flex: 3,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Edit'),
+                                ),
                                 SizedBox(
                                   width: 02,
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Delete'),
                                 ),
                               ],
                             ),
@@ -120,37 +153,30 @@ class AllTutorListContainer extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
+                          height: 400,
                           // width: 1200,
                           decoration: BoxDecoration(
                             color: cWhite,
                             border: Border.all(color: cWhite),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            padding: const EdgeInsets.only(right: 5, left: 5),
                             child: SizedBox(
                               // width: 1100,
                               child: StreamBuilder(
                                 stream: server
                                     .collection('DrivingSchoolCollection')
                                     .doc(UserCredentialsController.schoolId)
-                                    .collection('Teachers')
+                                    .collection('PracticeSchedule')
                                     .snapshots(),
                                 builder: (context, snaPS) {
-                                  //  if (!snaPS.hasData || snaPS.data!.docs.isEmpty) {
-                                  //     return const Center(
-                                  //         child: Text(
-                                  //       'No Teachers Added',
-                                  //       style: TextStyle(
-                                  //           fontSize: 15, fontWeight: FontWeight.w500),
-                                  //     ));
-                                  //   }
                                   if (snaPS.hasData) {
                                     return snaPS.data!.docs.isEmpty
                                         ? const Center(
                                             child: Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
-                                                "Please create Teacher",
+                                                "Please create Students",
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.w400),
@@ -159,21 +185,22 @@ class AllTutorListContainer extends StatelessWidget {
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
-                                              final data = TeacherModel.fromMap(
-                                                  snaPS.data!.docs[index]
-                                                      .data());
+                                              final data =
+                                                  PracticeSheduleModel.fromMap(
+                                                      snaPS.data!.docs[index]
+                                                          .data());
                                               return GestureDetector(
                                                 onTap: () {
-                                                  teacherController
-                                                      .tutorModelData
-                                                      .value = data;
-                                                  teacherController
-                                                      .ontapviewTutor
+                                                  practiceSheduleController
+                                                      .onTapSchedule
                                                       .value = true;
+                                                  practiceSheduleController
+                                                      .scheduleId
+                                                      .value = data.practiceId;
                                                 },
-                                                child: AllTutorDataList(
-                                                  index: index,
+                                                child: PracticeSheduleDataList(
                                                   data: data,
+                                                  index: index,
                                                 ),
                                               );
                                             },
@@ -183,6 +210,8 @@ class AllTutorListContainer extends StatelessWidget {
                                               );
                                             },
                                             itemCount: snaPS.data!.docs.length);
+                                  } else if (snaPS.data == null) {
+                                    return const LoadingWidget();
                                   } else {
                                     return const LoadingWidget();
                                   }
