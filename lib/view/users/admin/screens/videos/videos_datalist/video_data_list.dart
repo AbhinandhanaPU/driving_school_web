@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/videos_controller/videos_controller.dart';
-import 'package:new_project_driving/view/users/admin/screens/videos/video_edit.dart';
+import 'package:new_project_driving/view/users/admin/screens/videos/videos_datalist/video_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 

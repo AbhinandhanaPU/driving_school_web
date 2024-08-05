@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/test_controller/test_controller.dart';
+import 'package:new_project_driving/controller/batch_controller/batch_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/model/test_model/test_model.dart';
+import 'package:new_project_driving/model/batch_model/batch_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_student_list.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/schedule_test.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/batch_std_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/crud/create_batch.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/data_table_batch/batch_datalist.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class TestDetails extends StatelessWidget {
-  TestDetails({super.key});
-  final TestController testController = Get.put(TestController());
+class AllBatchsListContainer extends StatelessWidget {
+  AllBatchsListContainer({super.key});
+
+  final BatchController batchController =
+      Get.put(BatchController());
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => testController.onTapTest.value == true
-          ? TestStudentListContainer()
+      () => batchController.onTapBtach.value == true
+          ? BatchStudentListContainer()
           : SingleChildScrollView(
               scrollDirection: ResponsiveWebSite.isMobile(context)
                   ? Axis.horizontal
@@ -42,7 +44,7 @@ class TestDetails extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           TextFontWidget(
-                            text: 'Test details',
+                            text: 'All Batches',
                             fontsize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -54,28 +56,27 @@ class TestDetails extends StatelessWidget {
                       Row(
                         children: [
                           const RouteSelectedTextContainer(
-                            title: 'All Tests',
+                            title: 'All Students',
                             width: 200,
                           ),
                           const Spacer(),
                           GestureDetector(
                             onTap: () {
-                              sheduleTestDate(context);
+                              createBatchFunction(context);
                             },
                             child: ButtonContainerWidget(
-                              curving: 30,
-                              colorindex: 0,
-                              height: 40,
-                              width: 180,
-                              child: const Center(
-                                child: TextFontWidgetRouter(
-                                  text: 'Add Test Shedule',
-                                  fontsize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: cWhite,
-                                ),
-                              ),
-                            ),
+                                curving: 30,
+                                colorindex: 0,
+                                height: 35,
+                                width: 120,
+                                child: const Center(
+                                  child: TextFontWidgetRouter(
+                                    text: 'Create Batch',
+                                    fontsize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: cWhite,
+                                  ),
+                                )),
                           ),
                         ],
                       ),
@@ -94,8 +95,7 @@ class TestDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 1,
                                   child: CatrgoryTableHeaderWidget(
-                                    headerTitle: 'No',
-                                  ),
+                                      headerTitle: 'No'),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -103,26 +103,16 @@ class TestDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
-                                    headerTitle: 'Date',
-                                  ),
+                                      headerTitle: 'Batch Name'),
                                 ),
                                 SizedBox(
                                   width: 02,
                                 ),
+                               
                                 Expanded(
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
-                                    headerTitle: 'Time',
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: CatrgoryTableHeaderWidget(
-                                    headerTitle: 'Place',
-                                  ),
+                                      headerTitle: 'Batch Date'),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -137,22 +127,17 @@ class TestDetails extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 3,
                                   child: CatrgoryTableHeaderWidget(
-                                    headerTitle: 'Edit',
-                                  ),
+                                      headerTitle: 'Edit'),
                                 ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 3,
                                   child: CatrgoryTableHeaderWidget(
-                                    headerTitle: 'Delete',
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 02,
+                                      headerTitle: 'Delete'),
                                 ),
                               ],
                             ),
@@ -162,6 +147,7 @@ class TestDetails extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 400,
+                          // width: 1200,
                           decoration: BoxDecoration(
                             color: cWhite,
                             border: Border.all(color: cWhite),
@@ -169,11 +155,13 @@ class TestDetails extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5, left: 5),
                             child: SizedBox(
+                              // width: 1100,
                               child: StreamBuilder(
                                 stream: server
                                     .collection('DrivingSchoolCollection')
                                     .doc(UserCredentialsController.schoolId)
-                                    .collection('DrivingTest')
+                                    .collection('Batch')
+                                    .orderBy('date',descending: true)
                                     .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {
@@ -182,7 +170,7 @@ class TestDetails extends StatelessWidget {
                                             child: Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
-                                                "Please shedule test",
+                                                "Please create Students",
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.w400),
@@ -191,17 +179,21 @@ class TestDetails extends StatelessWidget {
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
-                                              final data = TestModel.fromMap(snaPS
-                                                  .data!.docs[index]
-                                                  .data());
+                                              final data =
+                                                  BatchModel.fromMap(
+                                                      snaPS.data!.docs[index]
+                                                          .data());
                                               return GestureDetector(
                                                 onTap: () {
-                                                  testController
-                                                      .onTapTest.value = true;
-                                                  testController.testModelData.value =
-                                                      data;
+                                                  batchController
+                                                      .onTapBtach
+                                                      .value = true;
+                                                  batchController
+                                                      .batchId
+                                                      .value = data.batchId;
+                                                      batchController.ontapBatchName.value=data.batchName;
                                                 },
-                                                child: TestDataList(
+                                                child: BatchDataList(
                                                   data: data,
                                                   index: index,
                                                 ),
@@ -212,8 +204,9 @@ class TestDetails extends StatelessWidget {
                                                 height: 02,
                                               );
                                             },
-                                            itemCount: snaPS.data!.docs.length,
-                                          );
+                                            itemCount: snaPS.data!.docs.length);
+                                  } else if (snaPS.data == null) {
+                                    return const LoadingWidget();
                                   } else {
                                     return const LoadingWidget();
                                   }

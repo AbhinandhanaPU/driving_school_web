@@ -41,7 +41,39 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> updateStudentStatus(
+   Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
+    try {
+     final docidofcourse= await server
+           .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection("Courses")
+          .get();
+
+  if (docidofcourse.docs.isNotEmpty) {
+      for (var courseDoc in docidofcourse.docs) {
+        final courseDocid = courseDoc.id;
+
+        // Delete the student from each course
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection("Courses")
+            .doc(courseDocid)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .delete()
+            .then((value) => log("Student deleted from course: $courseDocid"));
+      }
+    } else {
+      log("No courses found");
+    }
+    } catch (e) {
+      log("Student deletion error:$e");
+    }
+  }
+
+
+   Future<void> updateStudentStatus(
       StudentModel studentModel, String newStatus) async {
     try {
       await server
@@ -51,7 +83,7 @@ class StudentController extends GetxController {
           .doc(studentModel.docid)
           .update({'status': newStatus}).then((value) {
         studentModel.status = newStatus;
-        update();
+        update(); 
         log("Student status updated to $newStatus");
       });
     } catch (e) {

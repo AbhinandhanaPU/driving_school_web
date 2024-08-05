@@ -5,7 +5,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/event_model/events_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/events/event_create.dart';
+import 'package:new_project_driving/view/users/admin/screens/events/edit_create_event/event_create.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/event_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';

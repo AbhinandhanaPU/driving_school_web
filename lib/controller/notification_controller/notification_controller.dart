@@ -58,7 +58,7 @@ class NotificationController extends GetxController {
         .then((value) async {
       for (var i = 0; i < value.docs.length; i++) {
         if (selectStudent.value == true &&
-            value.docs[i].data()['userrole'] == 'student') {
+            value.docs[i].data()['userRole'] == 'student') {
           log('if teacher Condition');
           log('student UId ${value.docs[i].data()['uid']}');
           final list = value.docs

@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
+import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
+import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/create_practice.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_data_list.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/std_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_student_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/schedule_test.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class PracticeSheduleDetails extends StatelessWidget {
-  PracticeSheduleDetails({super.key});
-
-  final PracticeSheduleController practiceSheduleController =
-      Get.put(PracticeSheduleController());
+class AllDrivingTestDetails extends StatelessWidget {
+  AllDrivingTestDetails({super.key});
+  final TestController testController = Get.put(TestController());
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => practiceSheduleController.onTapSchedule.value == true
-          ? PracticeStudentListContainer()
+      () => testController.onTapTest.value == true
+          ? TestStudentListContainer()
           : SingleChildScrollView(
               scrollDirection: ResponsiveWebSite.isMobile(context)
                   ? Axis.horizontal
@@ -44,7 +42,7 @@ class PracticeSheduleDetails extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           TextFontWidget(
-                            text: 'Practice Shedule',
+                            text: 'Test details',
                             fontsize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -56,27 +54,28 @@ class PracticeSheduleDetails extends StatelessWidget {
                       Row(
                         children: [
                           const RouteSelectedTextContainer(
-                            title: 'All Students',
+                            title: 'All Tests',
                             width: 200,
                           ),
                           const Spacer(),
                           GestureDetector(
                             onTap: () {
-                              createPracticeAdmin(context);
+                              sheduleTestDate(context);
                             },
                             child: ButtonContainerWidget(
-                                curving: 30,
-                                colorindex: 0,
-                                height: 35,
-                                width: 120,
-                                child: const Center(
-                                  child: TextFontWidgetRouter(
-                                    text: 'Create Slot',
-                                    fontsize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: cWhite,
-                                  ),
-                                )),
+                              curving: 30,
+                              colorindex: 0,
+                              height: 40,
+                              width: 180,
+                              child: const Center(
+                                child: TextFontWidgetRouter(
+                                  text: 'Add Test Schedule',
+                                  fontsize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: cWhite,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -95,7 +94,8 @@ class PracticeSheduleDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 1,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'No'),
+                                    headerTitle: 'No',
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -103,7 +103,8 @@ class PracticeSheduleDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Slot Name'),
+                                    headerTitle: 'Date',
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -111,7 +112,8 @@ class PracticeSheduleDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: ' Start Time'),
+                                    headerTitle: 'Time',
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -119,7 +121,8 @@ class PracticeSheduleDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'End Time'),
+                                    headerTitle: 'Place',
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -134,17 +137,22 @@ class PracticeSheduleDetails extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                  flex: 3,
+                                  flex: 2,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Edit'),
+                                    headerTitle: 'Edit',
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
-                                  flex: 3,
+                                  flex: 2,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Delete'),
+                                    headerTitle: 'Delete',
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 02,
                                 ),
                               ],
                             ),
@@ -154,7 +162,6 @@ class PracticeSheduleDetails extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 400,
-                          // width: 1200,
                           decoration: BoxDecoration(
                             color: cWhite,
                             border: Border.all(color: cWhite),
@@ -162,12 +169,11 @@ class PracticeSheduleDetails extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5, left: 5),
                             child: SizedBox(
-                              // width: 1100,
                               child: StreamBuilder(
                                 stream: server
                                     .collection('DrivingSchoolCollection')
                                     .doc(UserCredentialsController.schoolId)
-                                    .collection('PracticeSchedule')
+                                    .collection('DrivingTest')
                                     .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {
@@ -176,7 +182,7 @@ class PracticeSheduleDetails extends StatelessWidget {
                                             child: Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
-                                                "Please create Students",
+                                                "Please schedule test",
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.w400),
@@ -185,20 +191,17 @@ class PracticeSheduleDetails extends StatelessWidget {
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
-                                              final data =
-                                                  PracticeSheduleModel.fromMap(
-                                                      snaPS.data!.docs[index]
-                                                          .data());
+                                              final data = TestModel.fromMap(snaPS
+                                                  .data!.docs[index]
+                                                  .data());
                                               return GestureDetector(
                                                 onTap: () {
-                                                  practiceSheduleController
-                                                      .onTapSchedule
-                                                      .value = true;
-                                                  practiceSheduleController
-                                                      .scheduleId
-                                                      .value = data.practiceId;
+                                                  testController
+                                                      .onTapTest.value = true;
+                                                  testController.testModelData.value =
+                                                      data;
                                                 },
-                                                child: PracticeSheduleDataList(
+                                                child: TestDataList(
                                                   data: data,
                                                   index: index,
                                                 ),
@@ -209,9 +212,8 @@ class PracticeSheduleDetails extends StatelessWidget {
                                                 height: 02,
                                               );
                                             },
-                                            itemCount: snaPS.data!.docs.length);
-                                  } else if (snaPS.data == null) {
-                                    return const LoadingWidget();
+                                            itemCount: snaPS.data!.docs.length,
+                                          );
                                   } else {
                                     return const LoadingWidget();
                                   }
