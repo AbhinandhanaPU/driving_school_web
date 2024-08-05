@@ -215,6 +215,11 @@ class StudentDetailsContainer extends StatelessWidget {
                                                     title: 'Place',
                                                     subtitle: data.place,
                                                   ),
+                                                   ProfileDetailTileContainer(
+                                                    flex: 1,
+                                                    title: 'Joining Date',
+                                                    subtitle: data.joiningDate,
+                                                  ),
                                                 ],
                                               ),
                                             ),
