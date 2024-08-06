@@ -9,7 +9,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/batch/crud/add_students_batch.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/functions/add_students_batch.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/data_table_batch/batch_studentsdatalist.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
