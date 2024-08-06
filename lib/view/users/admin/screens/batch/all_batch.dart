@@ -68,8 +68,8 @@ class AllBatchsListContainer extends StatelessWidget {
                                 batchShift(context);
                               },
                               child: ButtonContainerWidget(
-                                  curving: 30,
-                                  colorindex: 0,
+                                  curving: 10,
+                                  colorindex: 2,
                                   height: 35,
                                   width: 120,
                                   child: const Center(
