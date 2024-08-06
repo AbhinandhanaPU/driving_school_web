@@ -101,11 +101,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                           ),
                                           GooglePoppinsWidgets(
                                             text: institutionName,
-                                            fontsize:
-                                                ResponsiveWebSite.isMobile(
-                                                        context)
-                                                    ? 18
-                                                    : 20,
+                                            fontsize:ResponsiveWebSite.isMobile(context)
+                                              ? 12
+                                              : 15,
                                             fontWeight: FontWeight.w500,
                                           )
                                         ],
