@@ -11,16 +11,14 @@ class StudentController extends GetxController {
   Rxn<StudentModel> studentModelData = Rxn<StudentModel>();
   RxBool ontapStudent = false.obs;
 
-  final _fbServer = server
-      .collection('DrivingSchoolCollection')
-      .doc(UserCredentialsController.schoolId);
+  final _fbServer =
+      server.collection('DrivingSchoolCollection').doc(UserCredentialsController.schoolId);
 
   Future<void> fetchAllStudents() async {
     try {
       log("fetchAllStudents......................");
       final data = await _fbServer.collection('Students').get();
-      studentProfileList =
-          data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      studentProfileList = data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
     } catch (e) {
       showToast(msg: "User Data Error");
@@ -41,40 +39,8 @@ class StudentController extends GetxController {
     }
   }
 
-   Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
-    try {
-     final docidofcourse= await server
-           .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .collection("Courses")
-          .get();
-
-  if (docidofcourse.docs.isNotEmpty) {
-      for (var courseDoc in docidofcourse.docs) {
-        final courseDocid = courseDoc.id;
-
-        // Delete the student from each course
-        await server
-            .collection('DrivingSchoolCollection')
-            .doc(UserCredentialsController.schoolId)
-            .collection("Courses")
-            .doc(courseDocid)
-            .collection('Students')
-            .doc(studentModel.docid)
-            .delete()
-            .then((value) => log("Student deleted from course: $courseDocid"));
-      }
-    } else {
-      log("No courses found");
-    }
-    } catch (e) {
-      log("Student deletion error:$e");
-    }
-  }
-
-
-   Future<void> updateStudentStatus(
-      StudentModel studentModel, String newStatus) async {
+ 
+  Future<void> updateStudentStatus(StudentModel studentModel, String newStatus) async {
     try {
       await server
           .collection('DrivingSchoolCollection')
@@ -83,7 +49,7 @@ class StudentController extends GetxController {
           .doc(studentModel.docid)
           .update({'status': newStatus}).then((value) {
         studentModel.status = newStatus;
-        update(); 
+        update();
         log("Student status updated to $newStatus");
       });
     } catch (e) {
@@ -152,6 +118,26 @@ class StudentController extends GetxController {
       }
     } catch (e) {
       log("Student course fetching error: $e");
+    }
+  }
+
+  Future<void> updateStudentLevel(
+      StudentModel studentModel, String newLevel, String courseID) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Courses')
+          .doc(courseID)
+          .collection('Students')
+          .doc(studentModel.docid)
+          .update({'level': newLevel}).then((value) {
+        studentModel.level = newLevel;
+        update();
+        log("Student level updated to $newLevel");
+      });
+    } catch (e) {
+      log("Student level update error: $e");
     }
   }
 }
