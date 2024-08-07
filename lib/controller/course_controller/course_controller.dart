@@ -20,6 +20,10 @@ class CourseController extends GetxController {
   RxString courseName = ''.obs;
   RxString courseId = ''.obs;
   RxString courseDocID = 'dd'.obs;
+  RxString ontapCourseName = 'dd'.obs;
+  RxString ontapCourseDocID = 'dd'.obs;
+
+  RxString level = 'Select Level'.obs;
   List<StudentModel> allstudentList = [];
   List<CourseModel> allcourseList = [];
   Rxn<CourseModel> courseModelData = Rxn<CourseModel>();
@@ -57,8 +61,7 @@ class CourseController extends GetxController {
         .get();
 
     for (var i = 0; i < firebase.docs.length; i++) {
-      final list =
-          firebase.docs.map((e) => CourseModel.fromMap(e.data())).toList();
+      final list = firebase.docs.map((e) => CourseModel.fromMap(e.data())).toList();
       allcourseList.add(list[i]);
       allcourseList.sort((a, b) => a.courseName.compareTo(b.courseName));
     }
@@ -145,8 +148,7 @@ class CourseController extends GetxController {
         .get();
 
     for (var i = 0; i < firebase.docs.length; i++) {
-      final list =
-          firebase.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      final list = firebase.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       allstudentList.add(list[i]);
     }
     return allstudentList;
@@ -164,6 +166,10 @@ class CourseController extends GetxController {
           .get();
       if (studentDocID.value != '') {
         final data = StudentModel.fromMap(studentResult.data()!);
+
+        final studentData = data.toMap();
+        studentData['level'] = level.value;
+
         await server
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)
@@ -171,7 +177,7 @@ class CourseController extends GetxController {
             .doc(courseID)
             .collection('Students')
             .doc(studentDocID.value)
-            .set(data.toMap())
+            .set(studentData)
             .then((value) async {
           showToast(msg: 'Added');
           allstudentList.clear();
@@ -181,6 +187,31 @@ class CourseController extends GetxController {
       log(e.toString());
       showToast(msg: 'Somthing went wrong please try again');
       allstudentList.clear();
+    }
+  }
+
+  Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
+    try {
+      final data = courseModelData.value;
+      if (data!.courseId != '') {
+        // Delete the student from each course
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection("Courses")
+            .doc(data.courseId)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .delete()
+            .then((value) {
+          log("Student deleted from course: ${data.courseId}");
+          Get.back();
+        });
+      } else {
+        log("No courses found");
+      }
+    } catch (e) {
+      log("Student deletion error:$e");
     }
   }
 }

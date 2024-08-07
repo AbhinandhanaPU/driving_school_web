@@ -1,18 +1,18 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
-import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 
 class StudentController extends GetxController {
-  final CourseController courseController = Get.put(CourseController());
-
   List<StudentModel> studentProfileList = [];
   Rxn<StudentModel> studentModelData = Rxn<StudentModel>();
   RxBool ontapStudent = false.obs;
+  final formKey = GlobalKey<FormState>();
+  TextEditingController amountController = TextEditingController();
 
   final _fbServer = server
       .collection('DrivingSchoolCollection')
@@ -39,31 +39,6 @@ class StudentController extends GetxController {
           .doc(studentModel.docid)
           .delete()
           .then((value) => log("Student deleted"));
-    } catch (e) {
-      log("Student deletion error:$e");
-    }
-  }
-
-  Future<void> deleteStudentsFromCourse(StudentModel studentModel) async {
-    try {
-      final data = courseController.courseModelData.value;
-      if (data!.courseId != '') {
-        // Delete the student from each course
-        await server
-            .collection('DrivingSchoolCollection')
-            .doc(UserCredentialsController.schoolId)
-            .collection("Courses")
-            .doc(data.courseId)
-            .collection('Students')
-            .doc(studentModel.docid)
-            .delete()
-            .then((value) {
-          log("Student deleted from course: ${data.courseId}");
-          Get.back();
-        });
-      } else {
-        log("No courses found");
-      }
     } catch (e) {
       log("Student deletion error:$e");
     }
@@ -148,6 +123,82 @@ class StudentController extends GetxController {
       }
     } catch (e) {
       log("Student course fetching error: $e");
+    }
+  }
+
+  Future<void> updateStudentLevel(
+      StudentModel studentModel, String newLevel, String courseID) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Courses')
+          .doc(courseID)
+          .collection('Students')
+          .doc(studentModel.docid)
+          .update({'level': newLevel}).then((value) {
+        studentModel.level = newLevel;
+        update();
+        log("Student level updated to $newLevel");
+      });
+    } catch (e) {
+      log("Student level update error: $e");
+    }
+  }
+
+  Future<void> updateStudentFeeColl(
+    StudentModel studentModel,
+    String status,
+    String courseID,
+  ) async {
+    await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Courses')
+        .doc(courseID)
+        .collection('Students')
+        .doc(studentModel.docid)
+        .update({
+      'feesStatus': status,
+    }).then((value) async {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Students')
+          .doc(studentModel.docid)
+          .update({
+        'feesStatus': status,
+      }).then((value) {
+        studentModel.feesStatus = status;
+      });
+    });
+  }
+
+  Future<void> addStudentFeeColl(
+    StudentModel studentModel,
+    String status,
+    String courseID,
+  ) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('FeeCollection')
+          .doc(studentModel.docid)
+          .set({
+        'studentName': studentModel.studentName,
+        'studentID': studentModel.docid,
+        'feeStatus': status,
+        'pendingAmount': amountController.text,
+        'courseID': courseID
+      }).then((value) {
+        studentModel.feesStatus = status;
+        update();
+        showToast(msg: 'student added to fees collecion');
+        showToast(msg: "Fees Status Updated");
+      });
+    } catch (e) {
+      log(" FeeCollection error: $e");
     }
   }
 }

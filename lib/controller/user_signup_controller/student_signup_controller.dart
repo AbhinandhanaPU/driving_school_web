@@ -54,23 +54,25 @@ class StudentSignUpController extends GetxController {
               email: emailController.text, password: passwordController.text)
           .then((authvalue) async {
         StudentModel studentModel = StudentModel(
-            docid: authvalue.user!.uid,
-            password: passwordController.text,
-            studentemail: emailController.text,
-            studentName: nameController.text,
-            phoneNumber: phoneController.text,
-            dateofBirth: dateOfBirthController.text,
-            guardianName: fatherSpouseController.text,
-            address: addressController.text,
-            place: placeController.text,
-            profileImageId: imageId,
-            profileImageUrl: downloadUrl.value,
-            rtoName: rtoNameController.text,
-            licenceNumber: licenceController.text,
-            joiningDate: DateTime.now().toString(),
-            userRole: "student", 
-            status: 'Inactive'//change
-            );
+          docid: authvalue.user!.uid,
+          password: passwordController.text,
+          studentemail: emailController.text,
+          studentName: nameController.text,
+          phoneNumber: phoneController.text,
+          dateofBirth: dateOfBirthController.text,
+          guardianName: fatherSpouseController.text,
+          address: addressController.text,
+          place: placeController.text,
+          profileImageId: imageId,
+          profileImageUrl: downloadUrl.value,
+          rtoName: rtoNameController.text,
+          licenceNumber: licenceController.text,
+          joiningDate: DateTime.now().toString(),
+          userRole: "student",
+          status: 'Inactive', //change
+          level: "Beginner",
+          feesStatus: '',
+        );
         await server
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)

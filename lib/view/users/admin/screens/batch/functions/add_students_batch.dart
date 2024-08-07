@@ -2,14 +2,13 @@ import 'package:awesome_side_sheet/Enums/sheet_position.dart';
 import 'package:awesome_side_sheet/side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
+import 'package:new_project_driving/controller/batch_controller/batch_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/student_dropdown/all_students.dart';
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
 
-addStudentsPractice(BuildContext context) {
-  final PracticeSheduleController practiceSheduleController =
-      Get.put(PracticeSheduleController());
+addStudentsBatch(BuildContext context) {
+   final BatchController batchController = Get.put(BatchController());
   aweSideSheet(
     context: context,
     sheetPosition: SheetPosition.right,
@@ -41,7 +40,7 @@ addStudentsPractice(BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Form(
-                    key: practiceSheduleController.formKey,
+                    key: batchController.formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -65,15 +64,16 @@ addStudentsPractice(BuildContext context) {
                       child: Obx(
                         () => ProgressButtonWidget(
                           function: () async {
-                            if (practiceSheduleController.formKey.currentState!
+                            if (batchController.formKey.currentState!
                                 .validate()) {
-                              practiceSheduleController
+                              batchController
                                   .addStudent()
-                                  .then((value) => Navigator.pop(context));
+                                 // .then((value) => Navigator.pop(context))
+                                  ;
                             }
                           },
                           buttonstate:
-                              practiceSheduleController.buttonstate.value,
+                              batchController.buttonstate.value,
                           text: 'Add Student',
                         ),
                       ),

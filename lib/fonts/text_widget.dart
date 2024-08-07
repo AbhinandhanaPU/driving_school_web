@@ -8,8 +8,8 @@ class TextFontWidget extends StatelessWidget {
   final double? letterSpacing;
   final Color? color;
   final TextOverflow? overflow;
- final String? Function(String?)? validator;
-   const TextFontWidget({
+  final String? Function(String?)? validator;
+  const TextFontWidget({
     this.validator,
     required this.text,
     required this.fontsize,
@@ -17,7 +17,8 @@ class TextFontWidget extends StatelessWidget {
     this.color,
     this.letterSpacing,
     this.overflow,
-    super.key, this.index,
+    super.key,
+    this.index,
   });
 
   @override
@@ -31,13 +32,11 @@ class TextFontWidget extends StatelessWidget {
         letterSpacing: letterSpacing,
         fontSize: fontsize,
         fontWeight: fontWeight,
-        color:color ?? Colors.black,
+        color: color ?? Colors.black,
       ),
     );
   }
 }
-
-
 
 class TextFontWidgetRouter extends StatelessWidget {
   final String text;
@@ -69,6 +68,44 @@ class TextFontWidgetRouter extends StatelessWidget {
         fontWeight: fontWeight,
         color: Colors.white,
       ),
+    );
+  }
+}
+
+class TextFormFieldWidget extends StatelessWidget {
+  final String hintText;
+  final String? Function(String?)? validator;
+  final double fontSize;
+  final FontWeight? fontWeight;
+  final double? letterSpacing;
+  final Color? color;
+  final Icon;
+
+  const TextFormFieldWidget({
+    required this.hintText,
+    this.validator,
+    required this.fontSize,
+    this.fontWeight,
+    this.color,
+    this.letterSpacing,
+    // ignore: non_constant_identifier_names
+    super.key,required this.Icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          letterSpacing: letterSpacing,
+        ),
+      ),
+      validator: validator,
     );
   }
 }

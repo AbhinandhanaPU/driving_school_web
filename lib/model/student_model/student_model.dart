@@ -16,7 +16,9 @@ class StudentModel {
   String rtoName;
   String licenceNumber;
   String joiningDate;
-  String status;//
+  String status; //
+  String level; //
+  String feesStatus;
 
   String userRole = 'student';
 
@@ -36,6 +38,8 @@ class StudentModel {
     required this.licenceNumber,
     required this.joiningDate,
     required this.status,
+    required this.level,
+    required this.feesStatus,
     required this.userRole,
   });
 
@@ -55,6 +59,8 @@ class StudentModel {
     String? licenceNumber,
     String? joiningDate,
     String? status,
+    String? level,
+    String? feesStatus,
     String? userRole,
   }) {
     return StudentModel(
@@ -73,6 +79,8 @@ class StudentModel {
       licenceNumber: licenceNumber ?? this.licenceNumber,
       joiningDate: joiningDate ?? this.joiningDate,
       status: status ?? this.status,
+      level: level ?? this.level,
+      feesStatus: feesStatus ?? this.feesStatus,
       userRole: userRole ?? this.userRole,
     );
   }
@@ -94,28 +102,32 @@ class StudentModel {
       'licenceNumber': licenceNumber,
       'joiningDate': joiningDate,
       'status': status,
+      'level': level,
+      'feesStatus': feesStatus,
       'userRole': userRole,
     };
   }
 
   factory StudentModel.fromMap(Map<String, dynamic> map) {
     return StudentModel(
-      docid: map['docid'] ??"",
-      password: map['password'] ??"",
-      studentemail: map['studentemail'] ??"",
-      studentName: map['studentName'] ??"",
-      phoneNumber: map['phoneNumber'] ??"",
-      dateofBirth: map['dateofBirth'] ??"",
-      guardianName: map['guardianName'] ??"",
-      address: map['address'] ??"",
-      place: map['place'] ??"",
-      profileImageId: map['profileImageId'] ??"",
-      profileImageUrl: map['profileImageUrl'] ??"",
-      rtoName: map['rtoName'] ??"",
-      licenceNumber: map['licenceNumber'] ??"",
-      joiningDate: map['joiningDate'] ??"",
-      status: map['status'] ??"",
-      userRole: map['userRole'] ??"",
+      docid: map['docid'] as String,
+      password: map['password'] as String,
+      studentemail: map['studentemail'] as String,
+      studentName: map['studentName'] as String,
+      phoneNumber: map['phoneNumber'] as String,
+      dateofBirth: map['dateofBirth'] as String,
+      guardianName: map['guardianName'] as String,
+      address: map['address'] as String,
+      place: map['place'] as String,
+      profileImageId: map['profileImageId'] as String,
+      profileImageUrl: map['profileImageUrl'] as String,
+      rtoName: map['rtoName'] as String,
+      licenceNumber: map['licenceNumber'] as String,
+      joiningDate: map['joiningDate'] as String,
+      status: map['status'] as String,
+      level: map['level'] as String,
+      feesStatus: map['feesStatus'] as String,
+      userRole: map['userRole'] as String,
     );
   }
 
@@ -126,49 +138,52 @@ class StudentModel {
 
   @override
   String toString() {
-    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, userRole: $userRole)';
+    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, level: $level, feesStatus: $feesStatus, userRole: $userRole)';
   }
 
   @override
   bool operator ==(covariant StudentModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.docid == docid &&
-      other.password == password &&
-      other.studentemail == studentemail &&
-      other.studentName == studentName &&
-      other.phoneNumber == phoneNumber &&
-      other.dateofBirth == dateofBirth &&
-      other.guardianName == guardianName &&
-      other.address == address &&
-      other.place == place &&
-      other.profileImageId == profileImageId &&
-      other.profileImageUrl == profileImageUrl &&
-      other.rtoName == rtoName &&
-      other.licenceNumber == licenceNumber &&
-      other.joiningDate == joiningDate &&
-      other.status == status &&
-      other.userRole == userRole;
+
+    return other.docid == docid &&
+        other.password == password &&
+        other.studentemail == studentemail &&
+        other.studentName == studentName &&
+        other.phoneNumber == phoneNumber &&
+        other.dateofBirth == dateofBirth &&
+        other.guardianName == guardianName &&
+        other.address == address &&
+        other.place == place &&
+        other.profileImageId == profileImageId &&
+        other.profileImageUrl == profileImageUrl &&
+        other.rtoName == rtoName &&
+        other.licenceNumber == licenceNumber &&
+        other.joiningDate == joiningDate &&
+        other.status == status &&
+        other.level == level &&
+        other.feesStatus == feesStatus &&
+        other.userRole == userRole;
   }
 
   @override
   int get hashCode {
     return docid.hashCode ^
-      password.hashCode ^
-      studentemail.hashCode ^
-      studentName.hashCode ^
-      phoneNumber.hashCode ^
-      dateofBirth.hashCode ^
-      guardianName.hashCode ^
-      address.hashCode ^
-      place.hashCode ^
-      profileImageId.hashCode ^
-      profileImageUrl.hashCode ^
-      rtoName.hashCode ^
-      licenceNumber.hashCode ^
-      joiningDate.hashCode ^
-      status.hashCode ^
-      userRole.hashCode;
+        password.hashCode ^
+        studentemail.hashCode ^
+        studentName.hashCode ^
+        phoneNumber.hashCode ^
+        dateofBirth.hashCode ^
+        guardianName.hashCode ^
+        address.hashCode ^
+        place.hashCode ^
+        profileImageId.hashCode ^
+        profileImageUrl.hashCode ^
+        rtoName.hashCode ^
+        licenceNumber.hashCode ^
+        joiningDate.hashCode ^
+        status.hashCode ^
+        level.hashCode ^
+        feesStatus.hashCode ^
+        userRole.hashCode;
   }
 }

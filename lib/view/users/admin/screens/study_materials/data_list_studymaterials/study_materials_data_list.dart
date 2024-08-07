@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/study_materials/study_materials_controller.dart';
-import 'package:new_project_driving/view/users/admin/screens/study_materials/pdf_viewer.dart';
-import 'package:new_project_driving/view/users/admin/screens/study_materials/study_materials_edit.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/data_list_studymaterials/pdf_viewer.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/function_studymaterial/study_materials_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 

@@ -4,7 +4,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_edit.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practise_functions/practice_shedule_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 

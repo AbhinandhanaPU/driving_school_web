@@ -15,8 +15,8 @@ import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class CoursesDetails extends StatelessWidget {
-  CoursesDetails({super.key});
+class AllCoursesDetails extends StatelessWidget {
+  AllCoursesDetails({super.key});
 
   final CourseController courseController = Get.put(CourseController());
   
@@ -192,6 +192,8 @@ class CoursesDetails extends StatelessWidget {
                                         courseController
                                                 .ontapStudentDetail
                                                 .value = true;
+                                        courseController.ontapCourseName.value=data.courseName;
+                                        courseController.ontapCourseDocID.value=data.courseId;
                                     },
                                     child: AllCoursesDataList(
                                         data: data, index: index),

@@ -4,27 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
+import 'package:new_project_driving/controller/batch_controller/batch_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practise_functions/add_students.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/std_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/functions/add_students_batch.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/data_table_batch/batch_studentsdatalist.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class PracticeStudentListContainer extends StatelessWidget {
-  PracticeStudentListContainer({super.key});
-  final PracticeSheduleController practiceSheduleController =
-      Get.put(PracticeSheduleController());
+class BatchStudentListContainer extends StatelessWidget {
+  BatchStudentListContainer({super.key});
+   final BatchController batchController = Get.put(BatchController());
 
   @override
   Widget build(BuildContext context) {
-    log(practiceSheduleController.scheduleId.value);
+   // final namebth = batchController.batchModelData.value;
+    log(batchController.batchId.value);
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -37,11 +37,11 @@ class PracticeStudentListContainer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextFontWidget(
-                    text: 'Practice Schedule',
+                    text: batchController. ontapBatchName.toString(),
                     fontsize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -54,7 +54,7 @@ class PracticeStudentListContainer extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      practiceSheduleController.onTapSchedule.value = false;
+                      batchController.onTapBtach.value = false;
                     },
                     child: const RouteSelectedTextContainer(
                       title: 'Back',
@@ -71,7 +71,7 @@ class PracticeStudentListContainer extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      addStudentsPractice(context);
+                      addStudentsBatch(context);
                     },
                     child: ButtonContainerWidget(
                       curving: 30,
@@ -91,20 +91,7 @@ class PracticeStudentListContainer extends StatelessWidget {
                   const SizedBox(
                     width: 20,
                   ),
-                  ButtonContainerWidget(
-                    curving: 0,
-                    colorindex: 6,
-                    height: 35,
-                    width: 220,
-                    child: const Center(
-                      child: TextFontWidgetRouter(
-                        text: 'Send practice schedule to Students',
-                        fontsize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: cWhite,
-                      ),
-                    ),
-                  ),
+                 
                 ],
               ),
               const SizedBox(
@@ -129,6 +116,13 @@ class PracticeStudentListContainer extends StatelessWidget {
                         Expanded(
                           flex: 4,
                           child: CatrgoryTableHeaderWidget(headerTitle: 'Name'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
+                         Expanded(
+                          flex: 4,
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'Course'),
                         ),
                         SizedBox(
                           width: 02,
@@ -176,8 +170,8 @@ class PracticeStudentListContainer extends StatelessWidget {
                         stream: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
-                            .collection('PracticeSchedule')
-                            .doc(practiceSheduleController.scheduleId.value)
+                            .collection('Batch')
+                            .doc(batchController.batchId.value)
                             .collection('Students')
                             .snapshots(),
                         builder: (context, studentSnapshot) {
@@ -205,7 +199,7 @@ class PracticeStudentListContainer extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final data = StudentModel.fromMap(
                                   studentSnapshot.data!.docs[index].data());
-                              return PracticeStdDataList(
+                              return BatchStdDataList(
                                 data: data,
                                 index: index,
                               );

@@ -10,22 +10,23 @@ import 'package:new_project_driving/view/users/admin/app_bar/admin_appbar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/student_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/all_batch.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/Allcourse_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
-import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/driving_test/alldriving_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
-import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/create_fees/view_fees_status.dart';
-import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/learners_test/moke_test_home.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
 import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/notice/notice_all_ist.dart';
 import 'package:new_project_driving/view/users/admin/screens/notifications/admin_notification_create.dart';
-import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practice_shedule_student_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/practice_shedule/allpractice_shedule.dart';
 import 'package:new_project_driving/view/users/admin/screens/registration/teachers_regi_container.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/students_list/view_all_students.dart';
-import 'package:new_project_driving/view/users/admin/screens/study_materials/study_materials_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/students/view_all_students.dart';
+import 'package:new_project_driving/view/users/admin/screens/study_materials/allstudy_materials_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/tutor/view_all_tutor.dart';
-import 'package:new_project_driving/view/users/admin/screens/videos/video_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/videos/allvideo_list.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:sidebar_drawer/sidebar_drawer.dart';
@@ -49,8 +50,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: UserCredentialsController.schoolId !=
-                FirebaseAuth.instance.currentUser!.uid
+        stream: UserCredentialsController.schoolId != FirebaseAuth.instance.currentUser!.uid
             ? server
                 .collection('DrivingSchoolCollection')
                 .doc(UserCredentialsController.schoolId)
@@ -65,8 +65,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     body: SafeArea(
                         child: Center(
                       child: TextFontWidget(
-                          text: "Waiting for superadmin response.....",
-                          fontsize: 20),
+                          text: "Waiting for superadmin response.....", fontsize: 20),
                     )),
                   )
                 : Scaffold(
@@ -100,19 +99,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                           ),
                                           GooglePoppinsWidgets(
                                             text: institutionName,
-                                            fontsize:
-                                                ResponsiveWebSite.isMobile(
-                                                        context)
-                                                    ? 18
-                                                    : 20,
+                                            fontsize: ResponsiveWebSite.isMobile(context) ? 12 : 15,
                                             fontWeight: FontWeight.w500,
                                           )
                                         ],
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, top: 12),
+                                      padding: const EdgeInsets.only(left: 10, top: 12),
                                       child: GestureDetector(
                                         child: Text(
                                           "Main Menu",
@@ -138,8 +132,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           )),
                     ),
                   );
-          } else if (UserCredentialsController.schoolId ==
-              FirebaseAuth.instance.currentUser!.uid) {
+          } else if (UserCredentialsController.schoolId == FirebaseAuth.instance.currentUser!.uid) {
             return Scaffold(
               backgroundColor: cWhite,
               body: SafeArea(
@@ -154,9 +147,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       color: Colors.white,
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.only(
-                              left:
-                                  ResponsiveWebSite.isMobile(context) ? 0 : 10),
+                          padding:
+                              EdgeInsets.only(left: ResponsiveWebSite.isMobile(context) ? 0 : 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -165,10 +157,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      height:
-                                          ResponsiveWebSite.isMobile(context)
-                                              ? 40
-                                              : 60,
+                                      height: ResponsiveWebSite.isMobile(context) ? 40 : 60,
                                       child: Image.asset(
                                         logoImage,
                                         fit: BoxFit.fill,
@@ -176,18 +165,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     ),
                                     GooglePoppinsWidgets(
                                       text: institutionName,
-                                      fontsize:
-                                          ResponsiveWebSite.isMobile(context)
-                                              ? 12
-                                              : 15,
+                                      fontsize: ResponsiveWebSite.isMobile(context) ? 12 : 15,
                                       fontWeight: FontWeight.w500,
                                     )
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, top: 12),
+                                padding: const EdgeInsets.only(left: 10, top: 12),
                                 child: Text(
                                   "Main Menu",
                                   style: TextStyle(
@@ -221,21 +206,22 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 List<Widget> pages = [
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
-  CoursesDetails(), // index 1
+  AllCoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
   AllStudentListContainer(), // index 3
   AllTutorListContainer(), // index 4
+  AllBatchsListContainer(),
   const AllStudentsAttendance(), // index 5
   const AllTutorAttendance(), // index 6
-  const LearnersStudentListContainer(), // index 7
-  TestDetails(), // index 8
-  PracticeSheduleDetails(), // index 10
-  CreatedFeesStatus(), // index 11
+  const MokeTestHome(), // index 7
+  AllDrivingTestDetails(), // index 8
+  AllPracticeShedules(), // index 10
+  StudentsFeesStatus(), // index 11
   AllAdminListPage(), // index 12
-  const StudyMaterialsList(), // index 13
+  const AllStudyMaterialsList(), // index 13
   NoticeAllList(), // index 14
   const AllEventsList(), // index 15
-  const VideosList(), // index 16
+  const AllVideosList(), // index 16
   AdminNotificationCreate(), // index 17
   LoginHistroyContainer(), // index 18////////////////////////////////
 ];

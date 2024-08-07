@@ -15,18 +15,19 @@ import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
 
 class StudentsInCoursesDetails extends StatelessWidget {
-   StudentsInCoursesDetails({super.key});
-   final CourseController courseController = Get.put(CourseController());
+  StudentsInCoursesDetails({super.key});
+  final CourseController courseController = Get.put(CourseController());
 
   @override
   Widget build(BuildContext context) {
-    final data = courseController.courseModelData.value;
+    //final data = courseController.courseModelData.value;
+    final courseid = courseController.ontapCourseDocID.value;
 
-     print('Course ID: ${data?.courseId}');
+    //  print('Course ID: ${data?.courseId}');
 
-    if (data == null) {
-      return const Center(child: Text('Course data is not available'));
-    }
+    // if (data == null) {
+    //   return const Center(child: Text('Course data is not available'));
+    // }
 
     return SingleChildScrollView(
       scrollDirection:
@@ -50,12 +51,14 @@ class StudentsInCoursesDetails extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10),
               child: Row(
                 children: [
-                   RouteSelectedTextContainer(
-                      width: 180, title: data.courseName),
+                  RouteSelectedTextContainer(
+                      width: 180,
+                      title: courseController.ontapCourseName.toString()),
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      addStudentToCourse(context,data.courseId);
+                      addStudentToCourse(
+                          context, courseController.ontapCourseDocID.value);
                     },
                     child: ButtonContainerWidget(
                         curving: 30,
@@ -74,25 +77,24 @@ class StudentsInCoursesDetails extends StatelessWidget {
                 ],
               ),
             ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: GestureDetector(
-                      onTap: () {
-                        courseController.ontapStudentDetail.value =
-                            false;
-                      },
-                      child: const SizedBox(
-                        height: 35,
-                        width: 100,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 05, left: 05),
-                          child: RouteNonSelectedTextContainer(
-                            title: 'Back',
-                          ),
-                        ),
-                      ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: GestureDetector(
+                onTap: () {
+                  courseController.ontapStudentDetail.value = false;
+                },
+                child: const SizedBox(
+                  height: 35,
+                  width: 100,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 05, left: 05),
+                    child: RouteNonSelectedTextContainer(
+                      title: 'Back',
                     ),
                   ),
+                ),
+              ),
+            ),
             Container(
               color: cWhite,
               child: Padding(
@@ -105,55 +107,61 @@ class StudentsInCoursesDetails extends StatelessWidget {
                   height: 40,
                   child: const Row(
                     children: [
-                   Expanded(
-                                  flex: 1,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'No')),
-                              SizedBox(
-                                width: 01,
-                              ),
-                              Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'License No.')),
-                              SizedBox(
-                                width: 01,
-                              ),
-                              // Expanded(
-                              //     flex: 2,
-                              //     child: CatrgoryTableHeaderWidget(
-                              //         headerTitle: 'Card ID')),
-                              // SizedBox(
-                              //   width: 01,
-                              // ),
-                              Expanded(
-                                  flex: 4,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Name')),
-                              SizedBox(
-                                width: 02,
-                              ),
-                              Expanded(
-                                  flex: 4,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'E mail')),
-                              SizedBox(
-                                width: 02,
-                              ),
-                              Expanded(
-                                  flex: 3,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Ph.No')),
-                              SizedBox(
-                                width: 02,
-                              ),
-                              Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Delete')),
-                              SizedBox(
-                                width: 02,
-                              ),
+                      Expanded(
+                          flex: 1,
+                          child: CatrgoryTableHeaderWidget(headerTitle: 'No')),
+                      SizedBox(
+                        width: 01,
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child: CatrgoryTableHeaderWidget(
+                              headerTitle: 'License No.')),
+                      SizedBox(
+                        width: 01,
+                      ),
+                      Expanded(
+                          flex: 3,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Name')),
+                      SizedBox(
+                        width: 02,
+                      ),
+                      Expanded(
+                          flex: 3,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'E mail')),
+                      SizedBox(
+                        width: 02,
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Ph.No')),
+                      SizedBox(
+                        width: 02,
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Level')),
+                      SizedBox(
+                        width: 02,
+                      ),
+                      Expanded(
+                          flex: 3,
+                          child: CatrgoryTableHeaderWidget(
+                              headerTitle: 'Fees Status')),
+                      SizedBox(
+                        width: 02,
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Delete')),
+                      SizedBox(
+                        width: 02,
+                      ),
                     ],
                   ),
                 ),
@@ -171,13 +179,13 @@ class StudentsInCoursesDetails extends StatelessWidget {
                 ),
                 child: StreamBuilder(
                     stream: server
-                         .collection('DrivingSchoolCollection')
-                         .doc(UserCredentialsController.schoolId)
-                         .collection('Courses')
-                         .doc(data.courseId)
-                         .collection("Students")
-                                      //  .orderBy('studentName')
-                         .snapshots(),
+                        .collection('DrivingSchoolCollection')
+                        .doc(UserCredentialsController.schoolId)
+                        .collection('Courses')
+                        .doc(courseid)
+                        .collection("Students")
+                        //  .orderBy('studentName')
+                        .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -194,9 +202,10 @@ class StudentsInCoursesDetails extends StatelessWidget {
                       return ListView.separated(
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
-                           final data = StudentModel.fromMap(snapshot.data!.docs[index]
-                                                      .data());
-                          return AllCourseStudentDataList(data: data, index: index);
+                          final data = StudentModel.fromMap(
+                              snapshot.data!.docs[index].data());
+                          return AllCourseStudentDataList(
+                              data: data, index: index);
                         },
                         separatorBuilder: (context, index) => const SizedBox(
                           height: 02,

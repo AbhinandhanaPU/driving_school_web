@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
+import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
+import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/std_fees_level.dart';
+import 'package:new_project_driving/view/widget/dropdown_widget/student_level/student_level.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class AllCourseStudentDataList extends StatelessWidget {
@@ -16,8 +19,11 @@ class AllCourseStudentDataList extends StatelessWidget {
     super.key,
   });
   final StudentController studentController = Get.put(StudentController());
+  final CourseController courseController = Get.put(CourseController());
+
   @override
   Widget build(BuildContext context) {
+    final modelData = courseController.courseModelData.value;
     return
         // Obx(() =>
         Container(
@@ -39,7 +45,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                 headerTitle: '${index + 1}'), //....................No
           ),
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 2,
@@ -50,7 +56,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                 headerTitle: data.licenceNumber),
           ), //................................................. teacher ID
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           // Expanded(
           //   flex: 2,
@@ -64,7 +70,7 @@ class AllCourseStudentDataList extends StatelessWidget {
           //   width: 01,
           // ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Row(
               children: [
                 SizedBox(
@@ -86,10 +92,10 @@ class AllCourseStudentDataList extends StatelessWidget {
             ),
           ), //........................................... teacher Name
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Row(
               children: [
                 SizedBox(
@@ -110,10 +116,10 @@ class AllCourseStudentDataList extends StatelessWidget {
             ),
           ), // ................................... teacher Email
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Row(
               children: [
                 SizedBox(
@@ -135,21 +141,28 @@ class AllCourseStudentDataList extends StatelessWidget {
             ),
           ), //....................................... teacher Phone Number
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
-          // Expanded(
-          //   flex: 2,
-          //   child: DataContainerWidget(
-          //       rowMainAccess: MainAxisAlignment.center,
-          //       color: cWhite,
-          //       // width: 150,
-          //       index: index,
-          //       headerTitle: 'Class '),
-          // ), //............................. Student Class
-
-          // const SizedBox(
-          //   width: 01,
-          // ),
+          Expanded(
+            flex: 2,
+            child: StudentLevelDropDown(
+              data: data,
+              courseID: modelData!.courseId,
+            ),
+          ), //................................................. dropdwn
+          const SizedBox(
+            width: 02,
+          ),
+          Expanded(
+            flex: 3,
+            child: StdFeesLevelDropDown(
+              data: data,
+              courseID: modelData.courseId,
+            ),
+          ),
+          const SizedBox(
+            width: 02,
+          ),
           Expanded(
             flex: 2,
             child: Center(
@@ -158,7 +171,11 @@ class AllCourseStudentDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () {
-                      studentController.deleteStudentsFromCourse(data);
+                      courseController
+                          .deleteStudentsFromCourse(data)
+                          .then((value) {
+                        Navigator.pop(context);
+                      });
                     },
                   );
                 },

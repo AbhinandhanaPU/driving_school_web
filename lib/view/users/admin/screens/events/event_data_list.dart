@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/event_controller/event_controller.dart';
 import 'package:new_project_driving/model/event_model/events_model.dart';
-import 'package:new_project_driving/view/users/admin/screens/events/event_edit.dart';
+import 'package:new_project_driving/view/users/admin/screens/events/edit_create_event/event_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
