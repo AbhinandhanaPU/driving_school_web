@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/controller/class_controller/class_controller.dart';
@@ -202,23 +203,23 @@ class StudentDetailsContainer extends StatelessWidget {
                                                   ),
                                                   ProfileDetailTileContainer(
                                                     flex: 1,
-                                                    title: 'Parent/Spouse Name',
-                                                    subtitle: data.guardianName,
+                                                    title: 'Parent/Spouse  ',
+                                                    subtitle: "${data.guardianName   }",
                                                   ),
+                                                  // ProfileDetailTileContainer(
+                                                  //   flex: 1,
+                                                  //   title: ' Address',
+                                                  //   subtitle: "${data.     }",
+                                                  // ),
                                                   ProfileDetailTileContainer(
                                                     flex: 1,
-                                                    title: 'Address',
-                                                    subtitle: data.address,
-                                                  ),
-                                                  ProfileDetailTileContainer(
-                                                    flex: 1,
-                                                    title: 'Place',
-                                                    subtitle: data.place,
+                                                    title: ' Place',
+                                                    subtitle: "${data.place     }",
                                                   ),
                                                    ProfileDetailTileContainer(
                                                     flex: 1,
                                                     title: 'Joining Date',
-                                                    subtitle: data.joiningDate,
+                                                    subtitle:  DateFormat('yyyy-MM-dd').format(DateTime.parse(data.joiningDate)),
                                                   ),
                                                 ],
                                               ),

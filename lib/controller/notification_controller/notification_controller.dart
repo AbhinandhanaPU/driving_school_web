@@ -58,15 +58,19 @@ class NotificationController extends GetxController {
         .then((value) async {
       for (var i = 0; i < value.docs.length; i++) {
         if (selectStudent.value == true &&
-            value.docs[i].data()['userRole'] == 'student') {
+            value.docs[i].data()['userrole'] == 'student') {
           log('if teacher Condition');
-          log('student UId ${value.docs[i].data()['uid']}');
+          log('student UId ${value.docs[i].data()['uid']??'null'}');
           final list = value.docs
               .map((e) => UserDeviceIDModel.fromMap(e.data()))
               .toList();
+         if (list[i].uid.isNotEmpty) {
           selectedUSerUIDList.add(list[i]);
+        } else {
+          log('Invalid user UID: ${list[i].uid}');
         }
       }
+    }
     });
   }
 

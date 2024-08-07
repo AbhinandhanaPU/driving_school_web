@@ -69,7 +69,8 @@ addStudentsPractice(BuildContext context) {
                                 .validate()) {
                               practiceSheduleController
                                   .addStudent()
-                                  .then((value) => Navigator.pop(context));
+                                //  .then((value) => Navigator.pop(context))
+                                  ;
                             }
                           },
                           buttonstate:

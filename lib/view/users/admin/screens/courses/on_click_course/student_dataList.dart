@@ -6,6 +6,7 @@ import 'package:new_project_driving/controller/course_controller/course_controll
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
+import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/std_fees_level.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/student_level/student_level.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
@@ -28,7 +29,9 @@ class AllCourseStudentDataList extends StatelessWidget {
         Container(
       height: 45,
       decoration: BoxDecoration(
-        color: index % 2 == 0 ? const Color.fromARGB(255, 246, 246, 246) : Colors.blue[50],
+        color: index % 2 == 0
+            ? const Color.fromARGB(255, 246, 246, 246)
+            : Colors.blue[50],
       ),
       child: Row(
         children: [
@@ -42,7 +45,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                 headerTitle: '${index + 1}'), //....................No
           ),
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 2,
@@ -53,7 +56,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                 headerTitle: data.licenceNumber),
           ), //................................................. teacher ID
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           // Expanded(
           //   flex: 2,
@@ -67,7 +70,7 @@ class AllCourseStudentDataList extends StatelessWidget {
           //   width: 01,
           // ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Row(
               children: [
                 SizedBox(
@@ -89,10 +92,10 @@ class AllCourseStudentDataList extends StatelessWidget {
             ),
           ), //........................................... teacher Name
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Row(
               children: [
                 SizedBox(
@@ -113,10 +116,10 @@ class AllCourseStudentDataList extends StatelessWidget {
             ),
           ), // ................................... teacher Email
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Row(
               children: [
                 SizedBox(
@@ -138,7 +141,7 @@ class AllCourseStudentDataList extends StatelessWidget {
             ),
           ), //....................................... teacher Phone Number
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 2,
@@ -148,7 +151,17 @@ class AllCourseStudentDataList extends StatelessWidget {
             ),
           ), //................................................. dropdwn
           const SizedBox(
-            width: 01,
+            width: 02,
+          ),
+          Expanded(
+            flex: 3,
+            child: StdFeesLevelDropDown(
+              data: data,
+              courseID: modelData.courseId,
+            ),
+          ),
+          const SizedBox(
+            width: 02,
           ),
           Expanded(
             flex: 2,
@@ -158,7 +171,9 @@ class AllCourseStudentDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () {
-                      courseController.deleteStudentsFromCourse(data).then((value) {
+                      courseController
+                          .deleteStudentsFromCourse(data)
+                          .then((value) {
                         Navigator.pop(context);
                       });
                     },

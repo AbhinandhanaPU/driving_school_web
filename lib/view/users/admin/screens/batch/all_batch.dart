@@ -7,8 +7,9 @@ import 'package:new_project_driving/model/batch_model/batch_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/batch_std_list.dart';
-import 'package:new_project_driving/view/users/admin/screens/batch/crud/create_batch.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/data_table_batch/batch_datalist.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/functions/batch_shift.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/functions/create_batch.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
@@ -60,6 +61,27 @@ class AllBatchsListContainer extends StatelessWidget {
                             width: 200,
                           ),
                           const Spacer(),
+                           Padding(
+                             padding: const EdgeInsets.all(8.0),
+                             child: GestureDetector(
+                              onTap: () {
+                                batchShift(context);
+                              },
+                              child: ButtonContainerWidget(
+                                  curving: 10,
+                                  colorindex: 2,
+                                  height: 35,
+                                  width: 120,
+                                  child: const Center(
+                                    child: TextFontWidgetRouter(
+                                      text: 'Shift Batch',
+                                      fontsize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: cWhite,
+                                    ),
+                                  )),
+                                                       ),
+                           ),
                           GestureDetector(
                             onTap: () {
                               createBatchFunction(context);

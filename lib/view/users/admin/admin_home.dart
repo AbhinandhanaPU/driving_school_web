@@ -15,8 +15,8 @@ import 'package:new_project_driving/view/users/admin/screens/courses/Allcourse_d
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/alldriving_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
-import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/view_fees_status.dart';
-import 'package:new_project_driving/view/users/admin/screens/learners_test/moke_test_home.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
 import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/notice/notice_all_ist.dart';
@@ -50,7 +50,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: UserCredentialsController.schoolId != FirebaseAuth.instance.currentUser!.uid
+        stream: UserCredentialsController.schoolId !=
+                FirebaseAuth.instance.currentUser!.uid
             ? server
                 .collection('DrivingSchoolCollection')
                 .doc(UserCredentialsController.schoolId)
@@ -65,7 +66,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     body: SafeArea(
                         child: Center(
                       child: TextFontWidget(
-                          text: "Waiting for superadmin response.....", fontsize: 20),
+                          text: "Waiting for superadmin response.....",
+                          fontsize: 20),
                     )),
                   )
                 : Scaffold(
@@ -99,14 +101,19 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                           ),
                                           GooglePoppinsWidgets(
                                             text: institutionName,
-                                            fontsize: ResponsiveWebSite.isMobile(context) ? 18 : 20,
+                                            fontsize:
+                                                ResponsiveWebSite.isMobile(
+                                                        context)
+                                                    ? 12
+                                                    : 15,
                                             fontWeight: FontWeight.w500,
                                           )
                                         ],
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 10, top: 12),
+                                      padding: const EdgeInsets.only(
+                                          left: 10, top: 12),
                                       child: GestureDetector(
                                         child: Text(
                                           "Main Menu",
@@ -132,7 +139,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           )),
                     ),
                   );
-          } else if (UserCredentialsController.schoolId == FirebaseAuth.instance.currentUser!.uid) {
+          } else if (UserCredentialsController.schoolId ==
+              FirebaseAuth.instance.currentUser!.uid) {
             return Scaffold(
               backgroundColor: cWhite,
               body: SafeArea(
@@ -147,8 +155,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       color: Colors.white,
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding:
-                              EdgeInsets.only(left: ResponsiveWebSite.isMobile(context) ? 0 : 10),
+                          padding: EdgeInsets.only(
+                              left:
+                                  ResponsiveWebSite.isMobile(context) ? 0 : 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -157,7 +166,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      height: ResponsiveWebSite.isMobile(context) ? 40 : 60,
+                                      height:
+                                          ResponsiveWebSite.isMobile(context)
+                                              ? 40
+                                              : 60,
                                       child: Image.asset(
                                         logoImage,
                                         fit: BoxFit.fill,
@@ -165,14 +177,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     ),
                                     GooglePoppinsWidgets(
                                       text: institutionName,
-                                      fontsize: ResponsiveWebSite.isMobile(context) ? 12 : 15,
+                                      fontsize:
+                                          ResponsiveWebSite.isMobile(context)
+                                              ? 12
+                                              : 15,
                                       fontWeight: FontWeight.w500,
                                     )
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 10, top: 12),
+                                padding:
+                                    const EdgeInsets.only(left: 10, top: 12),
                                 child: Text(
                                   "Main Menu",
                                   style: TextStyle(
@@ -205,7 +221,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
 List<Widget> pages = [
   // AdminDashBoardSections(),
-  const MokeTestHome(), // index 7
   const AdminDashBoardSections(), // index 0
   AllCoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
@@ -214,9 +229,10 @@ List<Widget> pages = [
   AllBatchsListContainer(),
   const AllStudentsAttendance(), // index 5
   const AllTutorAttendance(), // index 6
+  const LearnersStudentListContainer(), // index 7
   AllDrivingTestDetails(), // index 8
   AllPracticeShedules(), // index 10
-  CreatedFeesStatus(), // index 11
+  StudentsFeesStatus(), // index 11
   AllAdminListPage(), // index 12
   const AllStudyMaterialsList(), // index 13
   NoticeAllList(), // index 14

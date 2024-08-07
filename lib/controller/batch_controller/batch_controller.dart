@@ -22,7 +22,7 @@ class BatchController extends GetxController {
   TextEditingController batchNameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   
-
+  RxList<BatchModel> batches = RxList<BatchModel>();
   Rxn<BatchModel> batchModelData = Rxn<BatchModel>();
     RxString ontapBatchName= 'dd'.obs;
   RxBool onTapBtach = false.obs;
@@ -170,4 +170,70 @@ class BatchController extends GetxController {
 
     return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
   }
+
+  Future<void> shiftStudentToAnotherBatch({
+  required String studentDocId,
+  required String oldBatchId,
+  required String newBatchId,
+}) async {
+  try {
+    // Fetch the student data from the old batch
+    final studentSnapshot = await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Batch')
+        .doc(oldBatchId)
+        .collection('Students')
+        .doc(studentDocId)
+        .get();
+
+    if (studentSnapshot.exists) {
+      final studentData = StudentModel.fromMap(studentSnapshot.data()!);
+
+      // Add the student to the new batch
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Batch')
+          .doc(newBatchId)
+          .collection('Students')
+          .doc(studentDocId)
+          .set(studentData.toMap());
+
+      // Remove the student from the old batch
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Batch')
+          .doc(oldBatchId)
+          .collection('Students')
+          .doc(studentDocId)
+          .delete();
+
+      showToast(msg: "Student shifted successfully");
+    } else {
+      showToast(msg: "Student not found in the old batch");
+    }
+  } catch (e) {
+    showToast(msg: "Error shifting student. Please try again.");
+    log("Error shifting student: $e", name: "Batch");
+  }
+}
+
+  Future<void> fetchBatches() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Batch')
+          .get();
+
+      batches.value = snapshot.docs
+          .map((doc) => BatchModel.fromMap(doc.data()))
+          .toList();
+    } catch (e) {
+      log("Error fetching batches: $e");
+    }
+  }
+
 }

@@ -72,6 +72,7 @@ createCoursesAdmin(BuildContext context) {
                             child: TextFormFiledHeightnoColor(
                               width: 500,
                               validator: checkFieldEmpty,
+                              keyboardType: TextInputType.number,
                               controller:
                                   courseController.courseDurationController,
                               title: ' Duration (In Days)',
@@ -85,6 +86,7 @@ createCoursesAdmin(BuildContext context) {
                               width: 500,
                               controller: courseController.courseRateController,
                               validator: checkFieldEmpty,
+                              keyboardType: TextInputType.number,
                               title: ' Rate',
                               hintText: ' Rate',
                             ),
