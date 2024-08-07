@@ -188,14 +188,14 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Substitutions" id="9ic-FL-obx">
+                            <menuItem title="SubstiDrivings" id="9ic-FL-obx">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Substitutions" id="FeM-D8-WVr">
+                                <menu key="submenu" title="SubstiDrivings" id="FeM-D8-WVr">
                                     <items>
-                                        <menuItem title="Show Substitutions" id="z6F-FW-3nz">
+                                        <menuItem title="Show SubstiDrivings" id="z6F-FW-3nz">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="orderFrontSubstitutionsPanel:" target="-1" id="oku-mr-iSq"/>
+                                                <action selector="orderFrontSubstiDrivingsPanel:" target="-1" id="oku-mr-iSq"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="gPx-C9-uUO"/>
@@ -208,13 +208,13 @@
                                         <menuItem title="Smart Quotes" id="hQb-2v-fYv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticQuoteSubstitution:" target="-1" id="ptq-xd-QOA"/>
+                                                <action selector="toggleAutomaticQuoteSubstiDriving:" target="-1" id="ptq-xd-QOA"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Smart Dashes" id="rgM-f4-ycn">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="toggleAutomaticDashSubstitution:" target="-1" id="oCt-pO-9gS"/>
+                                                <action selector="toggleAutomaticDashSubstiDriving:" target="-1" id="oCt-pO-9gS"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Smart Links" id="cwL-P1-jid">

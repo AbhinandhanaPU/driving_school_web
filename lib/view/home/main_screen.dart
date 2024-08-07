@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:new_project_driving/view/home/home_page/home_screen/home_screen.dart';
+import 'package:new_project_driving/view/home/home_page/home_screen.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
 class MainScreen extends StatelessWidget {

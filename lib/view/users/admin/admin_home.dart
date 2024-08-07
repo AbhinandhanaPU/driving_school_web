@@ -100,7 +100,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                             ),
                                           ),
                                           GooglePoppinsWidgets(
-                                            text: institutionName,
+                                            text: instiDrivingName,
                                             fontsize:ResponsiveWebSite.isMobile(context)
                                               ? 12
                                               : 15,
@@ -174,7 +174,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       ),
                                     ),
                                     GooglePoppinsWidgets(
-                                      text: institutionName,
+                                      text: instiDrivingName,
                                       fontsize:
                                           ResponsiveWebSite.isMobile(context)
                                               ? 12
