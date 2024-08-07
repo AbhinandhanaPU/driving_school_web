@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/user_login_Controller/user_login_controller.dart';
+import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/home/appbar/login_button.dart';
+import 'package:new_project_driving/view/signup_section/student_signup_section.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -33,7 +35,9 @@ class ResponsiveMobileAppBar extends StatelessWidget {
         height: 100,
         // ResponsiveWebSite.isMobile(context) ? 150 : 100,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+          padding: EdgeInsets.symmetric(
+              vertical: 5,
+              horizontal: ResponsiveWebSite.isMobile(context) ? 10 : 20),
           child: Row(
             children: [
               Row(
@@ -61,8 +65,35 @@ class ResponsiveMobileAppBar extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: ResponsiveWebSite.isMobile(context) ? 40 : 30,
+                        left: ResponsiveWebSite.isMobile(context) ? 10 : 70),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return const StudentProfileCreationScreen();
+                          },
+                        ));
+                      },
+                      child: Container(
+                        width: 100,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: excelkaroorThemeColor.withOpacity(0.2),
+                            border: Border.all(color: cWhite),
+                            borderRadius: BorderRadius.circular(10)),
+                        alignment: Alignment.center,
+                        child: const TextFontWidget(
+                          text: "REGISTER",
+                          fontsize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: cWhite,
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
               const Spacer(),
@@ -77,48 +108,49 @@ class ResponsiveMobileAppBar extends StatelessWidget {
                         children: [
                           const LoginButton(),
                           ResponsiveWebSite.isMobile(context)
-                              ? Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const FaIcon(
-                                        size: 15,
-                                        FontAwesomeIcons.facebook,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () => _launchURL(
-                                          'https://www.facebook.com'),
-                                    ),
-                                    IconButton(
-                                      icon: const FaIcon(
-                                        size: 15,
-                                        FontAwesomeIcons.instagram,
-                                        color:
-                                            Color.fromARGB(255, 217, 83, 128),
-                                      ),
-                                      onPressed: () => _launchURL(
-                                          'https://www.instagram.com'),
-                                    ),
-                                    IconButton(
-                                      focusColor: Colors.black,
-                                      icon: const FaIcon(
-                                        size: 15,
-                                        FontAwesomeIcons.xTwitter,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () =>
-                                          _launchURL('https://www.twitter.com'),
-                                    ),
-                                    IconButton(
-                                      icon: const FaIcon(
-                                        size: 15,
-                                        FontAwesomeIcons.youtube,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () =>
-                                          _launchURL('https://www.youtube.com'),
-                                    ),
-                                  ],
-                                )
+                              ? const SizedBox()
+                              // ? Row(
+                              //     children: [
+                              //       IconButton(
+                              //         icon: const FaIcon(
+                              //           size: 15,
+                              //           FontAwesomeIcons.facebook,
+                              //           color: Colors.white,
+                              //         ),
+                              //         onPressed: () => _launchURL(
+                              //             'https://www.facebook.com'),
+                              //       ),
+                              //       IconButton(
+                              //         icon: const FaIcon(
+                              //           size: 15,
+                              //           FontAwesomeIcons.instagram,
+                              //           color:
+                              //               Color.fromARGB(255, 217, 83, 128),
+                              //         ),
+                              //         onPressed: () => _launchURL(
+                              //             'https://www.instagram.com'),
+                              //       ),
+                              //       IconButton(
+                              //         focusColor: Colors.black,
+                              //         icon: const FaIcon(
+                              //           size: 15,
+                              //           FontAwesomeIcons.xTwitter,
+                              //           color: Colors.white,
+                              //         ),
+                              //         onPressed: () =>
+                              //             _launchURL('https://www.twitter.com'),
+                              //       ),
+                              //       IconButton(
+                              //         icon: const FaIcon(
+                              //           size: 15,
+                              //           FontAwesomeIcons.youtube,
+                              //           color: Colors.red,
+                              //         ),
+                              //         onPressed: () =>
+                              //             _launchURL('https://www.youtube.com'),
+                              //       ),
+                              //     ],
+                              //   )
                               : Row(
                                   children: [
                                     IconButton(
@@ -198,14 +230,16 @@ class ResponsiveMobileAppBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Visibility(
-                    visible: maxWidthValue < 430,
-                    child: const Row(
-                      children: [
-                        LoginButton(),
-                      ],
-                    ),
-                  )
+                  ResponsiveWebSite.isMobile(context)
+                      ? const SizedBox()
+                      : Visibility(
+                          visible: maxWidthValue < 430,
+                          child: const Row(
+                            children: [
+                              LoginButton(),
+                            ],
+                          ),
+                        )
                 ],
               ),
             ],
