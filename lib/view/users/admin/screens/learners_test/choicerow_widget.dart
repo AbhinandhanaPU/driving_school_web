@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ChoiceRowWidget extends StatelessWidget {
   final String label;
+  final TextEditingController controller;
   final String hintText;
   final String? Function(String?)? validator;
   final double fontSize;
@@ -19,7 +20,7 @@ class ChoiceRowWidget extends StatelessWidget {
     this.color,
     this.letterSpacing,
     this.iconColor,
-    super.key,
+    super.key, required this.controller,
   });
 
   @override
@@ -34,28 +35,32 @@ class ChoiceRowWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(60),
               color: const Color.fromARGB(255, 29, 121, 196),
             ),
-            child: Text(label, style: const TextStyle(color: Colors.white)),
+            child: Text(label, style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
           ),
-          Container(
-            height: 20,
-            width: 500,
+          Padding(
             padding: const EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.grey.withOpacity(0.2),
-            ),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText,
-                hintStyle: TextStyle(
-                  fontSize: fontSize,
-                  fontWeight: fontWeight,
-                  color: color,
-                  letterSpacing: letterSpacing,
-                ),
+            child: Container(
+              height: 40,
+              width: 400,
+              padding: const EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.grey.withOpacity(0.2),
               ),
-              validator: validator,
+              child: TextFormField(
+                controller: controller,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: hintText,
+                  hintStyle: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: fontWeight,
+                    color: color,
+                    letterSpacing: letterSpacing,
+                  ),
+                ),
+                validator: validator,
+              ),
             ),
           ),
           Container(

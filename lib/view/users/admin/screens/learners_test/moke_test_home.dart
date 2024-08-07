@@ -1,92 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/controller/mocktest_controller/mocktest_Controller.dart';
+import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/choicerow_widget.dart';
+import 'package:new_project_driving/view/widget/blue_container_widget/blue_container_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
-class MokeTestHome extends StatefulWidget {
-  const MokeTestHome({super.key});
+class MokeTestHome extends StatelessWidget {
+  final MockTestController mtController = Get.put(MockTestController());
+  MokeTestHome({super.key});
 
-  @override
-  State<MokeTestHome> createState() => _MokeTestHomeState();
-}
-
-class _MokeTestHomeState extends State<MokeTestHome> {
-  bool isActive = false;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+      scrollDirection:
+          ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
       child: Container(
         color: screenContainerbackgroundColor,
-        height: 650,
+        height: 800,
         width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
-        padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+        padding: const EdgeInsets.only(
+          left: 08,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.arrow_back_ios,
-                      size: 15,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        right: 10,
-                        left: 10,
-                      ),
-                      padding: const EdgeInsets.only(
-                        right: 15,
-                        left: 15,
-                        top: 10,
-                        bottom: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Question 1/3',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 15,
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    right: 10,
-                    left: 10,
-                  ),
-                  padding: const EdgeInsets.only(
-                    right: 15,
-                    left: 15,
-                    top: 10,
-                    bottom: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Add Question',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                  ),
-                ),
-              ],
-            ),
             Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 10),
               padding: const EdgeInsets.only(top: 20, right: 50, left: 50),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -95,23 +36,41 @@ class _MokeTestHomeState extends State<MokeTestHome> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Text(
-                      'Question',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
+                  Row(
+                    children: [
+                      const TextFontWidget(
+                        text: "Question",
+                        fontsize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: BlueContainerWidget(
+                            title: "View All Questions",
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.bold,
+                            color: themeColorBlue),
+                      ),
+                    ],
                   ),
                   Container(
+                    height: 150,
                     margin: const EdgeInsets.only(top: 20),
                     padding: const EdgeInsets.only(left: 10),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.grey.withOpacity(0.2)),
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Lets ask your qn',
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey.withOpacity(0.2),
+                    ),
+                    child: Expanded(
+                      child: TextFormField(
+                        controller: mtController.questionController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Lets ask your question',
+                        ),
+                        maxLines:
+                            null, // This allows the text field to expand vertically
                       ),
                     ),
                   ),
@@ -119,24 +78,20 @@ class _MokeTestHomeState extends State<MokeTestHome> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 20,
+                          top: 05,
                         ),
                         child: Transform.scale(
                           scale: 0.65,
                           child: Switch(
                             activeColor: Colors.green,
-                            value: isActive,
-                            onChanged: (value) {
-                              setState(() {
-                                isActive = value; // Update the state when the switch is toggled
-                              });
-                            },
+                            value: true,
+                            onChanged: (value) {},
                           ),
                         ),
                       ),
                       const Padding(
                         padding: EdgeInsets.only(
-                          top: 20,
+                          top: 05,
                         ),
                         child: Text(
                           'Single answer with image',
@@ -146,17 +101,19 @@ class _MokeTestHomeState extends State<MokeTestHome> {
                     ],
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(top: 05),
                     child: Text(
-                      'Choice',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      'Write down the Options',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
                     child: Row(
                       children: [
                         ChoiceRowWidget(
+                          controller: mtController.optionAController,
                           label: 'A',
                           hintText: 'Lets ask your qn',
                           fontSize: 16,
@@ -165,30 +122,28 @@ class _MokeTestHomeState extends State<MokeTestHome> {
                           letterSpacing: 0.5,
                           iconColor: Colors.black,
                         ),
-                      ],
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      children: [
-                        ChoiceRowWidget(
-                          label: 'B',
-                          hintText: 'Lets ask your qn',
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black,
-                          letterSpacing: 0.5,
-                          iconColor: Colors.black,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: ChoiceRowWidget(
+                            controller: mtController.optionBController,
+                            label: 'B',
+                            hintText: 'Lets ask your qn',
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                            letterSpacing: 0.5,
+                            iconColor: Colors.black,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Row(
                       children: [
                         ChoiceRowWidget(
+                          controller: mtController.optionCController,
                           label: 'C',
                           hintText: 'Lets ask your qn',
                           fontSize: 16,
@@ -197,25 +152,112 @@ class _MokeTestHomeState extends State<MokeTestHome> {
                           letterSpacing: 0.5,
                           iconColor: Colors.black,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: ChoiceRowWidget(
+                            controller: mtController.optionDController,
+                            label: 'D',
+                            hintText: 'Lets ask your qn',
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                            letterSpacing: 0.5,
+                            iconColor: Colors.black,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      children: [
-                        ChoiceRowWidget(
-                          label: 'D',
-                          hintText: 'Lets ask your qn',
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black,
-                          letterSpacing: 0.5,
-                          iconColor: Colors.black,
-                        ),
-                      ],
+                    padding: EdgeInsets.only(
+                      top: 10,
                     ),
-                  )
+                    child: TextFontWidget(
+                      text: "Select Correct Answer",
+                      fontsize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: 250,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: cBlack),
+                              ),
+                              child: const Center(
+                                  child: TextFontWidget(
+                                text: 'A',
+                                fontsize: 12,
+                                fontWeight: FontWeight.bold,
+                              )),
+                            ),
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: cBlack),
+                              ),
+                              child: const Center(
+                                  child: TextFontWidget(
+                                text: 'B',
+                                fontsize: 14,
+                                fontWeight: FontWeight.bold,
+                              )),
+                            ),
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: cBlack),
+                              ),
+                              child: const Center(
+                                  child: TextFontWidget(
+                                text: 'C',
+                                fontsize: 12,
+                                fontWeight: FontWeight.bold,
+                              )),
+                            ),
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: cBlack),
+                              ),
+                              child: const Center(
+                                  child: TextFontWidget(
+                                text: 'D',
+                                fontsize: 12,
+                                fontWeight: FontWeight.bold,
+                              )),
+                            )
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: GestureDetector(
+                          onTap: ()async{
+                            mtController.uploadQuestionWithoutImage();
+                          },
+                          child: BlueContainerWidget(
+                            title: "Upload Question",
+                            fontSize: 12.5,
+                            color: themeColorBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             )

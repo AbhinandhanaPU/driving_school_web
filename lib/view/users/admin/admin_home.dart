@@ -12,7 +12,6 @@ import 'package:new_project_driving/view/users/admin/screens/attendance/student_
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/all_batch.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/Allcourse_details.dart';
-import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/alldriving_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
@@ -204,8 +203,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
+     MokeTestHome(), // index 7
   // AdminDashBoardSections(),
-  const AdminDashBoardSections(), // index 0
+  // const AdminDashBoardSections(), // index 0
   AllCoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
   AllStudentListContainer(), // index 3
@@ -213,7 +213,7 @@ List<Widget> pages = [
   AllBatchsListContainer(),
   const AllStudentsAttendance(), // index 5
   const AllTutorAttendance(), // index 6
-  const MokeTestHome(), // index 7
+   MokeTestHome(), // index 7
   AllDrivingTestDetails(), // index 8
   AllPracticeShedules(), // index 10
   StudentsFeesStatus(), // index 11
