@@ -5,9 +5,9 @@ import 'package:new_project_driving/controller/batch_controller/batch_controller
 import 'package:new_project_driving/model/batch_model/batch_model.dart';
 
 class BatchDropDown extends StatelessWidget {
-  final Function(BatchModel?)? onChanged; // Add this parameter
+  final Function(BatchModel?)? onChanged; 
 
-  BatchDropDown({Key? key, this.onChanged}) : super(key: key);
+  BatchDropDown({super.key, this.onChanged});
 
   final BatchController batchController = Get.put(BatchController());
 
@@ -31,7 +31,7 @@ class BatchDropDown extends StatelessWidget {
           onChanged!(batch);
         }
       },
-      dropdownDecoratorProps: DropDownDecoratorProps(
+      dropdownDecoratorProps: const DropDownDecoratorProps(
         baseStyle: TextStyle(fontSize: 14),
         dropdownSearchDecoration: InputDecoration(
           hintText: "Select Batch",

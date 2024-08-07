@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/batch_controller/batch_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
@@ -58,7 +59,7 @@ class BatchDataList extends StatelessWidget {
                 ),
               ],
             ),
-          ), //........................................... practiceName
+          ), //........................................... batchName
           const SizedBox(
             width: 02,
           ),
@@ -71,9 +72,9 @@ class BatchDataList extends StatelessWidget {
                   color: cWhite,
                   // width: 150,
                   index: index,
-                  headerTitle: data.date),
+                  headerTitle:DateFormat("dd-MMMM-yyyy").format( DateFormat("dd-MM-yyyy").parse(data.date)) ),
             ),
-          ), //............................. Student endTime
+          ), //............................. batch date
           const SizedBox(
             width: 02,
           ),
