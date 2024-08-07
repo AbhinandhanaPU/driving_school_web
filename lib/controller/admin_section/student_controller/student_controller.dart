@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
@@ -10,15 +11,19 @@ class StudentController extends GetxController {
   List<StudentModel> studentProfileList = [];
   Rxn<StudentModel> studentModelData = Rxn<StudentModel>();
   RxBool ontapStudent = false.obs;
+  final formKey = GlobalKey<FormState>();
+  TextEditingController amountController = TextEditingController();
 
-  final _fbServer =
-      server.collection('DrivingSchoolCollection').doc(UserCredentialsController.schoolId);
+  final _fbServer = server
+      .collection('DrivingSchoolCollection')
+      .doc(UserCredentialsController.schoolId);
 
   Future<void> fetchAllStudents() async {
     try {
       log("fetchAllStudents......................");
       final data = await _fbServer.collection('Students').get();
-      studentProfileList = data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      studentProfileList =
+          data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
     } catch (e) {
       showToast(msg: "User Data Error");
@@ -39,8 +44,8 @@ class StudentController extends GetxController {
     }
   }
 
- 
-  Future<void> updateStudentStatus(StudentModel studentModel, String newStatus) async {
+  Future<void> updateStudentStatus(
+      StudentModel studentModel, String newStatus) async {
     try {
       await server
           .collection('DrivingSchoolCollection')
@@ -138,6 +143,62 @@ class StudentController extends GetxController {
       });
     } catch (e) {
       log("Student level update error: $e");
+    }
+  }
+
+  Future<void> updateStudentFeeColl(
+    StudentModel studentModel,
+    String status,
+    String courseID,
+  ) async {
+    await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Courses')
+        .doc(courseID)
+        .collection('Students')
+        .doc(studentModel.docid)
+        .update({
+      'feesStatus': status,
+    }).then((value) async {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Students')
+          .doc(studentModel.docid)
+          .update({
+        'feesStatus': status,
+      }).then((value) {
+        studentModel.feesStatus = status;
+      });
+    });
+  }
+
+  Future<void> addStudentFeeColl(
+    StudentModel studentModel,
+    String status,
+    String courseID,
+  ) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('FeeCollection')
+          .doc(studentModel.docid)
+          .set({
+        'studentName': studentModel.studentName,
+        'studentID': studentModel.docid,
+        'feeStatus': status,
+        'pendingAmount': amountController.text,
+        'courseID': courseID
+      }).then((value) {
+        studentModel.feesStatus = status;
+        update();
+        showToast(msg: 'student added to fees collecion');
+        showToast(msg: "Fees Status Updated");
+      });
+    } catch (e) {
+      log(" FeeCollection error: $e");
     }
   }
 }

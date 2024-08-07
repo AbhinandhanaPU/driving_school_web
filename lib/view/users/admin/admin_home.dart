@@ -15,7 +15,7 @@ import 'package:new_project_driving/view/users/admin/screens/courses/Allcourse_d
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/alldriving_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
-import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/view_fees_status.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/learners_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
 import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
@@ -101,9 +101,11 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                           ),
                                           GooglePoppinsWidgets(
                                             text: institutionName,
-                                            fontsize:ResponsiveWebSite.isMobile(context)
-                                              ? 12
-                                              : 15,
+                                            fontsize:
+                                                ResponsiveWebSite.isMobile(
+                                                        context)
+                                                    ? 12
+                                                    : 15,
                                             fontWeight: FontWeight.w500,
                                           )
                                         ],
@@ -220,18 +222,17 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 List<Widget> pages = [
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
- 
   AllCoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
   AllStudentListContainer(), // index 3
   AllTutorListContainer(), // index 4
-   AllBatchsListContainer(),
+  AllBatchsListContainer(),
   const AllStudentsAttendance(), // index 5
   const AllTutorAttendance(), // index 6
   const LearnersStudentListContainer(), // index 7
   AllDrivingTestDetails(), // index 8
   AllPracticeShedules(), // index 10
-  CreatedFeesStatus(), // index 11
+  StudentsFeesStatus(), // index 11
   AllAdminListPage(), // index 12
   const AllStudyMaterialsList(), // index 13
   NoticeAllList(), // index 14

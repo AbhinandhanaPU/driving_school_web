@@ -18,6 +18,7 @@ class StudentModel {
   String joiningDate;
   String status; //
   String level; //
+  String feesStatus;
 
   String userRole = 'student';
 
@@ -38,6 +39,7 @@ class StudentModel {
     required this.joiningDate,
     required this.status,
     required this.level,
+    required this.feesStatus,
     required this.userRole,
   });
 
@@ -58,6 +60,7 @@ class StudentModel {
     String? joiningDate,
     String? status,
     String? level,
+    String? feesStatus,
     String? userRole,
   }) {
     return StudentModel(
@@ -77,6 +80,7 @@ class StudentModel {
       joiningDate: joiningDate ?? this.joiningDate,
       status: status ?? this.status,
       level: level ?? this.level,
+      feesStatus: feesStatus ?? this.feesStatus,
       userRole: userRole ?? this.userRole,
     );
   }
@@ -99,6 +103,7 @@ class StudentModel {
       'joiningDate': joiningDate,
       'status': status,
       'level': level,
+      'feesStatus': feesStatus,
       'userRole': userRole,
     };
   }
@@ -121,6 +126,7 @@ class StudentModel {
       joiningDate: map['joiningDate'] as String,
       status: map['status'] as String,
       level: map['level'] as String,
+      feesStatus: map['feesStatus'] as String,
       userRole: map['userRole'] as String,
     );
   }
@@ -132,51 +138,52 @@ class StudentModel {
 
   @override
   String toString() {
-    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, level: $level, userRole: $userRole)';
+    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, level: $level, feesStatus: $feesStatus, userRole: $userRole)';
   }
 
   @override
   bool operator ==(covariant StudentModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.docid == docid &&
-      other.password == password &&
-      other.studentemail == studentemail &&
-      other.studentName == studentName &&
-      other.phoneNumber == phoneNumber &&
-      other.dateofBirth == dateofBirth &&
-      other.guardianName == guardianName &&
-      other.address == address &&
-      other.place == place &&
-      other.profileImageId == profileImageId &&
-      other.profileImageUrl == profileImageUrl &&
-      other.rtoName == rtoName &&
-      other.licenceNumber == licenceNumber &&
-      other.joiningDate == joiningDate &&
-      other.status == status &&
-      other.level == level &&
-      other.userRole == userRole;
+
+    return other.docid == docid &&
+        other.password == password &&
+        other.studentemail == studentemail &&
+        other.studentName == studentName &&
+        other.phoneNumber == phoneNumber &&
+        other.dateofBirth == dateofBirth &&
+        other.guardianName == guardianName &&
+        other.address == address &&
+        other.place == place &&
+        other.profileImageId == profileImageId &&
+        other.profileImageUrl == profileImageUrl &&
+        other.rtoName == rtoName &&
+        other.licenceNumber == licenceNumber &&
+        other.joiningDate == joiningDate &&
+        other.status == status &&
+        other.level == level &&
+        other.feesStatus == feesStatus &&
+        other.userRole == userRole;
   }
 
   @override
   int get hashCode {
     return docid.hashCode ^
-      password.hashCode ^
-      studentemail.hashCode ^
-      studentName.hashCode ^
-      phoneNumber.hashCode ^
-      dateofBirth.hashCode ^
-      guardianName.hashCode ^
-      address.hashCode ^
-      place.hashCode ^
-      profileImageId.hashCode ^
-      profileImageUrl.hashCode ^
-      rtoName.hashCode ^
-      licenceNumber.hashCode ^
-      joiningDate.hashCode ^
-      status.hashCode ^
-      level.hashCode ^
-      userRole.hashCode;
+        password.hashCode ^
+        studentemail.hashCode ^
+        studentName.hashCode ^
+        phoneNumber.hashCode ^
+        dateofBirth.hashCode ^
+        guardianName.hashCode ^
+        address.hashCode ^
+        place.hashCode ^
+        profileImageId.hashCode ^
+        profileImageUrl.hashCode ^
+        rtoName.hashCode ^
+        licenceNumber.hashCode ^
+        joiningDate.hashCode ^
+        status.hashCode ^
+        level.hashCode ^
+        feesStatus.hashCode ^
+        userRole.hashCode;
   }
 }
