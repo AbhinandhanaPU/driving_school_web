@@ -119,18 +119,11 @@ class _MockTesttHomeState extends State<MockTesttHome> {
                                   setState(() {});
                                 }
                               },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(60),
-                                  color: const Color.fromARGB(255, 29, 121, 196),
-                                ),
-                                child: const Text(
-                                  "Add image",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                                ),
+                              child: BlueContainerWidget(
+                                title: "Add Image",
+                                fontSize: 12.5,
+                                color: themeColorBlue,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
