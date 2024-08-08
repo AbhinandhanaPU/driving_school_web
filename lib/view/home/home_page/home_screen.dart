@@ -5,6 +5,9 @@ import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/view/home/appbar/app_bar.dart';
 import 'package:new_project_driving/view/home/home_page/HomeMainImageScreen/HomeMainImage_screen.dart';
 import 'package:new_project_driving/view/home/home_page/about/about.dart';
+import 'package:new_project_driving/view/home/home_page/screens/footer/footer.dart';
+import 'package:new_project_driving/view/home/home_page/screens/footer/lepton_footerbar.dart';
+import 'package:new_project_driving/view/home/home_page/screens/footer/widgets/copyright_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -39,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                   ? 350
                   : 500, 
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(image: AssetImage('assets/images/blue_background.jpg',),fit: BoxFit.fill)
                   ),// Adjust the height of the containers as needed
               child: Column(
@@ -116,6 +119,14 @@ class HomeScreen extends StatelessWidget {
           //   color: cWhite,
           // ),
           // const CopyRightWidget()
+
+          const FooterSectionScreen(),
+                 const Divider(
+                  thickness: 01,
+                  color: cBlack,
+                ),
+                const LeptonFooterBar(),
+                const CopyRightWidget()
         ],
       ),
     );
