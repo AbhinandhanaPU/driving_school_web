@@ -141,8 +141,9 @@ class StudentsFeesStatus extends StatelessWidget {
                                                     StudentModel.fromMap(
                                                         snapshot.data!.data()!);
                                                 return StudentFeeDatalist(
-                                                  data: stddata,
+                                                  stdData: stddata,
                                                   index: index,
+                                                  feeData: data,
                                                 );
                                               });
                                         },
