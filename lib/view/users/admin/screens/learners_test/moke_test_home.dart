@@ -7,9 +7,9 @@ import 'package:new_project_driving/view/users/admin/screens/learners_test/choic
 import 'package:new_project_driving/view/widget/blue_container_widget/blue_container_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
-class MokeTestHome extends StatelessWidget {
+class MockTesttHome extends StatelessWidget {
   final MockTestController mtController = Get.put(MockTestController());
-  MokeTestHome({super.key});
+  MockTesttHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,8 @@ class MokeTestHome extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
+                    padding:
+                        const EdgeInsets.only(top: 10, right: 10, bottom: 10),
                     child: Row(
                       children: [
                         ChoiceRowWidget(
@@ -245,7 +246,7 @@ class MokeTestHome extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: GestureDetector(
-                          onTap: ()async{
+                          onTap: () async {
                             mtController.uploadQuestionWithoutImage();
                           },
                           child: BlueContainerWidget(
