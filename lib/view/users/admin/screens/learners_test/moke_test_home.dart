@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
@@ -7,15 +11,23 @@ import 'package:new_project_driving/view/users/admin/screens/learners_test/choic
 import 'package:new_project_driving/view/widget/blue_container_widget/blue_container_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
-class MockTesttHome extends StatelessWidget {
+class MockTesttHome extends StatefulWidget {
+  const MockTesttHome({super.key});
+
+  @override
+  State<MockTesttHome> createState() => _MockTesttHomeState();
+}
+
+class _MockTesttHomeState extends State<MockTesttHome> {
   final MockTestController mtController = Get.put(MockTestController());
-  MockTesttHome({super.key});
+
+  bool isActive = false;
+  Uint8List? file;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection:
-          ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+      scrollDirection: ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
       child: Container(
         color: screenContainerbackgroundColor,
         height: 800,
@@ -69,48 +81,64 @@ class MockTesttHome extends StatelessWidget {
                           border: InputBorder.none,
                           hintText: 'Lets ask your question',
                         ),
-                        maxLines:
-                            null, // This allows the text field to expand vertically
+                        maxLines: null, // This allows the text field to expand vertically
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 05,
-                        ),
-                        child: Transform.scale(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        Transform.scale(
                           scale: 0.65,
                           child: Switch(
                             activeColor: Colors.green,
-                            value: true,
-                            onChanged: (value) {},
+                            value: isActive,
+                            onChanged: (value) {
+                              setState(() {
+                                isActive = value; // Update the state when the switch is toggled
+                              });
+                            },
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(
-                          top: 05,
-                        ),
-                        child: Text(
+                        const Text(
                           'Single answer with image',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ],
+                        if (isActive) // Conditionally display the container
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: GestureDetector(
+                              onTap: () async {
+                                FilePickerResult? result = await FilePicker.platform.pickFiles(
+                                  type: FileType.image,
+                                );
+                                if (result != null) {
+                                  file = result.files.first.bytes;
+                                  log(result.files.first.name);
+                                  setState(() {});
+                                }
+                              },
+                              child: BlueContainerWidget(
+                                title: "Add Image",
+                                fontSize: 12.5,
+                                color: themeColorBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 05),
                     child: Text(
                       'Write down the Options',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 10, right: 10, bottom: 10),
+                    padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
                     child: Row(
                       children: [
                         ChoiceRowWidget(
