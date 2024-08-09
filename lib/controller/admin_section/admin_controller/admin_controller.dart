@@ -48,12 +48,14 @@ class AdminController extends GetxController {
           'active': false,
         }).then(
           (value) async {
-            showToast(msg: 'New Admin Created Successfully');
+            showToast(msg: 'New Admin Created Successfully, Please login again');
             buttonstate.value = ButtonState.success;
 
             await Future.delayed(const Duration(seconds: 2)).then((vazlue) {
               buttonstate.value = ButtonState.idle;
-            });
+            }).then((value) async{
+                  logoutUser();
+                });
           },
         ).then((value) => {
                   nameController.clear(),

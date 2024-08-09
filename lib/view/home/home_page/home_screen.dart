@@ -59,66 +59,91 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Column(
+                  SizedBox(
+              // color: Colors.black,
+              height: ResponsiveWebSite.isMobile(context) ? 500 : 350,
+              // width: 600,
+              child: ResponsiveWebSite.isDesktop(context)
+                  ? ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      // shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      // controller: sscrollcontroller,
+                      itemBuilder: (context, index) {
+                        //  final data = CreateEmployeeClassModel.fromMap(snapshot.data!.docs[index].data());
+                        return SizedBox(
+                          height: 400,
+                          width: 400,
+                          child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             ArticleView(
-                                  //                 url: snapshot.data!
-                                  //                         .docs[index]
-                                  //                     ['articleUrl'])));
-                                },
-                                child: Container(
-                                    margin: const EdgeInsets.all(8.0),
-                                    width: ResponsiveWebSite.isMobile(context)
-                                        ? 200
-                                        : 400, // Adjust the width of each container as needed
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Image.asset('assets/images/car_interior.jpg'),
-                                    )),
+                              Expanded(
+                                child: Image.network(
+                                  personPhotos[index],
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              GoogleMonstserratWidgets(
-                                text: "-----",
-                                fontsize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                              // Padding(
+                              //   padding: const EdgeInsets.only(top: 05),
+                              //   child: Text(
+                              //    personNameList[index],
+                              //     style: const TextStyle(
+                              //         color: cWhite,
+                              //         fontWeight: FontWeight.w400),
+                              //   ),
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(bottom: 20),
+                              //   child: GooglePoppinsWidgets(
+                              //     text: personOccu[index],
+                              //     fontsize: 10,
+                              //     color: cWhite,
+                              //     fontWeight: FontWeight.w200,
+                              //   ),
+                              // )
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          width: 20,
+                        );
+                      },
+                      itemCount: 4)
+                  : GridView.count(
+                      crossAxisCount: 2,
+                      padding: const EdgeInsets.all(20),
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      primary: false,
+                      children: List.generate(4, (index) {
+                        //    final data = CreateEmployeeClassModel.fromMap(snapshot.data!.docs[index].data());
+                        return SizedBox(
+                          // margin: ,
+                          height: 100,
+                          width: 100,
+                          // color: Colors.amber,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Image.network(
+                                    personPhotos[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                             ],
-                          );
-                        }),
-                  )
+                          ),
+                        );
+                      }),
+                    ))
                 ],
               ),
             ),
           ),
 
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 10),
-          //   child: OurTeamContainerWidget(sscrollcontroller: sscrollcontroller),
-          // ),
-
-          // const Divider(
-          //   height: 01,
-          //   // thickness: 01,
-          //   color: cWhite,
-          // ),
-          // const FooterSectionScreen(),
-          // const Divider(
-          //   height: 01,
-          //   // thickness: 01,
-          //   color: cWhite,
-          // ),
-          // const CopyRightWidget()
 
           const FooterSectionScreen(),
                  const Divider(
@@ -133,11 +158,11 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-List<String> persionPhotos = [
-  'assets/images/persion_4.jpeg',
-  'assets/images/persion_2.jpeg',
-  'assets/images/persion_1.jpeg',
-  'assets/images/persion_3.jpeg',
+List<String> personPhotos = [
+  'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fcar_interior.jpg?alt=media&token=a0bbc52a-6f02-46dd-8e4c-587dffd3075b',
+  'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fidcard.jpg?alt=media&token=0e425c29-db53-4372-8b2c-4bfdc5050bef',
+  'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fsignals.jpg?alt=media&token=ef6b7092-f99d-4546-9bfb-856be2b96b2e',
+  'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fvehicles.jpg?alt=media&token=5b28c347-e6a2-46a3-b0e7-03b796e4ac79',
 ];
 List<String> persion_text = [''];
 
