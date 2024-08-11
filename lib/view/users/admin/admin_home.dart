@@ -220,6 +220,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
+    const MockTesttHome(),
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
 
@@ -230,7 +231,7 @@ List<Widget> pages = [
   AllBatchsListContainer(),
   const AllStudentsAttendance(), // index 5
   const AllTutorAttendance(), // index 6
-  MockTesttHome(), // index 7
+  const MockTesttHome(), // index 7
   AllDrivingTestDetails(), // index 8
   AllPracticeShedules(), // index 10
   CreatedFeesStatus(), // index 11
