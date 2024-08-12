@@ -69,7 +69,7 @@ class MockTestController extends GetxController {
           isCorrect: insertOptions[i] == correctAns.value ? true : false,
         );
 
-        await server
+        await server 
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)
             .collection('MockTestCollection')
