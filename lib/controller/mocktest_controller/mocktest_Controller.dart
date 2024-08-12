@@ -35,6 +35,7 @@ class MockTestController extends GetxController {
   
   RxBool ontapViewAllQuestions = false.obs;
   final formKey = GlobalKey<FormState>();
+   RxBool ontapViewOptions = false.obs;
 
   Future<void> uploadQuestionImage() async {
     final insertOptions = [
