@@ -66,7 +66,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                       .doc(UserCredentialsController.schoolId)
                       .collection("MockTestCollection")
                       .orderBy(
-                        'questionNo',
+                        'questionNo',descending: true
                       )
                       .snapshots(),
                   builder: (context, snapshot) {
@@ -170,7 +170,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                         width: 01,
                                       ),
                                       Expanded(
-                                        flex: 2,
+                                        flex: 1,
                                         child: GestureDetector(
                                           onTap: () {
                                             mtController.editquestionController
@@ -190,6 +190,30 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                   color: Colors.blueGrey[100],
                                                   alignment: Alignment.center,
                                                   child: const Icon(Icons.edit),
+                                                ),
+                                        ),
+                                      ),
+                                       const SizedBox(
+                                        width: 01,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            mtController.deleteQuestion(questiondata.docid);
+                                          },
+                                          child: questiondata.imageID == null
+                                              ? Container(
+                                                  height: 50,
+                                                  color: Colors.blueGrey[100],
+                                                  alignment: Alignment.center,
+                                                  child: const Icon(Icons.delete),
+                                                )
+                                              : Container(
+                                                  height: 100,
+                                                  color: Colors.blueGrey[100],
+                                                  alignment: Alignment.center,
+                                                  child: const Icon(Icons.delete),
                                                 ),
                                         ),
                                       ),

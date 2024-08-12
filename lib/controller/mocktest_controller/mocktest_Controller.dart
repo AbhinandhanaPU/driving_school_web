@@ -187,4 +187,21 @@ class MockTestController extends GetxController {
       log("Mock Updation failed");
     }
   }
+
+   Future<void> deleteQuestion(String mockId) async {
+    log("courseId -----------$mockId");
+    try {
+      server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('MockTestCollection')
+          .doc(mockId)
+          .delete()
+          .then((value) {
+        showToast(msg: "Question deleted Successfully");
+      });
+    } catch (e) {
+      log("Question delete$e");
+    }
+  }
 }
