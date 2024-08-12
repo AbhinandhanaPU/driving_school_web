@@ -8,6 +8,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/view_allquestions/edit_mock.dart';
+import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
 
@@ -65,9 +66,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                       .collection("DrivingSchoolCollection")
                       .doc(UserCredentialsController.schoolId)
                       .collection("MockTestCollection")
-                      .orderBy(
-                        'questionNo',descending: true
-                      )
+                      .orderBy('questionNo', descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
                     return ListView.separated(
@@ -193,27 +192,37 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                 ),
                                         ),
                                       ),
-                                       const SizedBox(
+                                      const SizedBox(
                                         width: 01,
                                       ),
                                       Expanded(
                                         flex: 1,
                                         child: GestureDetector(
                                           onTap: () {
-                                            mtController.deleteQuestion(questiondata.docid);
+                                            customDeleteShowDialog(
+                                              context: context,
+                                              onTap: () async {
+                                                await mtController
+                                                    .deleteQuestion(
+                                                        questiondata.docid);
+                                              },
+                                            );
+                                            //   mtController.deleteQuestion(questiondata.docid);
                                           },
                                           child: questiondata.imageID == null
                                               ? Container(
                                                   height: 50,
                                                   color: Colors.blueGrey[100],
                                                   alignment: Alignment.center,
-                                                  child: const Icon(Icons.delete),
+                                                  child:
+                                                      const Icon(Icons.delete),
                                                 )
                                               : Container(
                                                   height: 100,
                                                   color: Colors.blueGrey[100],
                                                   alignment: Alignment.center,
-                                                  child: const Icon(Icons.delete),
+                                                  child:
+                                                      const Icon(Icons.delete),
                                                 ),
                                         ),
                                       ),
@@ -314,9 +323,15 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                     flex: 2,
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                         mtController.editoptionController
-                                                .text = optionDataModel.options;
-                                                        editMockTestOptions(context, questiondata, optionDataModel);
+                                                        mtController
+                                                                .editoptionController
+                                                                .text =
+                                                            optionDataModel
+                                                                .options;
+                                                        editMockTestOptions(
+                                                            context,
+                                                            questiondata,
+                                                            optionDataModel);
                                                       },
                                                       child: Container(
                                                         height: 50,

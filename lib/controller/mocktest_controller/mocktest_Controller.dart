@@ -199,6 +199,7 @@ class MockTestController extends GetxController {
           .delete()
           .then((value) {
         showToast(msg: "Question deleted Successfully");
+          Get.back();
       });
     } catch (e) {
       log("Question delete$e");
