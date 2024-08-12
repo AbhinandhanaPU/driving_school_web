@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
@@ -18,13 +17,12 @@ class MockTestController extends GetxController {
   RxBool optionC = false.obs;
   RxBool optionD = false.obs;
   RxString correctAns = ''.obs;
-  RxString imagePath = ''.obs;
+  Uint8List? imagePath;
   TextEditingController questionController = TextEditingController();
   TextEditingController optionAController = TextEditingController();
   TextEditingController optionBController = TextEditingController();
   TextEditingController optionCController = TextEditingController();
   TextEditingController optionDController = TextEditingController();
-
 
   TextEditingController editquestionController = TextEditingController();
   TextEditingController editoptionController = TextEditingController();
@@ -32,10 +30,9 @@ class MockTestController extends GetxController {
   // TextEditingController editoptionCController = TextEditingController();
   // TextEditingController editoptionDController = TextEditingController();
 
-  
   RxBool ontapViewAllQuestions = false.obs;
   final formKey = GlobalKey<FormState>();
-   RxBool ontapViewOptions = false.obs;
+  RxBool ontapViewOptions = false.obs;
 
   Future<void> uploadQuestionImage() async {
     final insertOptions = [
@@ -48,7 +45,7 @@ class MockTestController extends GetxController {
     QuizTestQuestionModel questionModel = QuizTestQuestionModel(
       questionNo: await genrateQuestionNo(),
       docid: questionID,
-      imageQuestion: imagePath.value == '' ? false : true,
+      imageQuestion: imagePath == null ? false : true,
       question: questionController.text,
     );
     await server
@@ -58,13 +55,12 @@ class MockTestController extends GetxController {
         .doc(questionID)
         .set(questionModel.toMap())
         .then((value) async {
-      if (imagePath.value != '') {
+      if (imagePath != null) {
+      final imageName = 'image_${DateTime.now()}.jpg';
         Reference storegeRef =
-            serverStorage.ref().child('MockQuestionCollection/images');
+            serverStorage.ref().child('MockQuestionCollection/$imageName');
         // Upload the file
-        await storegeRef
-            .putData(Uint8List.fromList(utf8.encode(imagePath.value)))
-            .then((p0) async {
+        await storegeRef.putData(imagePath!).then((p0) async {
           final String downloadURl = await p0.ref.getDownloadURL();
           await server
               .collection('DrivingSchoolCollection')
@@ -82,7 +78,7 @@ class MockTestController extends GetxController {
           isCorrect: insertOptions[i] == correctAns.value ? true : false,
         );
 
-        await server 
+        await server
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)
             .collection('MockTestCollection')
@@ -104,7 +100,7 @@ class MockTestController extends GetxController {
       optionB.value = false;
       optionC.value = false;
       optionD.value = false;
-      imagePath.value = '';
+      imagePath = null;
     });
   }
 
@@ -147,7 +143,8 @@ class MockTestController extends GetxController {
 
     return number;
   }
-   Future<void> updateMockQuestion(String mockID, BuildContext context) async {
+
+  Future<void> updateMockQuestion(String mockID, BuildContext context) async {
     try {
       await server
           .collection('DrivingSchoolCollection')
@@ -156,8 +153,7 @@ class MockTestController extends GetxController {
           .doc(mockID)
           .update({
         'question': editquestionController.text,
-     //   'imageID': editcourseDesController.text,
-        
+        //   'imageID': editcourseDesController.text,
       }).then((value) {
         editquestionController.clear();
         Navigator.pop(context);
@@ -167,7 +163,8 @@ class MockTestController extends GetxController {
     }
   }
 
-     Future<void> updateMockOption(String mockID, BuildContext context,String optionID) async {
+  Future<void> updateMockOption(
+      String mockID, BuildContext context, String optionID) async {
     try {
       await server
           .collection('DrivingSchoolCollection')
@@ -178,8 +175,7 @@ class MockTestController extends GetxController {
           .doc(optionID)
           .update({
         'options': editoptionController.text,
-     //   'imageID': editcourseDesController.text,
-        
+        //   'imageID': editcourseDesController.text,
       }).then((value) {
         editoptionController.clear();
         Navigator.pop(context);
@@ -189,7 +185,7 @@ class MockTestController extends GetxController {
     }
   }
 
-   Future<void> deleteQuestion(String mockId) async {
+  Future<void> deleteQuestion(String mockId) async {
     log("courseId -----------$mockId");
     try {
       server
@@ -200,7 +196,7 @@ class MockTestController extends GetxController {
           .delete()
           .then((value) {
         showToast(msg: "Question deleted Successfully");
-          Get.back();
+        Get.back();
       });
     } catch (e) {
       log("Question delete$e");
