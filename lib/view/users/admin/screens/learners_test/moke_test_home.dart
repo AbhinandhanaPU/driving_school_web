@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -27,7 +26,8 @@ class _MockTesttHomeState extends State<MockTesttHome> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+      scrollDirection:
+          ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
       child: Container(
         color: screenContainerbackgroundColor,
         height: 800,
@@ -74,15 +74,14 @@ class _MockTesttHomeState extends State<MockTesttHome> {
                       borderRadius: BorderRadius.circular(5),
                       color: Colors.grey.withOpacity(0.2),
                     ),
-                    child: Expanded(
-                      child: TextFormField(
-                        controller: mtController.questionController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Lets ask your question',
-                        ),
-                        maxLines: null, // This allows the text field to expand vertically
+                    child: TextFormField(
+                      controller: mtController.questionController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Lets ask your question',
                       ),
+                      maxLines:
+                          null, // This allows the text field to expand vertically
                     ),
                   ),
                   Padding(
@@ -96,7 +95,8 @@ class _MockTesttHomeState extends State<MockTesttHome> {
                             value: isActive,
                             onChanged: (value) {
                               setState(() {
-                                isActive = value; // Update the state when the switch is toggled
+                                isActive =
+                                    value; // Update the state when the switch is toggled
                               });
                             },
                           ),
@@ -110,13 +110,14 @@ class _MockTesttHomeState extends State<MockTesttHome> {
                             padding: const EdgeInsets.only(left: 10),
                             child: GestureDetector(
                               onTap: () async {
-                                FilePickerResult? result = await FilePicker.platform.pickFiles(
+                                FilePickerResult? result =
+                                    await FilePicker.platform.pickFiles(
                                   type: FileType.image,
                                 );
                                 if (result != null) {
                                   file = result.files.first.bytes;
-                                  log(result.files.first.name);
-                                  setState(() {});
+                                  mtController.imagePath.value =
+                                      result.files.first.bytes.toString();
                                 }
                               },
                               child: BlueContainerWidget(
@@ -134,11 +135,13 @@ class _MockTesttHomeState extends State<MockTesttHome> {
                     padding: EdgeInsets.only(top: 05),
                     child: Text(
                       'Write down the Options',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
+                    padding:
+                        const EdgeInsets.only(top: 10, right: 10, bottom: 10),
                     child: Row(
                       children: [
                         ChoiceRowWidget(
@@ -207,86 +210,151 @@ class _MockTesttHomeState extends State<MockTesttHome> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 100,
-                        width: 250,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: cBlack),
-                              ),
-                              child: const Center(
-                                  child: TextFontWidget(
-                                text: 'A',
-                                fontsize: 12,
-                                fontWeight: FontWeight.bold,
-                              )),
+                  Obx(() => Row(
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            width: 250,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    mtController.correctAns.value =
+                                        mtController.optionAController.text;
+
+                                    mtController.optionA.value = true;
+                                    mtController.optionB.value = false;
+                                    mtController.optionC.value = false;
+                                    mtController.optionD.value = false;
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: mtController.optionA.value == true
+                                          ? cgreen
+                                          : cWhite,
+                                      border: Border.all(color: cBlack),
+                                    ),
+                                    child: Center(
+                                        child: TextFontWidget(
+                                      text: 'A',
+                                      fontsize: 12,
+                                      color: mtController.optionA.value == true
+                                          ? cWhite
+                                          : cBlack,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    mtController.correctAns.value =
+                                        mtController.optionBController.text;
+                                    mtController.optionA.value = false;
+                                    mtController.optionB.value = true;
+                                    mtController.optionC.value = false;
+                                    mtController.optionD.value = false;
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: mtController.optionB.value == true
+                                          ? cgreen
+                                          : cWhite,
+                                      border: Border.all(color: cBlack),
+                                    ),
+                                    child: Center(
+                                        child: TextFontWidget(
+                                      text: 'B',
+                                      color: mtController.optionB.value == true
+                                          ? cWhite
+                                          : cBlack,
+                                      fontsize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    mtController.correctAns.value =
+                                        mtController.optionCController.text;
+                                    mtController.optionA.value = false;
+                                    mtController.optionB.value = false;
+                                    mtController.optionC.value = true;
+                                    mtController.optionD.value = false;
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: mtController.optionC.value == true
+                                          ? cgreen
+                                          : cWhite,
+                                      border: Border.all(color: cBlack),
+                                    ),
+                                    child: Center(
+                                        child: TextFontWidget(
+                                      text: 'C',
+                                      fontsize: 12,
+                                      color: mtController.optionC.value == true
+                                          ? cWhite
+                                          : cBlack,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    mtController.correctAns.value =
+                                        mtController.optionDController.text;
+                                    mtController.optionA.value = false;
+                                    mtController.optionB.value = false;
+                                    mtController.optionC.value = false;
+                                    mtController.optionD.value = true;
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: mtController.optionD.value == true
+                                          ? cgreen
+                                          : cWhite,
+                                      border: Border.all(color: cBlack),
+                                    ),
+                                    child: Center(
+                                        child: TextFontWidget(
+                                      text: 'D',
+                                      fontsize: 12,
+                                      color: mtController.optionD.value == true
+                                          ? cWhite
+                                          : cBlack,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: cBlack),
-                              ),
-                              child: const Center(
-                                  child: TextFontWidget(
-                                text: 'B',
-                                fontsize: 14,
-                                fontWeight: FontWeight.bold,
-                              )),
-                            ),
-                            Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: cBlack),
-                              ),
-                              child: const Center(
-                                  child: TextFontWidget(
-                                text: 'C',
-                                fontsize: 12,
-                                fontWeight: FontWeight.bold,
-                              )),
-                            ),
-                            Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: cBlack),
-                              ),
-                              child: const Center(
-                                  child: TextFontWidget(
-                                text: 'D',
-                                fontsize: 12,
-                                fontWeight: FontWeight.bold,
-                              )),
-                            )
-                          ],
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          onTap: () async {
-                            mtController.uploadQuestionWithoutImage();
-                          },
-                          child: BlueContainerWidget(
-                            title: "Upload Question",
-                            fontSize: 12.5,
-                            color: themeColorBlue,
-                            fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: GestureDetector(
+                              onTap: () async {
+                                mtController.uploadQuestionImage();
+                              },
+                              child: BlueContainerWidget(
+                                title: "Upload Question",
+                                fontSize: 12.5,
+                                color: themeColorBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
                 ],
               ),
             )
