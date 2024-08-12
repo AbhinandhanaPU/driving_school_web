@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -23,6 +24,18 @@ class MockTestController extends GetxController {
   TextEditingController optionBController = TextEditingController();
   TextEditingController optionCController = TextEditingController();
   TextEditingController optionDController = TextEditingController();
+
+
+  TextEditingController editquestionController = TextEditingController();
+  TextEditingController editoptionController = TextEditingController();
+  // TextEditingController editoptionBController = TextEditingController();
+  // TextEditingController editoptionCController = TextEditingController();
+  // TextEditingController editoptionDController = TextEditingController();
+
+  
+  RxBool ontapViewAllQuestions = false.obs;
+  final formKey = GlobalKey<FormState>();
+   RxBool ontapViewOptions = false.obs;
 
   Future<void> uploadQuestionImage() async {
     final insertOptions = [
@@ -133,5 +146,64 @@ class MockTestController extends GetxController {
     });
 
     return number;
+  }
+   Future<void> updateMockQuestion(String mockID, BuildContext context) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('MockTestCollection')
+          .doc(mockID)
+          .update({
+        'question': editquestionController.text,
+     //   'imageID': editcourseDesController.text,
+        
+      }).then((value) {
+        editquestionController.clear();
+        Navigator.pop(context);
+      }).then((value) => showToast(msg: 'Mock Updated!'));
+    } catch (e) {
+      log("Mock Updation failed");
+    }
+  }
+
+     Future<void> updateMockOption(String mockID, BuildContext context,String optionID) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('MockTestCollection')
+          .doc(mockID)
+          .collection("Options")
+          .doc(optionID)
+          .update({
+        'options': editoptionController.text,
+     //   'imageID': editcourseDesController.text,
+        
+      }).then((value) {
+        editoptionController.clear();
+        Navigator.pop(context);
+      }).then((value) => showToast(msg: 'Mock Updated!'));
+    } catch (e) {
+      log("Mock Updation failed");
+    }
+  }
+
+   Future<void> deleteQuestion(String mockId) async {
+    log("courseId -----------$mockId");
+    try {
+      server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('MockTestCollection')
+          .doc(mockId)
+          .delete()
+          .then((value) {
+        showToast(msg: "Question deleted Successfully");
+          Get.back();
+      });
+    } catch (e) {
+      log("Question delete$e");
+    }
   }
 }

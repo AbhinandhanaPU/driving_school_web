@@ -137,12 +137,15 @@ class StudentsFeesStatus extends StatelessWidget {
                                                   .doc(data['studentID'])
                                                   .snapshots(),
                                               builder: (context, snapshot) {
-                                                final stddata =
-                                                    StudentModel.fromMap(
-                                                        snapshot.data!.data()!);
+                                                final modeldata = snapshot.data?.data() ?? {};
+                                                final stddata = StudentModel.fromMap(modeldata);
+                                               // final stddata =
+                                                    // StudentModel.fromMap(
+                                                    //     snapshot.data!.data()!);
                                                 return StudentFeeDatalist(
-                                                  data: stddata,
+                                                  stdData: stddata,
                                                   index: index,
+                                                  feeData: data,
                                                 );
                                               });
                                         },

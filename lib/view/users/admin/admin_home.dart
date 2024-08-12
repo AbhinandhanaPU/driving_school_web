@@ -15,7 +15,7 @@ import 'package:new_project_driving/view/users/admin/screens/courses/Allcourse_d
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/alldriving_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';
-import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/view_fees_status.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/moke_test_home.dart';
 import 'package:new_project_driving/view/users/admin/screens/login_histroy/login_histroy.dart';
 import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_admin_details.dart';
@@ -220,7 +220,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
-    const MockTesttHome(),
+  //  const MockTesttHome(),
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
 
@@ -234,7 +234,7 @@ List<Widget> pages = [
   const MockTesttHome(), // index 7
   AllDrivingTestDetails(), // index 8
   AllPracticeShedules(), // index 10
-  CreatedFeesStatus(), // index 11
+  StudentsFeesStatus(), // index 11
   AllAdminListPage(), // index 12
   const AllStudyMaterialsList(), // index 13
   NoticeAllList(), // index 14

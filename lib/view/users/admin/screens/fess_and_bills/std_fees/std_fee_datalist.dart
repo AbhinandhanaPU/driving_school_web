@@ -5,12 +5,14 @@ import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class StudentFeeDatalist extends StatelessWidget {
-  final StudentModel data;
+  final StudentModel stdData;
+  final Map<String, dynamic> feeData;
   final int index;
   const StudentFeeDatalist({
     required this.index,
-    required this.data,
+    required this.stdData,
     super.key,
+    required this.feeData,
   });
 
   @override
@@ -36,7 +38,7 @@ class StudentFeeDatalist extends StatelessWidget {
                 rowMainAccess: MainAxisAlignment.start,
                 color: cWhite,
                 index: index,
-                headerTitle: data.studentName),
+                headerTitle: stdData.studentName),
           ),
           const SizedBox(
             width: 02,
@@ -46,10 +48,9 @@ class StudentFeeDatalist extends StatelessWidget {
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                // width: 150,
                 index: index,
-                headerTitle: stringTimeToDateConvert(data.joiningDate)),
-          ), // ...................................Total Number
+                headerTitle: stringTimeToDateConvert(stdData.joiningDate)),
+          ),
           const SizedBox(
             width: 02,
           ),
@@ -60,29 +61,25 @@ class StudentFeeDatalist extends StatelessWidget {
                 color: cWhite,
                 index: index,
                 headerTitle: '0'),
-          ), //....................................... fee amount
+          ),
           const SizedBox(
             width: 02,
           ),
-
           Expanded(
             flex: 2,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                // width: 150,
                 index: index,
-                headerTitle: 'Pending'),
+                headerTitle: feeData['pendingAmount'].toString()),
           ),
-
           Expanded(
             flex: 2,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                // width: 150,
                 index: index,
-                headerTitle: 'total '),
+                headerTitle: 'total'),
           ),
         ],
       ),
