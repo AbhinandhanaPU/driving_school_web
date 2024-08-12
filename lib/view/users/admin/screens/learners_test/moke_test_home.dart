@@ -7,6 +7,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/mocktest_controller/mocktest_Controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/choicerow_widget.dart';
+import 'package:new_project_driving/view/users/admin/screens/learners_test/view_allquestions/view_allquestion.dart';
 import 'package:new_project_driving/view/widget/blue_container_widget/blue_container_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 
@@ -25,44 +26,51 @@ class _MockTesttHomeState extends State<MockTesttHome> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection:
-          ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
-      child: Container(
-        color: screenContainerbackgroundColor,
-        height: 800,
-        width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
-        padding: const EdgeInsets.only(
-          left: 08,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              padding: const EdgeInsets.only(top: 20, right: 50, left: 50),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: const Color.fromARGB(255, 255, 255, 255),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+    return Obx(() => mtController.ontapViewAllQuestions.value ==true? 
+      ViewAllQuestionsUploaded()
+   : SingleChildScrollView(
+          scrollDirection:
+              ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+          child: Container(
+            color: screenContainerbackgroundColor,
+            height: 800,
+            width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+            padding: const EdgeInsets.only(
+              left: 08,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 20, right: 50, left: 50),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TextFontWidget(
-                        text: "Question",
+                      Row(
+                        children: [
+                          const TextFontWidget(
+                            text: "Question",
                         fontsize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                       const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: BlueContainerWidget(
-                            title: "View All Questions",
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.bold,
-                            color: themeColorBlue),
+                      GestureDetector(
+                        onTap: () {
+                           mtController.ontapViewAllQuestions.value=true;
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: BlueContainerWidget(
+                              title: "View All Questions",
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.bold,
+                              color: themeColorBlue),
+                        ),
                       ),
                     ],
                   ),
@@ -361,6 +369,7 @@ class _MockTesttHomeState extends State<MockTesttHome> {
           ],
         ),
       ),
+   ),
     );
   }
 }
