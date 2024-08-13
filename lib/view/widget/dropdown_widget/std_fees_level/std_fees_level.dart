@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
@@ -9,9 +7,14 @@ import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/f
 class StdFeesLevelDropDown extends StatefulWidget {
   final StudentModel data;
   final String courseID;
+  final String feeData;
 
-  const StdFeesLevelDropDown(
-      {super.key, required this.data, required this.courseID});
+  const StdFeesLevelDropDown({
+    super.key,
+    required this.data,
+    required this.courseID,
+    required this.feeData,
+  });
 
   @override
   State<StdFeesLevelDropDown> createState() => _StdFeesLevelDropDownState();
@@ -19,13 +22,19 @@ class StdFeesLevelDropDown extends StatefulWidget {
 
 class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
   StudentController studentController = Get.put(StudentController());
-  var selectStdLevel;
+  String? selectStdLevel;
+
+  @override
+  void initState() {
+    super.initState();
+    selectStdLevel = widget.feeData;
+  }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       value: selectStdLevel,
-      hint: Text(widget.data.feesStatus),
+      hint: Text(widget.feeData),
       decoration: const InputDecoration(
         border: InputBorder.none,
         filled: false,
@@ -39,21 +48,27 @@ class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
           value: 'fully paid',
           child: Text('Fully paid'),
         ),
+        DropdownMenuItem(
+          value: 'not paid',
+          child: Text('Not paid'),
+        ),
       ],
       onChanged: (val) {
         if (val != null) {
-          log('Selected type: $val');
           setState(() {
-            widget.data.feesStatus = val;
+            selectStdLevel = val;
           });
           if (val == 'partly paid') {
             pendingAmountFunction(
               context,
               widget.data,
-              val, 
+              val,
               widget.courseID,
             );
-          } 
+          } else {
+            studentController.addStudentFeeColl(
+                widget.data, val, widget.courseID);
+          }
         }
       },
     );

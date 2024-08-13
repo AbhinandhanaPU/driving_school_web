@@ -5,6 +5,8 @@ import 'package:new_project_driving/controller/admin_section/student_controller/
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
+import 'package:new_project_driving/utils/firebase/firebase.dart';
+import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/std_fees_level.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/student_level/student_level.dart';
@@ -155,9 +157,35 @@ class AllCourseStudentDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: StdFeesLevelDropDown(
-              data: data,
-              courseID: modelData.courseId,
+            child: StreamBuilder(
+              stream: server
+                  .collection('DrivingSchoolCollection')
+                  .doc(UserCredentialsController.schoolId)
+                  .collection('FeeCollection')
+                  .doc(modelData.courseId)
+                  .collection('Students')
+                  .doc(data.docid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                String feeStatus =
+                    'not paid'; // Default value if no data is found
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+
+                if (snapshot.hasData && snapshot.data?.data() != null) {
+                  final feeData = snapshot.data!.data();
+                  feeStatus = feeData!['feeStatus'] ??
+                      'not paid'; // Use available data or fallback
+                }
+
+                return StdFeesLevelDropDown(
+                  data: data,
+                  courseID: modelData.courseId,
+                  feeData: feeStatus,
+                );
+              },
             ),
           ),
           const SizedBox(

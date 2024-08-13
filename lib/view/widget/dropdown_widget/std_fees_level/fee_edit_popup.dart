@@ -53,24 +53,25 @@ pendingAmountFunction(
                           height: 05,
                         ),
                         Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                                border: Border.all(width: 1),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: studentController.amountController,
-                                validator: checkFieldEmpty,
-                                decoration: const InputDecoration(
-                                    hintText: "Enter Amount",
-                                    hintStyle: TextStyle(
-                                      fontSize: 13,
-                                    ),
-                                    border: InputBorder.none),
-                              ),
-                            )),
+                          height: 40,
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 1),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: studentController.amountController,
+                              validator: checkFieldEmpty,
+                              decoration: const InputDecoration(
+                                  hintText: "Enter Amount",
+                                  hintStyle: TextStyle(
+                                    fontSize: 13,
+                                  ),
+                                  border: InputBorder.none),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -80,21 +81,8 @@ pendingAmountFunction(
                   child: GestureDetector(
                     onTap: () {
                       if (studentController.formKey.currentState!.validate()) {
-                        studentController
-                            .updateStudentFeeColl(
-                          studentModel,
-                          status,
-                          courseID,
-                        )
-                            .then(
-                          (value) {
-                            studentController.addStudentFeeColl(
-                              studentModel,
-                              status,
-                              courseID,
-                            );
-                          },
-                        );
+                        studentController.addStudentFeeColl(
+                            studentModel, status, courseID);
                       }
                       Navigator.pop(context);
                     },

@@ -73,13 +73,16 @@ class StudentFeeDatalist extends StatelessWidget {
                 index: index,
                 headerTitle: feeData['pendingAmount'].toString()),
           ),
+          const SizedBox(
+            width: 02,
+          ),
           Expanded(
             flex: 2,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
                 index: index,
-                headerTitle: 'total'),
+                headerTitle: feeData['feeStatus']),
           ),
         ],
       ),

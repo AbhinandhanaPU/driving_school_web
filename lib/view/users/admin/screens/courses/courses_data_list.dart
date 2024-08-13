@@ -74,10 +74,6 @@ class AllCoursesDataList extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ), //........................................... rate
-
-          const SizedBox(
-            width: 02,
-          ),
           const SizedBox(
             width: 02,
           ),
@@ -105,11 +101,11 @@ class AllCoursesDataList extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   courseController.editcourseNameController.text =
-                      data.courseName; 
+                      data.courseName;
                   courseController.editcourseDesController.text =
-                      data.courseDes; 
-                  courseController.editcourseDurationController.text = 
-                      data.duration; 
+                      data.courseDes;
+                  courseController.editcourseDurationController.text =
+                      data.duration;
                   courseController.editcourseRateController.text = data.rate;
                   editFunctionOfCourse(context, data);
                 },
