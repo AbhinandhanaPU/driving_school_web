@@ -10,10 +10,10 @@ import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
 
-class StudentDetailsContainer extends StatelessWidget {
+class ArchivesStudentDetailsContainer extends StatelessWidget {
   final StudentController studentController = Get.put(StudentController());
   final ClassController classController = Get.put(ClassController());
-  StudentDetailsContainer({super.key});
+  ArchivesStudentDetailsContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class StudentDetailsContainer extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.only(left: 25, top: 25),
                 child: TextFontWidget(
-                  text: 'Student Details',
+                  text: 'Archives Student Details',
                   fontsize: 18,
                   fontWeight: FontWeight.bold,
                 ),

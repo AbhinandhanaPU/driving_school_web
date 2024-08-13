@@ -204,7 +204,7 @@ customViewShowDialog({
                 return Image.network(
                   downloadUrl,
                   errorBuilder: (context, error, stackTrace) {
-                    print('Error loading image: $error');
+                 //   print('Error loading image: $error');
                     return const Center(child: Text('Failed to load image'));
                   },
                 );
@@ -241,7 +241,7 @@ customViewShowDialog({
 Future<String> _getFileType(String url) async {
   final uri = Uri.parse(url);
   final path = uri.path;
-  print('File path: $path'); 
+  //print('File path: $path'); 
   
   if (path.endsWith('.jpg') || path.endsWith('.jpeg') || path.endsWith('.png')) {
     return 'image';

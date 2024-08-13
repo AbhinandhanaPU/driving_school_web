@@ -8,6 +8,7 @@ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/app_bar/admin_appbar.dart';
 import 'package:new_project_driving/view/users/admin/drawer/drawer_pages.dart';
+import 'package:new_project_driving/view/users/admin/screens/archives_students/view_all_archivestds.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/student_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/all_batch.dart';
@@ -220,7 +221,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
-   const MockTesttHome(),
+//const MockTesttHome(),
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
 
@@ -242,5 +243,6 @@ List<Widget> pages = [
   const AllVideosList(), // index 16
   AdminNotificationCreate(), // index 17
   LoginHistroyContainer(), // index 18////////////////////////////////
+  AllArchivesStudentListContainer(),
 ];
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

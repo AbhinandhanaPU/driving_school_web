@@ -6,24 +6,24 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/search_students/search_student_name.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_data_list.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/archives_students/archive_students_list/archive_student_data_list.dart';
+import 'package:new_project_driving/view/users/admin/screens/archives_students/archive_students_list/archive_student_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/archives_students/search_students/archives_search_student_name.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class AllStudentListContainer extends StatelessWidget {
+class AllArchivesStudentListContainer extends StatelessWidget {
   final StudentController studentController = Get.put(StudentController());
   // final RegistrationController regiControl = Get.put(RegistrationController());
-  AllStudentListContainer({super.key});
+  AllArchivesStudentListContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => studentController.ontapStudent.value == true
-          ? StudentDetailsContainer()
+          ? ArchivesStudentDetailsContainer()
           : SingleChildScrollView(
               scrollDirection: ResponsiveWebSite.isMobile(context)
                   ? Axis.horizontal
@@ -43,7 +43,7 @@ class AllStudentListContainer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const TextFontWidget(
-                            text: 'All Students List',
+                            text: 'All Archives Students',
                             fontsize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -77,7 +77,7 @@ class AllStudentListContainer extends StatelessWidget {
                       const Row(
                         children: [
                           RouteSelectedTextContainer(
-                            title: 'All Students',
+                            title: 'All Archives ',
                             width: 200,
                           ),
                         ],
@@ -118,7 +118,7 @@ class AllStudentListContainer extends StatelessWidget {
                                 Expanded(
                                     flex: 4,
                                     child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'courses type')),
+                                        headerTitle: 'Place')),
                                 SizedBox(
                                   width: 02,
                                 ),
@@ -129,31 +129,10 @@ class AllStudentListContainer extends StatelessWidget {
                                 SizedBox(
                                   width: 02,
                                 ),
-                                // Expanded(
-                                //     flex: 2,
-                                //     child: CatrgoryTableHeaderWidget(
-                                //         headerTitle: 'Permission Status')),
-                                // SizedBox(
-                                //   width: 02,
-                                // ),
                                 Expanded(
                                     flex: 2,
                                     child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Status')),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                 Expanded(
-                                    flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Archives')),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                    flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Delete')),
+                                        headerTitle: 'Result')),
                                 SizedBox(
                                   width: 02,
                                 ),
@@ -223,7 +202,7 @@ class AllStudentListContainer extends StatelessWidget {
                                                   studentController.ontapStudent
                                                       .value = true;
                                                 },
-                                                child: AllStudentDataList(
+                                                child: ArchiveAllStudentDataList(
                                                   data: data,
                                                   index: index,
                                                 ),
@@ -256,6 +235,6 @@ class AllStudentListContainer extends StatelessWidget {
 
   Future<void> searchStudentsByName(BuildContext context) async {
     studentController.fetchAllStudents();
-    await showSearch(context: context, delegate: AllStudentSearchByName());
+    await showSearch(context: context, delegate: ArchivesAllStudentSearchByName());
   }
 }

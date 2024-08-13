@@ -5,6 +5,7 @@ import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
+import 'package:new_project_driving/view/users/admin/screens/students/archives_function/archive_std.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
@@ -170,6 +171,38 @@ class AllStudentDataList extends StatelessWidget {
               ],
             ),
           ), //............................. Status [Active or DeActivate]
+           const SizedBox(
+            width: 01,
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  archivesStudentsFunction(context);
+                },
+                child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 15,
+                      child: Image.asset(
+                       'webassets/png/shape.png',
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: TextFontWidget(
+                        text: "Archive",
+                        fontsize: 12,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           const SizedBox(
             width: 01,
           ),

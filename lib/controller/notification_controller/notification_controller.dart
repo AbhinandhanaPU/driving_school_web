@@ -208,7 +208,7 @@ class NotificationController extends GetxController {
   }) async {
     final String docid = uuid.v1();
     try {
-      print(messageText);
+    //  print(messageText);
       log('Calling user notification');
       final details = NotificationModel(
           icon: icon,

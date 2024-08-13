@@ -83,7 +83,7 @@ class TutorDetailsContainer extends StatelessWidget {
                                     ),
                                   ),
                                   const RouteSelectedTextContainer(
-                                      width: 140, title: 'Teacher Deatils'),
+                                      width: 140, title: 'Teacher Details'),
                                 ],
                               ),
                             ),

@@ -88,10 +88,10 @@ class StudentFeeController extends GetxController {
   }
 
   getStudentFeeDetails(String studentId) async {
-    print('fee start');
-    print(studentId);
-    print(Get.find<FeesAndBillsController>().feeMonthData.value);
-    print(Get.find<FeesAndBillsController>().feeDateData.value);
+    // print('fee start');
+    // print(studentId);
+    // print(Get.find<FeesAndBillsController>().feeMonthData.value);
+    // print(Get.find<FeesAndBillsController>().feeDateData.value);
     final studentFeeData = await server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)

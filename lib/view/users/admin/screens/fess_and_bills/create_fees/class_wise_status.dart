@@ -65,7 +65,7 @@ class ClassWiseFeesStatus extends StatelessWidget {
                       ),
                     ),
                     const RouteSelectedTextContainer(
-                        width: 140, title: 'Fees Deatils'),
+                        width: 140, title: 'Fees Details'),
                     const Spacer(),
                     GestureDetector(
                       onTap: () async {
