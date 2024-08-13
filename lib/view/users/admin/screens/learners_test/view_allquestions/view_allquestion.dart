@@ -23,30 +23,30 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+     child: Container(
+      height: 720,
+      width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+      color: screenContainerbackgroundColor,
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: Container(
-        height: 720,
-        width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
-        color: screenContainerbackgroundColor,
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-        child: Container(
-               height: 680,
-              width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
-              color: cWhite,
-               padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+             height: 680,
+             width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+             color: cWhite,
+             padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+             child: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   const Text(
                     'All Questions ',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  Row(
+                   ),
+                   Row(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
@@ -88,8 +88,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
               ),
               SizedBox(
                 height: 600,
-                width:
-                    ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+                width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
                 child: StreamBuilder(
                     stream: server
                         .collection("DrivingSchoolCollection")
@@ -101,20 +100,15 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                       if (!snapshot.hasData || snapshot.data == null) {
                         return const Center(child: CircularProgressIndicator());
                       }
-          
                       return ListView.separated(
                         itemBuilder: (context, index) {
-                          QuizTestQuestionModel questiondata =
-                              QuizTestQuestionModel.fromMap(
-                                  snapshot.data!.docs[index].data());
-          
+                          QuizTestQuestionModel questiondata = 
+                           QuizTestQuestionModel.fromMap( snapshot.data!.docs[index].data());
                           return Obx(() {
                                double containerHeight =
                                 questiondata.imageID == null
-                                ? 100
-                                : 140;
-                                bool isExpanded =
-                                  expandedQuestionMap[index] ?? false;
+                                ? 100 : 140;
+                                bool isExpanded = expandedQuestionMap[index] ?? false;
           
                             if (isExpanded) {
                                 containerHeight += 250; // Increase height when options are visible
@@ -127,8 +121,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                               height: containerHeight,
                               //questiondata.imageID == null ? 310 : 360,
                               width: ResponsiveWebSite.isDesktop(context)
-                                  ? double.infinity
-                                  : 1200,
+                                  ? double.infinity : 1200,
                               color: const Color.fromARGB(255, 246, 246, 246),
                               alignment: Alignment.center,
                               child: Padding(
@@ -143,8 +136,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                             flex: 1,
                                             child: Container(
                                               height: questiondata.imageID == null
-                                                  ? 50
-                                                  : 100,
+                                                  ? 50 : 100,
                                               color: themeColorBlue.withOpacity(0.1),
                                               alignment: Alignment.center,
                                               child: TextFontWidget(
@@ -165,7 +157,8 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                     child: TextFontWidget(
                                                       text: questiondata.question,
                                                       fontsize: 14,
-                                                      fontWeight:ResponsiveWebSite.isMobile(context)?FontWeight.w400: FontWeight.bold,
+                                                      fontWeight:ResponsiveWebSite.isMobile(context)
+                                                      ?FontWeight.w400: FontWeight.bold,
                                                     ),
                                                   )
                                                 : Container(
@@ -180,8 +173,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                             height: 100,
                                                             errorBuilder: (context,
                                                                 error, stackTrace) {
-                                                              return const Icon(
-                                                                  Icons.error);
+                                                              return const Icon(Icons.error);
                                                             },
                                                           ),
                                                         ),
@@ -190,7 +182,8 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                           child: TextFontWidget(
                                                             text: questiondata.question,
                                                             fontsize:ResponsiveWebSite.isMobile(context)?12: 14,
-                                                            fontWeight:ResponsiveWebSite.isMobile(context)?FontWeight.w400:  FontWeight.bold,
+                                                            fontWeight:ResponsiveWebSite.isMobile(context)?
+                                                             FontWeight.w400:  FontWeight.bold,
                                                           ),
                                                         ),
                                                       ],
@@ -204,13 +197,11 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                               onTap: () {
                                                 mtController.editquestionController
                                                     .text = questiondata.question;
-                                                editMockTestQuestions(
-                                                    context, questiondata);
+                                                editMockTestQuestions( context, questiondata);
                                               },
                                               child: Container(
                                                 height: questiondata.imageID == null
-                                                    ? 50
-                                                    : 100,
+                                                    ? 50 : 100,
                                                 color: themeColorBlue.withOpacity(0.1),
                                                 alignment: Alignment.center,
                                                 child: const Icon(Icons.edit),
@@ -225,16 +216,13 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                 customDeleteShowDialog(
                                                   context: context,
                                                   onTap: () async {
-                                                    await mtController
-                                                        .deleteQuestion(
-                                                            questiondata.docid);
+                                                    await mtController.deleteQuestion( questiondata.docid);
                                                   },
                                                 );
                                               },
                                               child: Container(
                                                 height: questiondata.imageID == null
-                                                    ? 50
-                                                    : 100,
+                                                    ? 50 : 100,
                                                 color: themeColorBlue.withOpacity(0.1),
                                                 alignment: Alignment.center,
                                                 child: const Icon(Icons.delete),
@@ -247,36 +235,26 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                     isExpanded
                                             ? StreamBuilder(
                                             stream: server
-                                                .collection(
-                                                    "DrivingSchoolCollection")
+                                                .collection( "DrivingSchoolCollection")
                                                 .doc(UserCredentialsController.schoolId)
                                                 .collection("MockTestCollection")
                                                 .doc(questiondata.docid)
                                                 .collection("Options")
                                                 .snapshots(),
                                             builder: (context, optionSnap) {
-                                              if (!optionSnap.hasData ||
-                                                  optionSnap.data == null) {
+                                              if (!optionSnap.hasData ||optionSnap.data == null) {
                                                 return const CircularProgressIndicator();
                                               }
                                               return SizedBox(
                                                 height: 220,
-                                                width: ResponsiveWebSite.isDesktop(
-                                                        context)
-                                                    ? double.infinity
-                                                    : 1200,
+                                                width: ResponsiveWebSite.isDesktop( context)
+                                                    ? double.infinity: 1200,
                                                 child: ListView.separated(
                                                   itemBuilder: (context, optIndex) {
-                                                    QuizTestAnswerModel
-                                                        optionDataModel =
-                                                        QuizTestAnswerModel.fromMap(
-                                                            optionSnap.data!
-                                                                .docs[optIndex]
-                                                                .data());
-                            
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(5.0),
+                                                    QuizTestAnswerModel optionDataModel =
+                                                        QuizTestAnswerModel.fromMap( optionSnap.data!.docs[optIndex].data());
+                                                   return Padding(
+                                                      padding:  const EdgeInsets.all(5.0),
                                                       child: Row(
                                                         children: [
                                                           Expanded(
@@ -284,11 +262,9 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                             child: Container(
                                                               height: 38,
                                                               color: cWhite,
-                                                              alignment:
-                                                                  Alignment.center,
+                                                              alignment: Alignment.center,
                                                               child: TextFontWidget(
-                                                                text: String.fromCharCode(
-                                                                    65 + optIndex),
+                                                                text: String.fromCharCode( 65 + optIndex),
                                                                 fontsize: 13,
                                                               ),
                                                             ),
@@ -298,18 +274,14 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                             flex: 15,
                                                             child: Container(
                                                               height: 38,
-                                                              color: optionDataModel
-                                                                      .isCorrect
+                                                              color: optionDataModel .isCorrect
                                                                   ? cgreen
                                                                   : cWhite,
-                                                              alignment: Alignment
-                                                                  .centerLeft,
+                                                              alignment: Alignment.centerLeft,
                                                               child: TextFontWidget(
-                                                                text: optionDataModel
-                                                                    .options,
+                                                                text: optionDataModel .options,
                                                                 fontsize: 13,
-                                                                color: optionDataModel
-                                                                        .isCorrect
+                                                                color: optionDataModel .isCorrect
                                                                     ? cWhite
                                                                     : Colors.black,
                                                               ),
@@ -320,11 +292,8 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                             flex: 2,
                                                             child: GestureDetector(
                                                               onTap: () {
-                                                                mtController
-                                                                        .editoptionController
-                                                                        .text =
-                                                                    optionDataModel
-                                                                        .options;
+                                                                mtController.editoptionController
+                                                                    .text =  optionDataModel .options;
                                                                 editMockTestOptions(
                                                                     context,
                                                                     questiondata,
@@ -333,10 +302,8 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                               child: Container(
                                                                 height: 38,
                                                                 color: cWhite,
-                                                                alignment:
-                                                                    Alignment.center,
-                                                                child: const Icon(
-                                                                    Icons.edit),
+                                                                alignment:Alignment.center,
+                                                                child: const Icon( Icons.edit),
                                                               ),
                                                             ),
                                                           ),
@@ -344,9 +311,7 @@ class ViewAllQuestionsUploaded extends StatelessWidget {
                                                       ),
                                                     );
                                                   },
-                                                  itemCount: optionSnap
-                                                          .data?.docs.length ??
-                                                       0,
+                                                  itemCount: optionSnap .data?.docs.length ?? 0,
                                                   separatorBuilder: (context, index) =>
                                                       const SizedBox(height: 0),
                                                 ),
