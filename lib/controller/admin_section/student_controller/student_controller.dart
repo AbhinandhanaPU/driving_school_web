@@ -146,34 +146,6 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> updateStudentFeeColl(
-    StudentModel studentModel,
-    String status,
-    String courseID,
-  ) async {
-    await server
-        .collection('DrivingSchoolCollection')
-        .doc(UserCredentialsController.schoolId)
-        .collection('Courses')
-        .doc(courseID)
-        .collection('Students')
-        .doc(studentModel.docid)
-        .update({
-      'feesStatus': status,
-    }).then((value) async {
-      await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .collection('Students')
-          .doc(studentModel.docid)
-          .update({
-        'feesStatus': status,
-      }).then((value) {
-        studentModel.feesStatus = status;
-      });
-    });
-  }
-
   Future<void> addStudentFeeColl(
     StudentModel studentModel,
     String status,
@@ -184,18 +156,28 @@ class StudentController extends GetxController {
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
           .collection('FeeCollection')
-          .doc(studentModel.docid)
-          .set({
-        'studentName': studentModel.studentName,
-        'studentID': studentModel.docid,
-        'feeStatus': status,
-        'pendingAmount': amountController.text,
-        'courseID': courseID
-      }).then((value) {
-        studentModel.feesStatus = status;
-        update();
-        showToast(msg: 'student added to fees collecion');
-        showToast(msg: "Fees Status Updated");
+          .doc(courseID)
+          .set({'docId': courseID}).then((value) async {
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('FeeCollection')
+            .doc(courseID)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .set({
+          'studentName': studentModel.studentName,
+          'studentID': studentModel.docid,
+          'feeStatus': status,
+          'pendingAmount':
+              amountController.text == "" ? 0 : amountController.text,
+          'courseID': courseID
+        }).then((value) {
+          amountController.clear();
+          update();
+          showToast(msg: 'student fees updated');
+          log("Fees Status Updated");
+        });
       });
     } catch (e) {
       log(" FeeCollection error: $e");

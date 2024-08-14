@@ -71,7 +71,6 @@ class StudentSignUpController extends GetxController {
           userRole: "student",
           status: 'Inactive', //change
           level: "Beginner",
-          feesStatus: '',
         );
         await server
             .collection('DrivingSchoolCollection')

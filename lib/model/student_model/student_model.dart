@@ -17,8 +17,7 @@ class StudentModel {
   String licenceNumber;
   String joiningDate;
   String status; //
-  String level; //
-  String feesStatus;
+  String level;
 
   String userRole = 'student';
 
@@ -39,7 +38,6 @@ class StudentModel {
     required this.joiningDate,
     required this.status,
     required this.level,
-    required this.feesStatus,
     required this.userRole,
   });
 
@@ -80,7 +78,6 @@ class StudentModel {
       joiningDate: joiningDate ?? this.joiningDate,
       status: status ?? this.status,
       level: level ?? this.level,
-      feesStatus: feesStatus ?? this.feesStatus,
       userRole: userRole ?? this.userRole,
     );
   }
@@ -103,31 +100,29 @@ class StudentModel {
       'joiningDate': joiningDate,
       'status': status,
       'level': level,
-      'feesStatus': feesStatus,
       'userRole': userRole,
     };
   }
 
   factory StudentModel.fromMap(Map<String, dynamic> map) {
     return StudentModel(
-      docid: map['docid'] ??"",
-      password: map['password'] ??"",
-      studentemail: map['studentemail'] ??"",
-      studentName: map['studentName'] ??"",
-      phoneNumber: map['phoneNumber'] ??"",
-      dateofBirth: map['dateofBirth'] ??"",
-      guardianName: map['guardianName'] ??"",
-      address: map['address'] ??"",
-      place: map['place'] ??"",
-      profileImageId: map['profileImageId'] ??"",
-      profileImageUrl: map['profileImageUrl'] ??"",
-      rtoName: map['rtoName'] ??"",
-      licenceNumber: map['licenceNumber'] ??"",
-      joiningDate: map['joiningDate'] ??"",
-      status: map['status'] ??"",
-      level: map['level'] ??"",
-      feesStatus: map['feesStatus'] ??"",
-      userRole: map['userRole'] ??"",
+      docid: map['docid'] ?? "",
+      password: map['password'] ?? "",
+      studentemail: map['studentemail'] ?? "",
+      studentName: map['studentName'] ?? "",
+      phoneNumber: map['phoneNumber'] ?? "",
+      dateofBirth: map['dateofBirth'] ?? "",
+      guardianName: map['guardianName'] ?? "",
+      address: map['address'] ?? "",
+      place: map['place'] ?? "",
+      profileImageId: map['profileImageId'] ?? "",
+      profileImageUrl: map['profileImageUrl'] ?? "",
+      rtoName: map['rtoName'] ?? "",
+      licenceNumber: map['licenceNumber'] ?? "",
+      joiningDate: map['joiningDate'] ?? "",
+      status: map['status'] ?? "",
+      level: map['level'] ?? "",
+      userRole: map['userRole'] ?? "",
     );
   }
 
@@ -138,7 +133,7 @@ class StudentModel {
 
   @override
   String toString() {
-    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, level: $level, feesStatus: $feesStatus, userRole: $userRole)';
+    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, level: $level, userRole: $userRole)';
   }
 
   @override
@@ -161,7 +156,6 @@ class StudentModel {
         other.joiningDate == joiningDate &&
         other.status == status &&
         other.level == level &&
-        other.feesStatus == feesStatus &&
         other.userRole == userRole;
   }
 
@@ -183,7 +177,6 @@ class StudentModel {
         joiningDate.hashCode ^
         status.hashCode ^
         level.hashCode ^
-        feesStatus.hashCode ^
         userRole.hashCode;
   }
 }
