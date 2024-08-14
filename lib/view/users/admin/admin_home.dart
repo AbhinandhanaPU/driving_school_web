@@ -12,7 +12,7 @@ import 'package:new_project_driving/view/users/admin/screens/archives_students/v
 import 'package:new_project_driving/view/users/admin/screens/attendance/student_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/attendance/tutor_attendance.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/all_batch.dart';
-import 'package:new_project_driving/view/users/admin/screens/courses/Allcourse_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/courses/course_list/Allcourse_details.dart';
 import 'package:new_project_driving/view/users/admin/screens/dash_board/admin_dashboard.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/alldriving_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/events/all_event_view.dart';

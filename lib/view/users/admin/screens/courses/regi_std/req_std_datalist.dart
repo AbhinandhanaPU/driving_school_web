@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
+import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
+import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
+import 'package:new_project_driving/view/widget/custom_showdialouge/custom_showdilog.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/std_fees_level.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/student_level/student_level.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
-class AllCourseStudentDataList extends StatelessWidget {
+class ReqStudentDataList extends StatelessWidget {
   final int index;
   final StudentModel data;
-  AllCourseStudentDataList({
+  ReqStudentDataList({
     required this.index,
     required this.data,
     super.key,
   });
-  final StudentController studentController = Get.put(StudentController());
   final CourseController courseController = Get.put(CourseController());
 
   @override
   Widget build(BuildContext context) {
     final modelData = courseController.courseModelData.value;
-    return
-        // Obx(() =>
-        Container(
+    return Container(
       height: 45,
       decoration: BoxDecoration(
         color: index % 2 == 0
@@ -42,35 +40,12 @@ class AllCourseStudentDataList extends StatelessWidget {
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                // width: 150,
                 index: index,
                 headerTitle: '${index + 1}'), //....................No
           ),
           const SizedBox(
             width: 02,
           ),
-          Expanded(
-            flex: 2,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: data.licenceNumber),
-          ), //................................................. teacher ID
-          const SizedBox(
-            width: 02,
-          ),
-          // Expanded(
-          //   flex: 2,
-          //   child: DataContainerWidget(
-          //       rowMainAccess: MainAxisAlignment.center,
-          //       color: cWhite,
-          //       index: index,
-          //       headerTitle: data. place),
-          // ), //................................................. teacher ID
-          // const SizedBox(
-          //   width: 01,
-          // ),
           Expanded(
             flex: 3,
             child: Row(
@@ -146,7 +121,7 @@ class AllCourseStudentDataList extends StatelessWidget {
             width: 02,
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: StudentLevelDropDown(
               data: data,
               courseID: modelData!.courseId,
@@ -155,52 +130,23 @@ class AllCourseStudentDataList extends StatelessWidget {
           const SizedBox(
             width: 02,
           ),
-          Expanded(
-            flex: 3,
-            child: StreamBuilder(
-              stream: server
-                  .collection('DrivingSchoolCollection')
-                  .doc(UserCredentialsController.schoolId)
-                  .collection('FeeCollection')
-                  .doc(modelData.courseId)
-                  .collection('Students')
-                  .doc(data.docid)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                String feeStatus = 'not paid';
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
 
-                if (snapshot.hasData && snapshot.data?.data() != null) {
-                  final feeData = snapshot.data!.data();
-                  feeStatus = feeData!['feeStatus'] ?? 'not paid';
-                }
-
-                return StdFeesLevelDropDown(
-                  data: data,
-                  courseID: modelData.courseId,
-                  feeData: feeStatus,
-                );
-              },
-            ),
-          ),
-          const SizedBox(
-            width: 02,
-          ),
           Expanded(
             flex: 2,
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  customDeleteShowDialog(
+                  customShowDilogBox2(
                     context: context,
-                    onTap: () {
-                      courseController
-                          .deleteStudentsFromCourse(data)
-                          .then((value) {
-                        Navigator.pop(context);
-                      });
+                    title: 'Approval Status ',
+                    children: [
+                      const Text(
+                          'Are you sure you want to accept offline payment request?')
+                    ],
+                    doyouwantActionButton: true,
+                    actiononTapfuction: () {
+                      Navigator.pop(context);
+                      approvalDialogBox(context, modelData, data);
                     },
                   );
                 },
@@ -208,16 +154,100 @@ class AllCourseStudentDataList extends StatelessWidget {
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
                     index: index,
-                    headerTitle: ' Remove 🗑️'),
+                    headerTitle: 'Accept'),
               ),
             ),
-          ), //........................................... delete
+          ),
           const SizedBox(
-            width: 01,
-          ), //............................. Status [Active or DeActivate]
+            width: 02,
+          ),
         ],
       ),
-      //  )
     );
   }
+}
+
+approvalDialogBox(
+  BuildContext context,
+  CourseModel modelData,
+  StudentModel data,
+) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: cWhite,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(Icons.arrow_back)),
+            const SizedBox(
+              width: 10,
+            ),
+            const TextFontWidget(
+              text: "Payement Status",
+              fontsize: 17,
+              fontWeight: FontWeight.bold,
+            )
+          ],
+        ),
+        content: SizedBox(
+          height: 80,
+          width: 150,
+          child: Column(
+            children: [
+              StreamBuilder(
+                stream: server
+                    .collection('DrivingSchoolCollection')
+                    .doc(UserCredentialsController.schoolId)
+                    .collection('FeeCollection')
+                    .doc(modelData.courseId)
+                    .collection('Students')
+                    .doc(data.docid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  String feeStatus = 'not paid';
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasData && snapshot.data?.data() != null) {
+                    final feeData = snapshot.data!.data();
+                    feeStatus = feeData!['feeStatus'] ?? 'not paid';
+                  }
+                  return StdFeesLevelDropDown(
+                    data: data,
+                    courseID: modelData.courseId,
+                    feeData: feeStatus,
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              height: 30,
+              width: 80,
+              decoration: const BoxDecoration(
+                color: themeColorBlue,
+              ),
+              child: Center(
+                child: GooglePoppinsWidgets(
+                    text: 'Cancel',
+                    color: cWhite,
+                    fontsize: 12,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          )
+        ],
+      );
+    },
+  );
 }

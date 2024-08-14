@@ -22,6 +22,7 @@ class CourseController extends GetxController {
   RxString courseDocID = 'dd'.obs;
   RxString ontapCourseName = 'dd'.obs;
   RxString ontapCourseDocID = 'dd'.obs;
+  RxBool ontapReqStudent = false.obs;
 
   RxString level = 'Select Level'.obs;
   List<StudentModel> allstudentList = [];
@@ -61,7 +62,8 @@ class CourseController extends GetxController {
         .get();
 
     for (var i = 0; i < firebase.docs.length; i++) {
-      final list = firebase.docs.map((e) => CourseModel.fromMap(e.data())).toList();
+      final list =
+          firebase.docs.map((e) => CourseModel.fromMap(e.data())).toList();
       allcourseList.add(list[i]);
       allcourseList.sort((a, b) => a.courseName.compareTo(b.courseName));
     }
@@ -148,7 +150,8 @@ class CourseController extends GetxController {
         .get();
 
     for (var i = 0; i < firebase.docs.length; i++) {
-      final list = firebase.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      final list =
+          firebase.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       allstudentList.add(list[i]);
     }
     return allstudentList;

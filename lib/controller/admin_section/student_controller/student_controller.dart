@@ -172,7 +172,8 @@ class StudentController extends GetxController {
           'pendingAmount':
               amountController.text == "" ? 0 : amountController.text,
           'courseID': courseID
-        }).then((value) {
+        }).then((value) async {
+          await acceptStudentToCourse(studentModel, status, courseID);
           amountController.clear();
           update();
           showToast(msg: 'student fees updated');
@@ -181,6 +182,41 @@ class StudentController extends GetxController {
       });
     } catch (e) {
       log(" FeeCollection error: $e");
+    }
+  }
+
+  Future<void> acceptStudentToCourse(
+    StudentModel studentModel,
+    String status,
+    String courseID,
+  ) async {
+    try {
+      final reqStudentDoc = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Courses')
+          .doc(courseID)
+          .collection("RequestedStudents")
+          .doc(studentModel.docid)
+          .get();
+
+      if (reqStudentDoc.exists) {
+        await reqStudentDoc.reference.delete();
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Courses')
+            .doc(courseID)
+            .collection("Students")
+            .doc(studentModel.docid)
+            .set(studentModel.toMap());
+        showToast(msg: 'Student Added to Course');
+        log("Student accepted and Added to the course.");
+      } else {
+        log("Student not found in RequestedStudents collection.");
+      }
+    } catch (e) {
+      log("Students approval error: $e");
     }
   }
 }
