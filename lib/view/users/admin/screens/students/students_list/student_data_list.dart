@@ -171,7 +171,7 @@ class AllStudentDataList extends StatelessWidget {
               ],
             ),
           ), //............................. Status [Active or DeActivate]
-           const SizedBox(
+          const SizedBox(
             width: 01,
           ),
           Expanded(
@@ -179,15 +179,15 @@ class AllStudentDataList extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  archivesStudentsFunction(context);
+                  archivesStudentsFunction(context, data);
                 },
-                child:  Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
                       width: 15,
                       child: Image.asset(
-                       'webassets/png/shape.png',
+                        'webassets/png/shape.png',
                       ),
                     ),
                     const Padding(
