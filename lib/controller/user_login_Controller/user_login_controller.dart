@@ -309,7 +309,7 @@ class UserLoginController extends GetxController {
       });
       logined.value = false;
     } catch (e) {
-      print("loginSaveData $e ");
+      log("loginSaveData $e ");
     }
   }
 

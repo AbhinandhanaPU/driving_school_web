@@ -107,6 +107,6 @@ class StudentFeeController extends GetxController {
     paidStudentFee.value = studentFeeData.data()!['paid'];
     unpaidStudentFee.value = totalStudentFee.value - paidStudentFee.value;
 
-    print(totalStudentFee.value);
+    log(totalStudentFee.value.toString());
   }
 }

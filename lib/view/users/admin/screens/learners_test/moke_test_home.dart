@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/mocktest_controller/mocktest_Controller.dart';
+import 'package:new_project_driving/controller/mocktest_controller/mocktest_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/choicerow_widget.dart';
 import 'package:new_project_driving/view/users/admin/screens/learners_test/view_allquestions/view_allquestion.dart';

@@ -144,7 +144,6 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 400,
-                          // width: 1200,
                           decoration: BoxDecoration(
                             color: cWhite,
                             border: Border.all(color: cWhite),
@@ -152,29 +151,13 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5, left: 5),
                             child: SizedBox(
-                              // width: 1100,
                               child: StreamBuilder(
-                                stream:
-                                    //  studentController.onClassWiseSearch.value ==
-                                    //         true
-                                    //     ? server
-                                    //         .collection('DrivingSchoolCollection')
-                                    //         .doc(UserCredentialsController.schoolId)
-                                    //         .collection(UserCredentialsController.batchId!)
-                                    //         .doc(UserCredentialsController.batchId!)
-                                    //         .collection('classes')
-                                    //         .doc(Get.find<ClassController>()
-                                    //             .classDocID
-                                    //             .value)
-                                    //         .collection('Students')
-                                    //         .snapshots()
-                                    //     :
-                                    server
-                                        .collection('DrivingSchoolCollection')
-                                        .doc(UserCredentialsController.schoolId)
-                                        .collection('Archives')
-                                        .orderBy('studentName')
-                                        .snapshots(),
+                                stream: server
+                                    .collection('DrivingSchoolCollection')
+                                    .doc(UserCredentialsController.schoolId)
+                                    .collection('Archives')
+                                    .orderBy('studentName')
+                                    .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {
                                     return snaPS.data!.docs.isEmpty
