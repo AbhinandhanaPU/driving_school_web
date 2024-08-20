@@ -75,19 +75,6 @@ class AppBarAdminPanel extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            width: 15,
-                            child: IconButton(
-                                focusNode: textButtonFocusNode2,
-                                onPressed: () {
-                                  // showPopupMenu(context);
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  size: 18,
-                                  color: cBlack,
-                                )),
-                          ),
                         ],
                       ),
                     ],

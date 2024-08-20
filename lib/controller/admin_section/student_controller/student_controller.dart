@@ -21,7 +21,21 @@ class StudentController extends GetxController {
   Future<void> fetchAllStudents() async {
     try {
       log("fetchAllStudents......................");
+      studentProfileList = [];
       final data = await _fbServer.collection('Students').get();
+      studentProfileList =
+          data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      log(studentProfileList[0].toString());
+    } catch (e) {
+      showToast(msg: "User Data Error");
+    }
+  }
+
+  Future<void> fetchAllArchivesStudents() async {
+    try {
+      log("fetchAllArchivesStudents......................");
+      studentProfileList = [];
+      final data = await _fbServer.collection('Archives').get();
       studentProfileList =
           data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
@@ -217,6 +231,31 @@ class StudentController extends GetxController {
       }
     } catch (e) {
       log("Students approval error: $e");
+    }
+  }
+
+  addStudentsToArchive(StudentModel studentModel) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Archives')
+          .doc(studentModel.docid)
+          .set(studentModel.toMap())
+          .then((value) async {
+        log('Student Archieved');
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .delete();
+        log('Student removed');
+        showToast(msg: 'Student Archieved');
+        Get.back();
+      });
+    } catch (e) {
+      log('Students archieve error $e', name: 'StudentController');
     }
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/fonts/google_monstre.dart';
 import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/view/home/appbar/app_bar.dart';
 import 'package:new_project_driving/view/home/home_page/HomeMainImageScreen/HomeMainImage_screen.dart';
@@ -21,7 +20,8 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: cWhite,
       appBar: const PreferredSize(
-          preferredSize: Size(double.infinity, 100), child: ResponsiveMobileAppBar()),
+          preferredSize: Size(double.infinity, 100),
+          child: ResponsiveMobileAppBar()),
       body: ListView(
         children: [
           HomeMainImageScreenWidget(screenSize: screenSize),
@@ -38,13 +38,15 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 1),
             child: Container(
-              height: ResponsiveWebSite.isMobile(context)
-                  ? 350
-                  : 500, 
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(image: AssetImage('assets/images/blue_background.jpg',),fit: BoxFit.fill)
-                  ),// Adjust the height of the containers as needed
+              height: ResponsiveWebSite.isMobile(context) ? 350 : 500,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/blue_background.jpg',
+                      ),
+                      fit: BoxFit
+                          .fill)), // Adjust the height of the containers as needed
               child: Column(
                 children: [
                   Padding(
@@ -60,98 +62,97 @@ class HomeScreen extends StatelessWidget {
                     height: 20,
                   ),
                   SizedBox(
-              // color: Colors.black,
-              height: ResponsiveWebSite.isMobile(context) ? 500 : 350,
-              // width: 600,
-              child: ResponsiveWebSite.isDesktop(context)
-                  ? ListView.separated(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      // shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      // controller: sscrollcontroller,
-                      itemBuilder: (context, index) {
-                        //  final data = CreateEmployeeClassModel.fromMap(snapshot.data!.docs[index].data());
-                        return SizedBox(
-                          height: 400,
-                          width: 400,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Image.network(
-                                  personPhotos[index],
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(top: 05),
-                              //   child: Text(
-                              //    personNameList[index],
-                              //     style: const TextStyle(
-                              //         color: cWhite,
-                              //         fontWeight: FontWeight.w400),
-                              //   ),
-                              // ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(bottom: 20),
-                              //   child: GooglePoppinsWidgets(
-                              //     text: personOccu[index],
-                              //     fontsize: 10,
-                              //     color: cWhite,
-                              //     fontWeight: FontWeight.w200,
-                              //   ),
-                              // )
-                            ],
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          width: 20,
-                        );
-                      },
-                      itemCount: 4)
-                  : GridView.count(
-                      crossAxisCount: 2,
-                      padding: const EdgeInsets.all(20),
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      primary: false,
-                      children: List.generate(4, (index) {
-                        //    final data = CreateEmployeeClassModel.fromMap(snapshot.data!.docs[index].data());
-                        return SizedBox(
-                          // margin: ,
-                          height: 100,
-                          width: 100,
-                          // color: Colors.amber,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: Image.network(
-                                    personPhotos[index],
-                                    fit: BoxFit.cover,
+                      // color: Colors.black,
+                      height: ResponsiveWebSite.isMobile(context) ? 500 : 350,
+                      // width: 600,
+                      child: ResponsiveWebSite.isDesktop(context)
+                          ? ListView.separated(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              // shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              // controller: sscrollcontroller,
+                              itemBuilder: (context, index) {
+                                //  final data = CreateEmployeeClassModel.fromMap(snapshot.data!.docs[index].data());
+                                return SizedBox(
+                                  height: 400,
+                                  width: 400,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Image.network(
+                                          personPhotos[index],
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(top: 05),
+                                      //   child: Text(
+                                      //    personNameList[index],
+                                      //     style: const TextStyle(
+                                      //         color: cWhite,
+                                      //         fontWeight: FontWeight.w400),
+                                      //   ),
+                                      // ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(bottom: 20),
+                                      //   child: GooglePoppinsWidgets(
+                                      //     text: personOccu[index],
+                                      //     fontsize: 10,
+                                      //     color: cWhite,
+                                      //     fontWeight: FontWeight.w200,
+                                      //   ),
+                                      // )
+                                    ],
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ))
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  width: 20,
+                                );
+                              },
+                              itemCount: 4)
+                          : GridView.count(
+                              crossAxisCount: 2,
+                              padding: const EdgeInsets.all(20),
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              primary: false,
+                              children: List.generate(4, (index) {
+                                //    final data = CreateEmployeeClassModel.fromMap(snapshot.data!.docs[index].data());
+                                return SizedBox(
+                                  // margin: ,
+                                  height: 100,
+                                  width: 100,
+                                  // color: Colors.amber,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Image.network(
+                                            personPhotos[index],
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ))
                 ],
               ),
             ),
           ),
 
-
           const FooterSectionScreen(),
-                 const Divider(
-                  thickness: 01,
-                  color: cBlack,
-                ),
-                const LeptonFooterBar(),
-                const CopyRightWidget()
+          const Divider(
+            thickness: 01,
+            color: cBlack,
+          ),
+          const LeptonFooterBar(),
+          const CopyRightWidget()
         ],
       ),
     );

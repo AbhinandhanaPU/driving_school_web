@@ -172,7 +172,7 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                     server
                                         .collection('DrivingSchoolCollection')
                                         .doc(UserCredentialsController.schoolId)
-                                        .collection('Students')
+                                        .collection('Archives')
                                         .orderBy('studentName')
                                         .snapshots(),
                                 builder: (context, snaPS) {
@@ -202,7 +202,8 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                                   studentController.ontapStudent
                                                       .value = true;
                                                 },
-                                                child: ArchiveAllStudentDataList(
+                                                child:
+                                                    ArchiveAllStudentDataList(
                                                   data: data,
                                                   index: index,
                                                 ),
@@ -234,7 +235,8 @@ class AllArchivesStudentListContainer extends StatelessWidget {
   }
 
   Future<void> searchStudentsByName(BuildContext context) async {
-    studentController.fetchAllStudents();
-    await showSearch(context: context, delegate: ArchivesAllStudentSearchByName());
+    studentController.fetchAllArchivesStudents();
+    await showSearch(
+        context: context, delegate: ArchivesAllStudentSearchByName());
   }
 }
