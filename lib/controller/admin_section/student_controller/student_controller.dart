@@ -46,9 +46,7 @@ class StudentController extends GetxController {
 
   Future<void> deleteStudents(StudentModel studentModel) async {
     try {
-      await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
+      await _fbServer
           .collection('Students')
           .doc(studentModel.docid)
           .delete()
@@ -61,9 +59,7 @@ class StudentController extends GetxController {
   Future<void> updateStudentStatus(
       StudentModel studentModel, String newStatus) async {
     try {
-      await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
+      await _fbServer
           .collection('Students')
           .doc(studentModel.docid)
           .update({'status': newStatus}).then((value) {
@@ -78,9 +74,7 @@ class StudentController extends GetxController {
 
   //   Future<void> updateStudentCourse(StudentModel student, String newCourseId) async {
   //   try {
-  //     await server
-  //         .collection('DrivingSchoolCollection')
-  //         .doc(UserCredentialsController.schoolId)
+  //     await _fbServer
   //         .collection('Students')
   //         .doc(student.docid)
   //         .update({'courseId': newCourseId});
@@ -95,20 +89,14 @@ class StudentController extends GetxController {
     List<String> courseNames = [];
 
     try {
-      final docidofcourse = await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .collection("Courses")
-          .get();
+      final docidofcourse = await _fbServer.collection("Courses").get();
 
       if (docidofcourse.docs.isNotEmpty) {
         for (var courseDoc in docidofcourse.docs) {
           final courseDocid = courseDoc.id;
 
           // fetch the student from each course
-          final std = await server
-              .collection('DrivingSchoolCollection')
-              .doc(UserCredentialsController.schoolId)
+          final std = await _fbServer
               .collection("Courses")
               .doc(courseDocid)
               .collection('Students')
@@ -117,12 +105,8 @@ class StudentController extends GetxController {
 
           if (std.exists) {
             // fetch the course document to get the course name
-            final courseDocument = await server
-                .collection('DrivingSchoolCollection')
-                .doc(UserCredentialsController.schoolId)
-                .collection("Courses")
-                .doc(courseDocid)
-                .get();
+            final courseDocument =
+                await _fbServer.collection("Courses").doc(courseDocid).get();
 
             if (courseDocument.exists) {
               final courseName = courseDocument.data()?['courseName'];
@@ -143,9 +127,7 @@ class StudentController extends GetxController {
   Future<void> updateStudentLevel(
       StudentModel studentModel, String newLevel, String courseID) async {
     try {
-      await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
+      await _fbServer
           .collection('Courses')
           .doc(courseID)
           .collection('Students')
@@ -166,15 +148,11 @@ class StudentController extends GetxController {
     String courseID,
   ) async {
     try {
-      await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
+      await _fbServer
           .collection('FeeCollection')
           .doc(courseID)
           .set({'docId': courseID}).then((value) async {
-        await server
-            .collection('DrivingSchoolCollection')
-            .doc(UserCredentialsController.schoolId)
+        await _fbServer
             .collection('FeeCollection')
             .doc(courseID)
             .collection('Students')
@@ -205,9 +183,7 @@ class StudentController extends GetxController {
     String courseID,
   ) async {
     try {
-      final reqStudentDoc = await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
+      final reqStudentDoc = await _fbServer
           .collection('Courses')
           .doc(courseID)
           .collection("RequestedStudents")
@@ -216,9 +192,7 @@ class StudentController extends GetxController {
 
       if (reqStudentDoc.exists) {
         await reqStudentDoc.reference.delete();
-        await server
-            .collection('DrivingSchoolCollection')
-            .doc(UserCredentialsController.schoolId)
+        await _fbServer
             .collection('Courses')
             .doc(courseID)
             .collection("Students")
@@ -236,26 +210,279 @@ class StudentController extends GetxController {
 
   addStudentsToArchive(StudentModel studentModel) async {
     try {
-      await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
+      await _fbServer
           .collection('Archives')
           .doc(studentModel.docid)
           .set(studentModel.toMap())
           .then((value) async {
         log('Student Archieved');
-        await server
-            .collection('DrivingSchoolCollection')
-            .doc(UserCredentialsController.schoolId)
-            .collection('Students')
-            .doc(studentModel.docid)
-            .delete();
-        log('Student removed');
+        await deleteStudentFromAllStudents(studentModel);
+        await deleteStudentFromCourse(studentModel);
+        await deleteStudentFromBatch(studentModel);
+        await deleteStudentFromDrivingTest(studentModel);
+        await deleteStudentFromPracticeSchedule(studentModel);
+        await deleteStudentFromFee(studentModel);
         showToast(msg: 'Student Archieved');
         Get.back();
       });
     } catch (e) {
       log('Students archieve error $e', name: 'StudentController');
+    }
+  }
+
+  Future<void> deleteStudentFromAllStudents(StudentModel studentModel) async {
+    try {
+      final documents = await _fbServer
+          .collection('Students')
+          .doc(studentModel.docid)
+          .collection('Documents')
+          .get();
+
+      for (var doc in documents.docs) {
+        await _fbServer
+            .collection('Archives')
+            .doc(studentModel.docid)
+            .collection('Documents')
+            .doc(doc.id)
+            .set(doc.data());
+      }
+      for (var doc in documents.docs) {
+        await _fbServer
+            .collection('Students')
+            .doc(studentModel.docid)
+            .collection('Documents')
+            .doc(doc.id)
+            .delete();
+      }
+      await _fbServer.collection('Students').doc(studentModel.docid).delete();
+
+      log('Student and related documents removed');
+    } catch (e) {
+      log('deleteStudentFromAllStudents error: $e');
+    }
+  }
+
+  Future<void> deleteStudentFromCourse(StudentModel studentModel) async {
+    try {
+      final coursesSnapshot = await _fbServer.collection("Courses").get();
+
+      if (coursesSnapshot.docs.isNotEmpty) {
+        for (var courseDoc in coursesSnapshot.docs) {
+          final courseDocid = courseDoc.id;
+
+          final studentDoc = await _fbServer
+              .collection("Courses")
+              .doc(courseDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (studentDoc.exists) {
+            final courseName = courseDoc.data()['courseName'];
+            await _fbServer
+                .collection('Archives')
+                .doc(studentModel.docid)
+                .collection('CoursesDetails')
+                .doc(studentModel.docid)
+                .set({
+              'courseName': courseName,
+              'courseId': courseDocid,
+            });
+            await _fbServer
+                .collection("Courses")
+                .doc(courseDocid)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .delete()
+                .then((value) {
+              log('Student deleted from course: $courseName');
+            });
+          }
+        }
+      }
+    } catch (e) {
+      log('deleteStudentFromCourse error: $e');
+    }
+  }
+
+  Future<void> deleteStudentFromBatch(StudentModel studentModel) async {
+    try {
+      final batchesSnapshot = await _fbServer.collection("Batch").get();
+
+      if (batchesSnapshot.docs.isNotEmpty) {
+        for (var batchDoc in batchesSnapshot.docs) {
+          final batchDocid = batchDoc.id;
+
+          final studentDoc = await _fbServer
+              .collection("Batch")
+              .doc(batchDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (studentDoc.exists) {
+            final batchName = batchDoc.data()['batchName'];
+
+            await _fbServer
+                .collection('Archives')
+                .doc(studentModel.docid)
+                .collection('CoursesDetails')
+                .doc(studentModel.docid)
+                .set({
+              'batchName': batchName,
+              'batchId': batchDocid,
+            });
+
+            await _fbServer
+                .collection("Batch")
+                .doc(batchDocid)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .delete()
+                .then((value) {
+              log('Student deleted from batch: $batchName');
+            });
+          }
+        }
+      }
+    } catch (e) {
+      log('deleteStudentFromBatch error: $e');
+    }
+  }
+
+  Future<void> deleteStudentFromDrivingTest(StudentModel studentModel) async {
+    try {
+      final drivingTestsSnapshot =
+          await _fbServer.collection("DrivingTest").get();
+
+      if (drivingTestsSnapshot.docs.isNotEmpty) {
+        for (var drivingTestDoc in drivingTestsSnapshot.docs) {
+          final drivingTestDocid = drivingTestDoc.id;
+
+          final studentDoc = await _fbServer
+              .collection("DrivingTest")
+              .doc(drivingTestDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (studentDoc.exists) {
+            await _fbServer
+                .collection('Archives')
+                .doc(studentModel.docid)
+                .collection('CoursesDetails')
+                .doc(studentModel.docid)
+                .set({
+              'testId': drivingTestDocid,
+            });
+
+            await _fbServer
+                .collection("DrivingTest")
+                .doc(drivingTestDocid)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .delete()
+                .then((value) {
+              log('Student deleted from driving test ');
+            });
+          }
+        }
+      }
+    } catch (e) {
+      log('deleteStudentFromDrivingTest error: $e');
+    }
+  }
+
+  Future<void> deleteStudentFromFee(StudentModel studentModel) async {
+    try {
+      final feeCollectionSnapshot =
+          await _fbServer.collection("FeeCollection").get();
+
+      if (feeCollectionSnapshot.docs.isNotEmpty) {
+        for (var feeDoc in feeCollectionSnapshot.docs) {
+          final feeDocid = feeDoc.id;
+
+          final studentDoc = await _fbServer
+              .collection("FeeCollection")
+              .doc(feeDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (studentDoc.exists) {
+            final feeStatus = studentDoc.data()!['feeStatus'];
+            final pendingAmount = studentDoc.data()!['pendingAmount'];
+
+            await _fbServer
+                .collection('Archives')
+                .doc(studentModel.docid)
+                .collection('CoursesDetails')
+                .doc(studentModel.docid)
+                .set({
+              'feeStatus': feeStatus,
+              'pendingAmount': pendingAmount,
+            });
+
+            await _fbServer
+                .collection("FeeCollection")
+                .doc(feeDocid)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .delete()
+                .then((value) {
+              log('Student deleted from fee collection');
+            });
+          }
+        }
+      }
+    } catch (e) {
+      log('deleteStudentFromFee error: $e');
+    }
+  }
+
+  Future<void> deleteStudentFromPracticeSchedule(
+      StudentModel studentModel) async {
+    try {
+      final practiceScheduleSnapshot =
+          await _fbServer.collection("PracticeSchedule").get();
+
+      if (practiceScheduleSnapshot.docs.isNotEmpty) {
+        for (var practiceDoc in practiceScheduleSnapshot.docs) {
+          final practiceDocid = practiceDoc.id;
+
+          final studentDoc = await _fbServer
+              .collection("PracticeSchedule")
+              .doc(practiceDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (studentDoc.exists) {
+            final practiceName = practiceDoc.data()['practiceName'];
+            await _fbServer
+                .collection('Archives')
+                .doc(studentModel.docid)
+                .collection('CoursesDetails')
+                .doc(studentModel.docid)
+                .set({
+              'practiceName': practiceName,
+              'practiceId': practiceDocid,
+            });
+
+            await _fbServer
+                .collection("PracticeSchedule")
+                .doc(practiceDocid)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .delete()
+                .then((value) {
+              log('Student deleted from practice schedule: $practiceName');
+            });
+          }
+        }
+      }
+    } catch (e) {
+      log('deleteStudentFromPracticeSchedule error: $e');
     }
   }
 }
