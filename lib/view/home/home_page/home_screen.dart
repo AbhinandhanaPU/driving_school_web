@@ -162,7 +162,7 @@ class HomeScreen extends StatelessWidget {
 List<String> personPhotos = [
   'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fcar_interior.jpg?alt=media&token=a0bbc52a-6f02-46dd-8e4c-587dffd3075b',
   'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fidcard.jpg?alt=media&token=0e425c29-db53-4372-8b2c-4bfdc5050bef',
-  'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fsignals.jpg?alt=media&token=ef6b7092-f99d-4546-9bfb-856be2b96b2e',
+  'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2F1678.jpg?alt=media&token=7f87ca79-a738-49b9-b0f1-0fccbaa96f12',
   'https://firebasestorage.googleapis.com/v0/b/driving-school-6e78e.appspot.com/o/driving_school_homeimages%2Fvehicles.jpg?alt=media&token=5b28c347-e6a2-46a3-b0e7-03b796e4ac79',
 ];
 List<String> persion_text = [''];
