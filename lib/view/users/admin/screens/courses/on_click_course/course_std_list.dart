@@ -23,13 +23,6 @@ class StudentsInCoursesDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     //final data = courseController.courseModelData.value;
     final courseid = courseController.ontapCourseDocID.value;
-
-    //  print('Course ID: ${data?.courseId}');
-
-    // if (data == null) {
-    //   return const Center(child: Text('Course data is not available'));
-    // }
-
     return Obx(() => courseController.ontapReqStudent.value == true
         ? ReqStudentsInCourses()
         : SingleChildScrollView(
@@ -39,8 +32,7 @@ class StudentsInCoursesDetails extends StatelessWidget {
             child: Container(
               color: screenContainerbackgroundColor,
               height: 650,
-              width:
-                  ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+              width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
               padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,8 +65,7 @@ class StudentsInCoursesDetails extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            addStudentToCourse(context,
-                                courseController.ontapCourseDocID.value);
+                            addStudentToCourse(context, courseController.ontapCourseDocID.value);
                           },
                           child: ButtonContainerWidget(
                               curving: 30,
