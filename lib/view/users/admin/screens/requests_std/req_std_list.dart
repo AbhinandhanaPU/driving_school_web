@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/course_controller/course_controller.dart';
+import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
+import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/courses/regi_std/req_std_datalist.dart';
+import 'package:new_project_driving/view/users/admin/screens/requests_std/req_std_datalist.dart';
+import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
-import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
-import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
 
 class ReqStudentsInCourses extends StatelessWidget {
   ReqStudentsInCourses({super.key});
-  final CourseController courseController = Get.put(CourseController());
+  final StudentController studentController = Get.put(StudentController());
 
   @override
   Widget build(BuildContext context) {
-    final courseid = courseController.ontapCourseDocID.value;
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -36,29 +33,8 @@ class ReqStudentsInCourses extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10, top: 10),
-              child: RouteSelectedTextContainer(
-                  width: 180,
-                  title: courseController.ontapCourseName.toString()),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: GestureDetector(
-                onTap: () {
-                  courseController.ontapReqStudent.value = false;
-                },
-                child: const SizedBox(
-                  height: 35,
-                  width: 100,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 05, left: 05),
-                    child: RouteNonSelectedTextContainer(
-                      title: 'Back',
-                    ),
-                  ),
-                ),
-              ),
+            const SizedBox(
+              height: 50,
             ),
             Container(
               color: cWhite,
@@ -88,7 +64,7 @@ class ReqStudentsInCourses extends StatelessWidget {
                       Expanded(
                           flex: 3,
                           child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'E mail')),
+                              CatrgoryTableHeaderWidget(headerTitle: 'Email')),
                       SizedBox(
                         width: 02,
                       ),
@@ -101,15 +77,22 @@ class ReqStudentsInCourses extends StatelessWidget {
                       ),
                       Expanded(
                           flex: 3,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Level')),
+                          child: CatrgoryTableHeaderWidget(
+                              headerTitle: 'Requested Course')),
                       SizedBox(
                         width: 02,
                       ),
                       Expanded(
                           flex: 2,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Approval Statuss')),
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Accept')),
+                      SizedBox(
+                        width: 02,
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Decline')),
                       SizedBox(
                         width: 02,
                       ),
@@ -128,39 +111,36 @@ class ReqStudentsInCourses extends StatelessWidget {
                   color: cWhite,
                   border: Border.all(color: cWhite),
                 ),
-                child: StreamBuilder(
-                    stream: server
-                        .collection('DrivingSchoolCollection')
-                        .doc(UserCredentialsController.schoolId)
-                        .collection('Courses')
-                        .doc(courseid)
-                        .collection("RequestedStudents")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.data!.docs.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'No Students',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
-                          ),
-                        );
-                      }
+                child: StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: studentController.streamStudentsFromAllCourses(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const LoadingWidget();
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                          child: Text("No students Requested to Join Courses"));
+                    } else {
+                      final studentCourseList = snapshot.data!;
                       return ListView.separated(
-                        itemCount: snapshot.data!.docs.length,
+                        itemCount: studentCourseList.length,
                         itemBuilder: (context, index) {
-                          final data = StudentModel.fromMap(
-                              snapshot.data!.docs[index].data());
-                          return ReqStudentDataList(data: data, index: index);
+                          final course =
+                              studentCourseList[index]["course"] as CourseModel;
+                          final student = studentCourseList[index]["student"]
+                              as StudentModel;
+                          return ReqStudentDataList(
+                              studentModel: student,
+                              courseModel: course,
+                              index: index);
                         },
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 02,
-                        ),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 02),
                       );
-                    }),
+                    }
+                  },
+                ),
               ),
             ),
           ],

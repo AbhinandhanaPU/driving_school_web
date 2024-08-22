@@ -23,6 +23,7 @@ import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_
 import 'package:new_project_driving/view/users/admin/screens/notice/notice_all_ist.dart';
 import 'package:new_project_driving/view/users/admin/screens/notifications/admin_notification_create.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/allpractice_shedule.dart';
+import 'package:new_project_driving/view/users/admin/screens/requests_std/req_std_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/registration/teachers_regi_container.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/view_all_students.dart';
 import 'package:new_project_driving/view/users/admin/screens/study_materials/allstudy_materials_list.dart';
@@ -221,28 +222,26 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
-   //const MockTesttHome(),
-  // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
-
   AllCoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2
-  AllStudentListContainer(), // index 3
-  AllTutorListContainer(), // index 4
-  AllBatchsListContainer(),
-  const AllStudentsAttendance(), // index 5
-  const AllTutorAttendance(), // index 6
-  const MockTesttHome(), // index 7
-  AllDrivingTestDetails(), // index 8
-  AllPracticeShedules(), // index 10
-  FeeCoursesDetails(), // index 11
-  AllAdminListPage(), // index 12
-  const AllStudyMaterialsList(), // index 13
-  NoticeAllList(), // index 14
-  const AllEventsList(), // index 15
-  const AllVideosList(), // index 16
-  AdminNotificationCreate(), // index 17
-  LoginHistroyContainer(), // index 18////////////////////////////////
-  AllArchivesStudentListContainer(),
+  ReqStudentsInCourses(), // index 3
+  AllStudentListContainer(), // index 4
+  AllTutorListContainer(), // index 5
+  AllBatchsListContainer(), // index 6
+  const AllStudentsAttendance(), // index 7
+  const AllTutorAttendance(), // index 8
+  const MockTesttHome(), // index 9
+  AllDrivingTestDetails(), // index 10
+  AllPracticeShedules(), // index 11
+  FeeCoursesDetails(), // index 12
+  AllAdminListPage(), // index 13
+  const AllStudyMaterialsList(), // index 14
+  NoticeAllList(), // index 15
+  const AllEventsList(), // index 16
+  const AllVideosList(), // index 17
+  AdminNotificationCreate(), // index 18
+  LoginHistroyContainer(), // index 19
+  AllArchivesStudentListContainer(), // index 20
 ];
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

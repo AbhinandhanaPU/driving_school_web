@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
+import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
@@ -215,6 +216,69 @@ class StudentController extends GetxController {
       }
     } catch (e) {
       log("Students approval error: $e");
+    }
+  }
+
+  Future<void> declineStudentToCourse(
+    StudentModel studentModel,
+    String courseID,
+  ) async {
+    try {
+      final reqStudentDoc = await _fbServer
+          .collection('Courses')
+          .doc(courseID)
+          .collection("RequestedStudents")
+          .doc(studentModel.docid)
+          .get();
+
+      if (reqStudentDoc.exists) {
+        await reqStudentDoc.reference.delete();
+        await _fbServer
+            .collection('Courses')
+            .doc(courseID)
+            .collection("RequestedStudents")
+            .doc(studentModel.docid)
+            .delete();
+        showToast(msg: 'Student request declined');
+        log("Student request declined");
+      } else {
+        log("Student not found in RequestedStudents collection.");
+      }
+    } catch (e) {
+      log("Students approval error: $e");
+    }
+  }
+
+  Stream<List<Map<String, dynamic>>> streamStudentsFromAllCourses() async* {
+    try {
+      final coursesStream = _fbServer.collection("Courses").snapshots();
+
+      await for (var coursesSnapshot in coursesStream) {
+        List<Map<String, dynamic>> results = [];
+
+        for (var courseDoc in coursesSnapshot.docs) {
+          CourseModel course = CourseModel.fromMap(courseDoc.data());
+          String courseDocId = courseDoc.id;
+
+          final requestedStudentsSnapshot = await _fbServer
+              .collection("Courses")
+              .doc(courseDocId)
+              .collection('RequestedStudents')
+              .get();
+
+          for (var studentDoc in requestedStudentsSnapshot.docs) {
+            StudentModel student = StudentModel.fromMap(studentDoc.data());
+            results.add({
+              "course": course,
+              "student": student,
+            });
+          }
+        }
+        yield results;
+      }
+    } catch (e) {
+      log("Error fetching students: $e");
+      yield [];
     }
   }
 

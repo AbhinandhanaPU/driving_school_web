@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/course_controller/course_controller.dart';
+import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/course_model/course_model.dart';
@@ -10,22 +10,22 @@ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/custom_showdialouge/custom_showdilog.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/std_fees_level.dart';
-import 'package:new_project_driving/view/widget/dropdown_widget/student_level/student_level.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class ReqStudentDataList extends StatelessWidget {
   final int index;
-  final StudentModel data;
+  final StudentModel studentModel;
+  final CourseModel courseModel;
   ReqStudentDataList({
     required this.index,
-    required this.data,
+    required this.studentModel,
     super.key,
+    required this.courseModel,
   });
-  final CourseController courseController = Get.put(CourseController());
+  final StudentController studentController = Get.put(StudentController());
 
   @override
   Widget build(BuildContext context) {
-    final modelData = courseController.courseModelData.value;
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -63,7 +63,7 @@ class ReqStudentDataList extends StatelessWidget {
                       rowMainAccess: MainAxisAlignment.center,
                       color: cWhite,
                       index: index,
-                      headerTitle: data.studentName),
+                      headerTitle: studentModel.studentName),
                 ),
               ],
             ),
@@ -85,7 +85,7 @@ class ReqStudentDataList extends StatelessWidget {
                 ),
                 Expanded(
                     child: TextFontWidget(
-                  text: "  ${data.studentemail}",
+                  text: studentModel.studentemail,
                   fontsize: 12,
                   overflow: TextOverflow.ellipsis,
                 )),
@@ -107,12 +107,15 @@ class ReqStudentDataList extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  width: 5,
+                ),
                 Expanded(
                   child: DataContainerWidget(
                       rowMainAccess: MainAxisAlignment.center,
                       color: cWhite,
                       index: index,
-                      headerTitle: data.phoneNumber),
+                      headerTitle: studentModel.phoneNumber),
                 ),
               ],
             ),
@@ -122,11 +125,13 @@ class ReqStudentDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: StudentLevelDropDown(
-              data: data,
-              courseID: modelData!.courseId,
+            child: DataContainerWidget(
+              rowMainAccess: MainAxisAlignment.center,
+              color: cWhite,
+              index: index,
+              headerTitle: courseModel.courseName,
             ),
-          ), //................................................. dropdwn
+          ), //................................................. course
           const SizedBox(
             width: 02,
           ),
@@ -146,15 +151,70 @@ class ReqStudentDataList extends StatelessWidget {
                     doyouwantActionButton: true,
                     actiononTapfuction: () {
                       Navigator.pop(context);
-                      approvalDialogBox(context, modelData, data);
+                      approvalDialogBox(context, courseModel, studentModel);
                     },
                   );
                 },
-                child: DataContainerWidget(
-                    rowMainAccess: MainAxisAlignment.center,
-                    color: cWhite,
-                    index: index,
-                    headerTitle: 'Accept'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 15,
+                      child: Image.asset('webassets/png/active.png'),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    DataContainerWidget(
+                        rowMainAccess: MainAxisAlignment.center,
+                        color: cWhite,
+                        index: index,
+                        headerTitle: 'Accept'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 02,
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  customShowDilogBox2(
+                    context: context,
+                    title: 'Approval Status',
+                    children: [
+                      const Text(
+                          'Are you sure you want to decline offline payment request?')
+                    ],
+                    doyouwantActionButton: true,
+                    actiononTapfuction: () {
+                      Navigator.pop(context);
+                      studentController.declineStudentToCourse(
+                          studentModel, courseModel.courseId);
+                    },
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 15,
+                      child: Image.asset('webassets/png/shape.png'),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    DataContainerWidget(
+                        rowMainAccess: MainAxisAlignment.center,
+                        color: cWhite,
+                        index: index,
+                        headerTitle: 'Decline'),
+                  ],
+                ),
               ),
             ),
           ),
