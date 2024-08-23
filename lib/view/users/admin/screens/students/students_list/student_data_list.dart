@@ -5,27 +5,34 @@ import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/archives_function/archive_std.dart';
+import 'package:new_project_driving/view/users/admin/screens/students/crud/archives_function/archive_std.dart';
+import 'package:new_project_driving/view/users/admin/screens/students/crud/update_std_batch.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
-class AllStudentDataList extends StatelessWidget {
+class AllStudentDataList extends StatefulWidget {
   final StudentModel data;
   final int index;
+
   const AllStudentDataList({
     required this.data,
     required this.index,
     super.key,
   });
+
+  @override
+  State<AllStudentDataList> createState() => _AllStudentDataListState();
+}
+
+class _AllStudentDataListState extends State<AllStudentDataList> {
   @override
   Widget build(BuildContext context) {
     StudentController studentController = Get.put(StudentController());
+
     return Container(
       height: 45,
       decoration: BoxDecoration(
-        color: index % 2 == 0
-            ? const Color.fromARGB(255, 246, 246, 246)
-            : Colors.blue[50],
+        color: widget.index % 2 == 0 ? const Color.fromARGB(255, 246, 246, 246) : Colors.blue[50],
       ),
       child: Row(
         children: [
@@ -34,12 +41,10 @@ class AllStudentDataList extends StatelessWidget {
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                index: index,
-                headerTitle: '  ${index + 1}'), //....................No
+                index: widget.index,
+                headerTitle: '  ${widget.index + 1}'), //....................No
           ),
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
           Expanded(
             flex: 3,
             child: Row(
@@ -54,7 +59,7 @@ class AllStudentDataList extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextFontWidget(
-                    text: '  ${data.studentName}',
+                    text: '  ${widget.data.studentName}',
                     fontsize: 12,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -62,9 +67,7 @@ class AllStudentDataList extends StatelessWidget {
               ],
             ),
           ), //........................................... Student Name
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
           Expanded(
             flex: 3,
             child: Row(
@@ -79,7 +82,7 @@ class AllStudentDataList extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextFontWidget(
-                    text: "  ${data.phoneNumber}",
+                    text: "  ${widget.data.phoneNumber}",
                     fontsize: 12,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -87,13 +90,11 @@ class AllStudentDataList extends StatelessWidget {
               ],
             ),
           ), //....................................... Student Phone Number
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: StreamBuilder<List<String>>(
-              stream: studentController.fetchStudentsCourse(data),
+              stream: studentController.fetchStudentsCourse(widget.data),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -103,7 +104,7 @@ class AllStudentDataList extends StatelessWidget {
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
-                    index: index,
+                    index: widget.index,
                     headerTitle: 'Course Not Found',
                   );
                 } else {
@@ -111,42 +112,50 @@ class AllStudentDataList extends StatelessWidget {
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
-                    index: index,
+                    index: widget.index,
                     headerTitle: courses,
                   );
                 }
               },
             ),
           ), //............................. Student courses type
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
           Expanded(
             flex: 2,
             child: Center(
               child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                index: index,
-                headerTitle: stringTimeToDateConvert(data.joiningDate),
+                index: widget.index,
+                headerTitle: stringTimeToDateConvert(widget.data.joiningDate),
               ),
             ),
           ), //............................. Student join date
-          const SizedBox(
-            width: 01,
+          const SizedBox(width: 1),
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: [
+                TextFontWidget(
+                  text: widget.data.batchName == '' ? " Not found" : widget.data.batchName,
+                  fontsize: 12,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                IconButton(
+                    onPressed: () {
+                      updateStudentBatch(context: context, studentModel: widget.data);
+                    },
+                    icon: const Icon(
+                      Icons.edit,
+                      size: 18,
+                      color: themeColorBlue,
+                    ))
+              ],
+            ),
           ),
-          // Expanded(
-          //   flex: 2,
-          //   child: DataContainerWidget(
-          //       rowMainAccess: MainAxisAlignment.center,
-          //       color: cWhite,
-          //       // width: 150,
-          //       index: index,
-          //       headerTitle: ' '),
-          // ), //............................. Student Permission Status
-          // const SizedBox(
-          //   width: 01,
-          // ),
+
+          //............................. Student Permission Status
+          const SizedBox(width: 1),
           Expanded(
             flex: 2,
             child: Row(
@@ -156,30 +165,28 @@ class AllStudentDataList extends StatelessWidget {
                   scale: 0.65,
                   child: Switch(
                     activeColor: Colors.green,
-                    value: data.status == 'active',
+                    value: widget.data.status == 'active',
                     onChanged: (value) {
                       final newStatus = value ? 'active' : 'inactive';
-                      studentController.updateStudentStatus(data, newStatus);
+                      studentController.updateStudentStatus(widget.data, newStatus);
                     },
                   ),
                 ),
                 TextFontWidget(
-                  text: data.status == 'active' ? "  Active" : "  Inactive",
+                  text: widget.data.status == 'active' ? "  Active" : "  Inactive",
                   fontsize: 12,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ), //............................. Status [Active or DeActivate]
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
           Expanded(
             flex: 2,
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  archivesStudentsFunction(context, data);
+                  archivesStudentsFunction(context);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -203,9 +210,7 @@ class AllStudentDataList extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
           Expanded(
             flex: 2,
             child: Center(
@@ -215,7 +220,7 @@ class AllStudentDataList extends StatelessWidget {
                     context: context,
                     onTap: () {
                       studentController
-                          .deleteStudents(data)
+                          .deleteStudents(widget.data)
                           .then((value) => Navigator.pop(context));
                     },
                   );
@@ -223,14 +228,12 @@ class AllStudentDataList extends StatelessWidget {
                 child: DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
-                    index: index,
+                    index: widget.index,
                     headerTitle: ' Remove 🗑️'),
               ),
             ),
           ), //........................................... delete
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
         ],
       ),
     );
