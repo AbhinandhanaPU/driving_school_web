@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/admin_profile/admin_profile.dart';
+import 'package:new_project_driving/view/users/admin/app_bar/batch/set_batch.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:sidebar_drawer/sidebar_drawer.dart';
 
@@ -50,6 +52,59 @@ class AppBarAdminPanel extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 5,
+                        ),
+                        child: Container(
+                          height: 45,
+                          width: 280,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.calendar_month_outlined),
+                              ),
+                              const TextFontWidget(text: ' ', fontsize: 12),
+                              const Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    bacthSettingFunction(context);
+                                  },
+                                  child: Container(
+                                    height: 34,
+                                    width: 34,
+                                    decoration: BoxDecoration(
+                                        color: cWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.settings_outlined,
+                                        color: cBlack,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(
                   width: 100,
                   child: Column(
