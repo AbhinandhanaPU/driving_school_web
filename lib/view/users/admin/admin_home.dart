@@ -23,8 +23,8 @@ import 'package:new_project_driving/view/users/admin/screens/new_admin_page/new_
 import 'package:new_project_driving/view/users/admin/screens/notice/notice_all_ist.dart';
 import 'package:new_project_driving/view/users/admin/screens/notifications/admin_notification_create.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/allpractice_shedule.dart';
-import 'package:new_project_driving/view/users/admin/screens/requests_std/req_std_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/registration/teachers_regi_container.dart';
+import 'package:new_project_driving/view/users/admin/screens/requests_std/req_std_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/view_all_students.dart';
 import 'package:new_project_driving/view/users/admin/screens/study_materials/allstudy_materials_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/tutor/view_all_tutor.dart';
@@ -222,6 +222,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
+    AdminNotificationCreate(),
   const AdminDashBoardSections(), // index 0
   AllCoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2

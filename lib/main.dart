@@ -35,14 +35,18 @@ class MyApp extends StatelessWidget {
             },
             home: SplashScreen(),
             theme: ThemeData(
-                inputDecorationTheme: InputDecorationTheme(
-                    border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(0),
-                )),
-                primarySwatch: Colors.blue,
-                dialogTheme: const DialogTheme(shape: RoundedRectangleBorder()),
-                datePickerTheme:
-                    const DatePickerThemeData(shape: RoundedRectangleBorder())),
+              inputDecorationTheme: InputDecorationTheme(
+                  border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(0),
+              )),
+              primarySwatch: Colors.blue,
+              dialogTheme: const DialogTheme(
+                shape: RoundedRectangleBorder(),
+              ),
+              datePickerTheme: const DatePickerThemeData(
+                shape: RoundedRectangleBorder(),
+              ),
+            ),
           );
         });
   }
