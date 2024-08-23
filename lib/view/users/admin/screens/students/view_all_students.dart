@@ -6,7 +6,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/search_students/search_student_name.dart';
+import 'package:new_project_driving/view/users/admin/screens/students/crud/search_students/search_student_name.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_details.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
@@ -25,15 +25,12 @@ class AllStudentListContainer extends StatelessWidget {
       () => studentController.ontapStudent.value == true
           ? StudentDetailsContainer()
           : SingleChildScrollView(
-              scrollDirection: ResponsiveWebSite.isMobile(context)
-                  ? Axis.horizontal
-                  : Axis.vertical,
+              scrollDirection:
+                  ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
               child: Container(
                 color: screenContainerbackgroundColor,
                 height: 650,
-                width: ResponsiveWebSite.isDesktop(context)
-                    ? double.infinity
-                    : 1200,
+                width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: Column(
@@ -62,9 +59,7 @@ class AllStudentListContainer extends StatelessWidget {
                                     padding: EdgeInsets.all(8.0),
                                     child: Icon(Icons.search),
                                   ),
-                                  TextFontWidget(
-                                      text: " Search By Student Name",
-                                      fontsize: 12)
+                                  TextFontWidget(text: " Search By Student Name", fontsize: 12)
                                 ],
                               ),
                             ),
@@ -95,65 +90,54 @@ class AllStudentListContainer extends StatelessWidget {
                             child: const Row(
                               children: [
                                 Expanded(
-                                    flex: 1,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'No')),
+                                    flex: 1, child: CatrgoryTableHeaderWidget(headerTitle: 'No')),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                    flex: 3, child: CatrgoryTableHeaderWidget(headerTitle: 'Name')),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                     flex: 3,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Name')),
+                                    child: CatrgoryTableHeaderWidget(headerTitle: 'Ph.NO')),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                     flex: 3,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Ph.NO')),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                    flex: 4,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'courses type')),
+                                    child: CatrgoryTableHeaderWidget(headerTitle: 'courses type')),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                     flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Join Date')),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                // Expanded(
-                                //     flex: 2,
-                                //     child: CatrgoryTableHeaderWidget(
-                                //         headerTitle: 'Permission Status')),
-                                // SizedBox(
-                                //   width: 02,
-                                // ),
-                                Expanded(
-                                    flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Status')),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                 Expanded(
-                                    flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Archives')),
+                                    child: CatrgoryTableHeaderWidget(headerTitle: 'Join Date')),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                     flex: 2,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Delete')),
+                                    child: CatrgoryTableHeaderWidget(headerTitle: 'Batch')),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                    flex: 2,
+                                    child: CatrgoryTableHeaderWidget(headerTitle: 'Status')),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                    flex: 2,
+                                    child: CatrgoryTableHeaderWidget(headerTitle: 'Archives')),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                    flex: 2,
+                                    child: CatrgoryTableHeaderWidget(headerTitle: 'Delete')),
                                 SizedBox(
                                   width: 02,
                                 ),
@@ -204,24 +188,18 @@ class AllStudentListContainer extends StatelessWidget {
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
                                                 "Please create Students",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                                style: TextStyle(fontWeight: FontWeight.w400),
                                               ),
                                             ),
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
                                               final data = StudentModel.fromMap(
-                                                  snaPS.data!.docs[index]
-                                                      .data());
+                                                  snaPS.data!.docs[index].data());
                                               return GestureDetector(
                                                 onTap: () {
-                                                  studentController
-                                                      .studentModelData
-                                                      .value = data;
-                                                  studentController.ontapStudent
-                                                      .value = true;
+                                                  studentController.studentModelData.value = data;
+                                                  studentController.ontapStudent.value = true;
                                                 },
                                                 child: AllStudentDataList(
                                                   data: data,
