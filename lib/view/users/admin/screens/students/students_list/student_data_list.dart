@@ -32,7 +32,9 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
     return Container(
       height: 45,
       decoration: BoxDecoration(
-        color: widget.index % 2 == 0 ? const Color.fromARGB(255, 246, 246, 246) : Colors.blue[50],
+        color: widget.index % 2 == 0
+            ? const Color.fromARGB(255, 246, 246, 246)
+            : Colors.blue[50],
       ),
       child: Row(
         children: [
@@ -137,13 +139,16 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
             child: Row(
               children: [
                 TextFontWidget(
-                  text: widget.data.batchName == '' ? " Not found" : widget.data.batchName,
+                  text: widget.data.batchName == ''
+                      ? " Not found"
+                      : widget.data.batchName,
                   fontsize: 12,
                   overflow: TextOverflow.ellipsis,
                 ),
                 IconButton(
                     onPressed: () {
-                      updateStudentBatch(context: context, studentModel: widget.data);
+                      updateStudentBatch(
+                          context: context, studentModel: widget.data);
                     },
                     icon: const Icon(
                       Icons.edit,
@@ -168,12 +173,15 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                     value: widget.data.status == 'active',
                     onChanged: (value) {
                       final newStatus = value ? 'active' : 'inactive';
-                      studentController.updateStudentStatus(widget.data, newStatus);
+                      studentController.updateStudentStatus(
+                          widget.data, newStatus);
                     },
                   ),
                 ),
                 TextFontWidget(
-                  text: widget.data.status == 'active' ? "  Active" : "  Inactive",
+                  text: widget.data.status == 'active'
+                      ? "  Active"
+                      : "  Inactive",
                   fontsize: 12,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -186,7 +194,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  archivesStudentsFunction(context);
+                  archivesStudentsFunction(context, widget.data);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

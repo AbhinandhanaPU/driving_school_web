@@ -15,6 +15,8 @@ class StudentController extends GetxController {
   RxBool ontapStudent = false.obs;
   final formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
+  RxString batchId = ''.obs;
+  RxString batchName = ''.obs;
 
   final _fbServer = server
       .collection('DrivingSchoolCollection')
@@ -83,6 +85,21 @@ class StudentController extends GetxController {
     }
   }
 
+  Future<void> updateStudentBatch(StudentModel studentModel) async {
+    try {
+      await _fbServer.collection('Students').doc(studentModel.docid).update({
+        'batchId': batchId.value,
+        'batchName': batchName.value,
+      }).then((value) {
+        studentModel.batchId = batchId.value;
+        studentModel.batchName = batchName.value;
+        update();
+        log("Student batch updated to $batchId");
+      });
+    } catch (e) {
+      log('student batch update error $e');
+    }
+  }
   //   Future<void> updateStudentCourse(StudentModel student, String newCourseId) async {
   //   try {
   //     await _fbServer
