@@ -13,17 +13,17 @@ class StudentController extends GetxController {
   RxBool ontapStudent = false.obs;
   final formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
+  RxString batchId = "".obs;
+  RxString batchName = "".obs;
 
-  final _fbServer = server
-      .collection('DrivingSchoolCollection')
-      .doc(UserCredentialsController.schoolId);
+  final _fbServer =
+      server.collection('DrivingSchoolCollection').doc(UserCredentialsController.schoolId);
 
   Future<void> fetchAllStudents() async {
     try {
       log("fetchAllStudents......................");
       final data = await _fbServer.collection('Students').get();
-      studentProfileList =
-          data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      studentProfileList = data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
     } catch (e) {
       showToast(msg: "User Data Error");
@@ -44,8 +44,7 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> updateStudentStatus(
-      StudentModel studentModel, String newStatus) async {
+  Future<void> updateStudentStatus(StudentModel studentModel, String newStatus) async {
     try {
       await server
           .collection('DrivingSchoolCollection')
@@ -169,8 +168,7 @@ class StudentController extends GetxController {
           'studentName': studentModel.studentName,
           'studentID': studentModel.docid,
           'feeStatus': status,
-          'pendingAmount':
-              amountController.text == "" ? 0 : amountController.text,
+          'pendingAmount': amountController.text == "" ? 0 : amountController.text,
           'courseID': courseID
         }).then((value) {
           amountController.clear();
@@ -181,6 +179,22 @@ class StudentController extends GetxController {
       });
     } catch (e) {
       log(" FeeCollection error: $e");
+    }
+  }
+
+  Future<void> updateStudentBatch(StudentModel studentModel) async {
+    try {
+      await _fbServer.collection('Students').doc(studentModel.docid).update({
+        'batchId': batchId.value,
+        'batchName': batchName.value,
+      }).then((value) {
+        studentModel.batchId = batchId.value;
+        studentModel.batchName = batchName.value;
+        update();
+        log("Student batch updated to $batchId");
+      });
+    } catch (e) {
+      log('student batch update error $e');
     }
   }
 }

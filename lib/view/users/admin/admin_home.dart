@@ -51,8 +51,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: UserCredentialsController.schoolId !=
-                FirebaseAuth.instance.currentUser!.uid
+        stream: UserCredentialsController.schoolId != FirebaseAuth.instance.currentUser!.uid
             ? server
                 .collection('DrivingSchoolCollection')
                 .doc(UserCredentialsController.schoolId)
@@ -67,8 +66,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     body: SafeArea(
                         child: Center(
                       child: TextFontWidget(
-                          text: "Waiting for superadmin response.....",
-                          fontsize: 20),
+                          text: "Waiting for superadmin response.....", fontsize: 20),
                     )),
                   )
                 : Scaffold(
@@ -102,19 +100,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                           ),
                                           GooglePoppinsWidgets(
                                             text: instiDrivingName,
-                                            fontsize:
-                                                ResponsiveWebSite.isMobile(
-                                                        context)
-                                                    ? 12
-                                                    : 15,
+                                            fontsize: ResponsiveWebSite.isMobile(context) ? 12 : 15,
                                             fontWeight: FontWeight.w500,
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, top: 12),
+                                      padding: const EdgeInsets.only(left: 10, top: 12),
                                       child: GestureDetector(
                                         child: Text(
                                           "Main Menu",
@@ -140,8 +133,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                           )),
                     ),
                   );
-          } else if (UserCredentialsController.schoolId ==
-              FirebaseAuth.instance.currentUser!.uid) {
+          } else if (UserCredentialsController.schoolId == FirebaseAuth.instance.currentUser!.uid) {
             return Scaffold(
               backgroundColor: cWhite,
               body: SafeArea(
@@ -156,9 +148,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                       color: Colors.white,
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.only(
-                              left:
-                                  ResponsiveWebSite.isMobile(context) ? 0 : 10),
+                          padding:
+                              EdgeInsets.only(left: ResponsiveWebSite.isMobile(context) ? 0 : 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -167,10 +158,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      height:
-                                          ResponsiveWebSite.isMobile(context)
-                                              ? 40
-                                              : 60,
+                                      height: ResponsiveWebSite.isMobile(context) ? 40 : 60,
                                       child: Image.asset(
                                         logoImage,
                                         fit: BoxFit.fill,
@@ -178,18 +166,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                     ),
                                     GooglePoppinsWidgets(
                                       text: instiDrivingName,
-                                      fontsize:
-                                          ResponsiveWebSite.isMobile(context)
-                                              ? 12
-                                              : 15,
+                                      fontsize: ResponsiveWebSite.isMobile(context) ? 12 : 15,
                                       fontWeight: FontWeight.w500,
                                     )
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, top: 12),
+                                padding: const EdgeInsets.only(left: 10, top: 12),
                                 child: Text(
                                   "Main Menu",
                                   style: TextStyle(
@@ -221,7 +205,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
-   //const MockTesttHome(),
+  //const MockTesttHome(),
   // AdminDashBoardSections(),
   const AdminDashBoardSections(), // index 0
 
