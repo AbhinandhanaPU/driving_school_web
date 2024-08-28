@@ -170,18 +170,16 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                   scale: 0.65,
                   child: Switch(
                     activeColor: Colors.green,
-                    value: widget.data.status == 'active',
+                    value: widget.data.status == true,
                     onChanged: (value) {
-                      final newStatus = value ? 'active' : 'inactive';
+                      final newStatus = value ? true : false;
                       studentController.updateStudentStatus(
                           widget.data, newStatus);
                     },
                   ),
                 ),
                 TextFontWidget(
-                  text: widget.data.status == 'active'
-                      ? "  Active"
-                      : "  Inactive",
+                  text: widget.data.status == true ? "  Active" : "  Inactive",
                   fontsize: 12,
                   overflow: TextOverflow.ellipsis,
                 ),
