@@ -69,7 +69,7 @@ class StudentSignUpController extends GetxController {
           licenceNumber: licenceController.text,
           joiningDate: DateTime.now().toString(),
           userRole: "student",
-          status: 'Inactive', //change
+          status: true, //change
           level: "Beginner",
           batchId: '',
           batchName: '',
@@ -95,7 +95,8 @@ class StudentSignUpController extends GetxController {
                 .doc(authvalue.user!.uid)
                 .get();
             if (user.data() != null) {
-              UserCredentialsController.studentModel = StudentModel.fromMap(user.data()!);
+              UserCredentialsController.studentModel =
+                  StudentModel.fromMap(user.data()!);
               log(UserCredentialsController.studentModel.toString());
             }
 
@@ -113,7 +114,8 @@ class StudentSignUpController extends GetxController {
                       content: const SingleChildScrollView(
                         child: ListBody(
                           children: <Widget>[
-                            Text('Your Profile Created Successfully ...login again to continue...')
+                            Text(
+                                'Your Profile Created Successfully ...login again to continue...')
                           ],
                         ),
                       ),
