@@ -384,7 +384,7 @@ class ClassWiseFeesDataListContainer extends StatelessWidget {
                                             .doc(studentdata['docid'])
                                             .get()
                                             .then((value) async {
-                                          await notificationController
+                                          // await notificationController
                                               // .userparentNotification(
                                               //     parentID: value['parentId'],
                                               //     icon: SuccessNotifierSetup()
@@ -402,22 +402,22 @@ class ClassWiseFeesDataListContainer extends StatelessWidget {
                                               //             .containerColor)
                                             //   .then((value) async {
                                             // await notificationController
-                                                .userStudentNotification(
-                                                    studentID:
-                                                        studentdata['docid'],
-                                                    icon: SuccessNotifierSetup()
-                                                        .icon,
-                                                    messageText:
-                                                        'Your ${Get.find<FeesAndBillsController>().feetypeName.value} rupees $studentFee /- is paid successfully, Thank you 🙏. \n നിങ്ങളുടെ ${Get.find<FeesAndBillsController>().feetypeName.value} ആയ $studentFee /- രൂപ വിജയകരമായി അടച്ചിരിക്കുന്നു, നന്ദി 🙏',
-                                                    // ,
-                                                    headerText:
-                                                        "${Get.find<FeesAndBillsController>().feetypeName.value} Due Fee",
-                                                    whiteshadeColor:
-                                                        SuccessNotifierSetup()
-                                                            .whiteshadeColor,
-                                                    containerColor:
-                                                        SuccessNotifierSetup()
-                                                            .containerColor);
+                                                // .userStudentNotification(
+                                                //     studentID:
+                                                //         studentdata['docid'],
+                                                //     icon: SuccessNotifierSetup()
+                                                //         .icon,
+                                                //     messageText:
+                                                //         'Your ${Get.find<FeesAndBillsController>().feetypeName.value} rupees $studentFee /- is paid successfully, Thank you 🙏. \n നിങ്ങളുടെ ${Get.find<FeesAndBillsController>().feetypeName.value} ആയ $studentFee /- രൂപ വിജയകരമായി അടച്ചിരിക്കുന്നു, നന്ദി 🙏',
+                                                //     // ,
+                                                //     headerText:
+                                                //         "${Get.find<FeesAndBillsController>().feetypeName.value} Due Fee",
+                                                //     whiteshadeColor:
+                                                //         SuccessNotifierSetup()
+                                                //             .whiteshadeColor,
+                                                //     containerColor:
+                                                //         SuccessNotifierSetup()
+                                                //             .containerColor);
                                           }).then((value) async {
                                             await Get.find<
                                                     StudentFeeController>()
@@ -461,7 +461,7 @@ class ClassWiseFeesDataListContainer extends StatelessWidget {
                                     const TextFontWidget(
                                         text: "Are you confirmed to Unpaid ?",
                                         fontsize: 15)
-                                  ],
+                                  ],  
                                   actiononTapfuction: () async {
                                     await server
                                         .collection('DrivingSchoolCollection')
@@ -470,22 +470,22 @@ class ClassWiseFeesDataListContainer extends StatelessWidget {
                                         .doc(studentdata['docid'])
                                         .get()
                                         .then((value) async {
-                                      await notificationController
-                                          .userStudentNotification(
-                                              studentID: studentdata['docid'],
-                                              icon: WarningNotifierSetup().icon,
-                                              messageText:
-                                                  ''' Your ${Get.find<FeesAndBillsController>().feetypeName.value} rupees $studentFee /- is due on ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} ,Please pay on or before the due date.
-                                                   നിങ്ങളുടെ ${Get.find<FeesAndBillsController>().feetypeName.value} ആയ $studentFee /- രൂപ, ദയവായി ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} തിയതിക്കുള്ളിൽ അടക്കേണ്ടതാണ്''',
-                                              // ,
-                                              headerText:
-                                                  "${Get.find<FeesAndBillsController>().feetypeName.value} Due Fee",
-                                              whiteshadeColor:
-                                                  WarningNotifierSetup()
-                                                      .whiteshadeColor,
-                                              containerColor:
-                                                  WarningNotifierSetup()
-                                                      .containerColor);
+                                      // await notificationController
+                                      //     .userStudentNotification(
+                                      //         studentID: studentdata['docid'],
+                                      //         icon: WarningNotifierSetup().icon,
+                                      //         messageText:
+                                      //             ''' Your ${Get.find<FeesAndBillsController>().feetypeName.value} rupees $studentFee /- is due on ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} ,Please pay on or before the due date.
+                                      //              നിങ്ങളുടെ ${Get.find<FeesAndBillsController>().feetypeName.value} ആയ $studentFee /- രൂപ, ദയവായി ${stringTimeToDateConvert(Get.find<FeesAndBillsController>().feeDueDateName.value)} തിയതിക്കുള്ളിൽ അടക്കേണ്ടതാണ്''',
+                                      //         // ,
+                                      //         headerText:
+                                      //             "${Get.find<FeesAndBillsController>().feetypeName.value} Due Fee",
+                                      //         whiteshadeColor:
+                                      //             WarningNotifierSetup()
+                                      //                 .whiteshadeColor,
+                                      //         containerColor:
+                                      //             WarningNotifierSetup()
+                                      //                 .containerColor);
 
                                       // await notificationController
                                       //     .userparentNotification(

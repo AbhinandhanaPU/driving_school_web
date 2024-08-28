@@ -137,15 +137,29 @@ class AdminNotificationCreate extends StatelessWidget {
         child: Obx(
           () => ProgressButtonWidget(
               function: () async {
+                notificationCntrl.selectedUSerUIDList.clear();
                 if (notificationCntrl.formKey.currentState!.validate()) {
-                  notificationCntrl
-                      .sendMessageSelectedUSers()
-                      .then((value) async {
+                  Future<void> sendNotificationsForRole(String role) async {
+                    await notificationCntrl.fetchUsersID(role: role);
                     await notificationCntrl.sendNotificationSelectedUsers(
-                        icon: Icons.warning_rounded,
-                        whiteshadeColor: InfoNotification().whiteshadeColor,
-                        containerColor: InfoNotification().containerColor);
-                  });
+                      icon: Icons.warning_rounded,
+                      whiteshadeColor: InfoNotification().whiteshadeColor,
+                      containerColor: InfoNotification().containerColor,
+                    );
+                  }
+
+                  if (notificationCntrl.selectStudent.value &&
+                      notificationCntrl.selectTeacher.value) {
+                    // Fetch and send notifications for both students and teachers
+                    await sendNotificationsForRole('student');
+                    await sendNotificationsForRole('teacher');
+                  } else if (notificationCntrl.selectStudent.value) {
+                    // Fetch and send notifications for students only
+                    await sendNotificationsForRole('student');
+                  } else if (notificationCntrl.selectTeacher.value) {
+                    // Fetch and send notifications for teachers only
+                    await sendNotificationsForRole('teacher');
+                  }
                 }
               },
               buttonstate: notificationCntrl.buttonstate.value,

@@ -222,7 +222,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 }
 
 List<Widget> pages = [
-    AdminNotificationCreate(),
   const AdminDashBoardSections(), // index 0
   AllCoursesDetails(), // index 1
   const AllTeacherRegistrationList(), // index 2

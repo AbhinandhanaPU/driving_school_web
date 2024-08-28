@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_project_driving/constant/const.dart';
-import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/model/notification_model/notification_model.dart';
 import 'package:new_project_driving/model/userDeviceModel/userDeviceModel.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
@@ -18,90 +17,17 @@ import 'package:uuid/uuid.dart';
 class NotificationController extends GetxController {
   TextEditingController headingController = TextEditingController();
   TextEditingController messageController = TextEditingController();
-  List<UserDeviceIDModel> selectedUSerUIDList = [];
   Rx<ButtonState> buttonstate = ButtonState.idle.obs;
   final formKey = GlobalKey<FormState>();
   RxBool selectStudent = false.obs;
   RxBool selectTeacher = false.obs;
 
-  Future<void> sendMessageSelectedUSers() async {
-    buttonstate.value = ButtonState.loading;
-    try {
-      if (selectStudent.value && selectTeacher.value) {
-        return fetchStudentID().then((studentID) => fetchTeacherID());
-      } else if (selectStudent.value) {
-        return fetchStudentID();
-      } else if (selectTeacher.value) {
-        return fetchTeacherID();
-      } else {
-        return;
-      }
-    } catch (e) {
-      showToast(msg: 'Somthing went wrong please try again');
-      buttonstate.value = ButtonState.fail;
-      await Future.delayed(const Duration(seconds: 2)).then((value) {
-        buttonstate.value = ButtonState.idle;
-      });
-      if (kDebugMode) {
-        log(e.toString());
-      }
-    }
-  }
-
-  Future<void> fetchStudentID() async {
-    log('fetchStudentID');
-    await server
-        .collection('DrivingSchoolCollection')
-        .doc(UserCredentialsController.schoolId)
-        .collection('AllUsersDeviceID')
-        .get()
-        .then((value) async {
-      for (var i = 0; i < value.docs.length; i++) {
-        if (selectStudent.value == true &&
-            value.docs[i].data()['userrole'] == 'student') {
-          log('if teacher Condition');
-          log('student UId ${value.docs[i].data()['uid']??'null'}');
-          final list = value.docs
-              .map((e) => UserDeviceIDModel.fromMap(e.data()))
-              .toList();
-         if (list[i].uid.isNotEmpty) {
-          selectedUSerUIDList.add(list[i]);
-        } else {
-          log('Invalid user UID: ${list[i].uid}');
-        }
-      }
-    }
-    });
-  }
-
-  Future<void> fetchTeacherID() async {
-    log('fetchTeacherID');
-    await server
-        .collection('DrivingSchoolCollection')
-        .doc(UserCredentialsController.schoolId)
-        .collection('AllUsersDeviceID')
-        .get()
-        .then((value) async {
-      for (var i = 0; i < value.docs.length; i++) {
-        if (selectTeacher.value == true &&
-            value.docs[i].data()['userrole'] == 'teacher') {
-          log('if teacher Condition');
-          log('teacher UId ${value.docs[i].data()['uid']}');
-          final list = value.docs
-              .map((e) => UserDeviceIDModel.fromMap(e.data()))
-              .toList();
-          selectedUSerUIDList.add(list[i]);
-        }
-      }
-    });
-  }
-
+  
   Future<void> sendNotificationSelectedUsers(
       {required IconData icon,
       required Color whiteshadeColor,
       required Color containerColor}) async {
     try {
-      log('selectedUSerUIDList  $selectedUSerUIDList');
 
       final uuid = const Uuid().v1();
       NotificationModel messageDetails = NotificationModel(
@@ -118,14 +44,14 @@ class NotificationController extends GetxController {
             .collection('DrivingSchoolCollection')
             .doc(UserCredentialsController.schoolId)
             .collection('AllUsersDeviceID')
-            .doc(selectedUSerUIDList[i].uid)
-            .set({'message': true, 'docid': selectedUSerUIDList[i].uid},
-                SetOptions(merge: true)).then((value) async {
+            .doc(selectedUSerUIDList[i].docId)
+            .set({'message': true,'docid':selectedUSerUIDList[i].docId}, SetOptions(merge: true)).then(
+                (value) async {
           await server
               .collection('DrivingSchoolCollection')
               .doc(UserCredentialsController.schoolId)
               .collection('AllUsersDeviceID')
-              .doc(selectedUSerUIDList[i].uid)
+              .doc(selectedUSerUIDList[i].docId)
               .get()
               .then((value) async {
             await sendPushMessage(selectedUSerUIDList[i].devideID,
@@ -135,18 +61,14 @@ class NotificationController extends GetxController {
                 .collection('DrivingSchoolCollection')
                 .doc(UserCredentialsController.schoolId)
                 .collection('AllUsersDeviceID')
-                .doc(selectedUSerUIDList[i].uid)
+                .doc(selectedUSerUIDList[i].docId)
                 .collection("Notification_Message")
                 .doc(uuid)
                 .set(messageDetails.toMap());
           });
         });
       }
-      selectStudent.value = false;
-      selectTeacher.value = false;
-      selectedUSerUIDList.clear();
-      headingController.clear();
-      messageController.clear();
+
       buttonstate.value = ButtonState.success;
       await Future.delayed(const Duration(seconds: 2)).then((vazlue) {
         buttonstate.value = ButtonState.idle;
@@ -163,84 +85,89 @@ class NotificationController extends GetxController {
     }
   }
 
-  Future<void> sendPushMessage(String token, String body, String title) async {
-    try {
-      final reponse = await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization':
-              'key=AAAAT5j1j9A:APA91bEDY97KTVTB5CH_4YTnLZEol4Z5fxF0fmO654V7YJO6dL9TV_PyIfv64-pVDx477rONsIl8d63VjxT793_Tj4zuGg32JTy_wUNQ4OhGNbr0KOS2i4z7JaG-ZtENTBpYnEGh-ZLg'
-        },
-        body: jsonEncode(
-          <String, dynamic>{
-            'priority': 'high',
-            'data': <String, dynamic>{
-              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'status': 'done',
-              'body': body,
-              'title': title,
-            },
-            "notification": <String, dynamic>{
-              'title': title,
-              'body': body,
-              'android_channel_id': 'high_importance_channel'
-            },
-            'to': token,
-          },
-        ),
-      );
-      log(reponse.body.toString());
-    } catch (e) {
-      if (kDebugMode) {
-        log("error push Notification");
+  List<UserDeviceIDModel> selectedUSerUIDList = [];// fetchUsersID 
+  Future<void> fetchUsersID({required String role}) async {
+    log('fetchStudentID');
+    await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('AllUsersDeviceID')
+        .get()
+        .then((usersvalue) async {
+      for (var i = 0; i < usersvalue.docs.length; i++) {
+        if (usersvalue.docs[i].data()['userRole'] == role) {
+          final list = usersvalue.docs
+              .map((e) => UserDeviceIDModel.fromMap(e.data()))
+              .toList();
+          selectedUSerUIDList.add(list[i]);
+        }
       }
-    }
+    });
   }
+    Future<void> sendPushMessage(String token, String body, String title) async {
+   await  getPushNotification();
+    final serverKey = pushNotficationKey.value;
+    final Uri url = Uri.parse(
+        'https://fcm.googleapis.com/v1/projects/driving-school-6e78e/messages:send');
 
-  Future<void> userStudentNotification({
-    required String studentID,
-    required IconData icon,
-    required String messageText,
-    required String headerText,
-    required Color whiteshadeColor,
-    required Color containerColor,
-  }) async {
-    final String docid = uuid.v1();
+    final Map<String, dynamic> message = {
+      'message': {
+        'token': token,
+        'notification': {
+          'title': title,
+          'body': body,
+        },
+        'android': {
+          'notification': {
+            'title': title,
+            'body': body,
+            'click_action': 'TOP_STORY_ACTIVITY'
+          },
+          'data': {'story_id': 'story_12345'}
+        },
+        'apns': {
+          'payload': {
+            'aps': {'category': 'NEW_MESSAGE_CATEGORY'}
+          },
+        },
+        'data': {
+          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+          'status': 'done',
+          'body': body,
+          'title': title,
+        },
+      },
+    };
+
     try {
-    //  print(messageText);
-      log('Calling user notification');
-      final details = NotificationModel(
-          icon: icon,
-          messageText: messageText,
-          headerText: headerText,
-          whiteshadeColor: whiteshadeColor,
-          containerColor: containerColor,
-          open: false,
-          docid: docid,
-          dateTime: DateTime.now().toString());
-      await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .collection("AllUsersDeviceID")
-          .doc(studentID)
-          .collection("Notification_Message")
-          .doc(docid)
-          .set(details.toMap())
-          .then((value) async {
-        await server
-            .collection('DrivingSchoolCollection')
-            .doc(UserCredentialsController.schoolId)
-            .collection("AllUsersDeviceID")
-            .doc(studentID)
-            .get()
-            .then((value) async {
-          await sendPushMessage(value['devideID'], messageText, headerText);
-        });
-      });
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $serverKey',
+        },
+        body: jsonEncode(message),
+      );
+
+      if (response.statusCode == 200) {
+        print('Notification sent successfully!');
+      } else {
+        print('Failed to send notification: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
     } catch (e) {
-      log(e.toString());
+      print('Exception caught sending notification: $e');
     }
+  } 
+    RxString pushNotficationKey = ''.obs;
+  getPushNotification() async {
+    FirebaseFirestore.instance
+        .collection('PushNotification')
+        .doc('key')
+        .get()
+        .then((value) async {
+      pushNotficationKey.value = value.data()?['key'];
+    });
   }
 }
 
