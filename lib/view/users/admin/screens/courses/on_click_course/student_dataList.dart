@@ -25,7 +25,7 @@ class AllCourseStudentDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modelData = courseController.courseModelData.value?.courseId;
+    final modelData = courseController.courseModelData.value;
     return
         // Obx(() =>
         Container(
@@ -149,7 +149,7 @@ class AllCourseStudentDataList extends StatelessWidget {
             flex: 2,
             child: StudentLevelDropDown(
               data: data,
-              courseID: modelData??"",
+              courseID: modelData!.courseId,
             ),
           ), //................................................. dropdwn
           const SizedBox(
@@ -162,13 +162,13 @@ class AllCourseStudentDataList extends StatelessWidget {
                   .collection('DrivingSchoolCollection')
                   .doc(UserCredentialsController.schoolId)
                   .collection('FeeCollection')
-                  .doc(modelData)
+                  .doc(modelData.courseId)
                   .collection('Students')
                   .doc(data.docid)
                   .snapshots(),
               builder: (context, snapshot) {
                 String feeStatus = 'not paid';
-                   bool isActive = false;
+                bool isActive = false;
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -176,16 +176,16 @@ class AllCourseStudentDataList extends StatelessWidget {
                 if (snapshot.hasData && snapshot.data?.data() != null) {
                   final feeData = snapshot.data!.data();
                   feeStatus = feeData!['feeStatus'] ?? 'not paid';
-                    if (feeData['active'] is String) {
-          isActive = feeData['active'] == "true";
-        } else if (feeData['active'] is bool) {
-          isActive = feeData['active'];
-        }
+                  if (feeData['active'] is String) {
+                    isActive = feeData['active'] == "true";
+                  } else if (feeData['active'] is bool) {
+                    isActive = feeData['active'];
+                  }
                 }
 
                 return StdFeesLevelDropDown(
                   data: data,
-                  courseID: modelData??"",
+                  course: modelData,
                   feeData: feeStatus,
                 );
               },
