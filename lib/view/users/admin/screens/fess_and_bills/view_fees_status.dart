@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
-import 'package:new_project_driving/controller/fees_N_bills_Controller/feeStudent_controller.dart';
+import 'package:new_project_driving/controller/fees_N_bills_Controller/fee_student_controller.dart';
 import 'package:new_project_driving/controller/fees_N_bills_Controller/fees_bills_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';

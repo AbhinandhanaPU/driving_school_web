@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/mocktest_controller/mocktest_Controller.dart';
-import 'package:new_project_driving/controller/mocktest_controller/model/answerModel.dart';
-import 'package:new_project_driving/controller/mocktest_controller/model/questionModel.dart';
+import 'package:new_project_driving/controller/mocktest_controller/mocktest_controller.dart';
+import 'package:new_project_driving/controller/mocktest_controller/model/answer_model.dart';
+import 'package:new_project_driving/controller/mocktest_controller/model/question_model.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';

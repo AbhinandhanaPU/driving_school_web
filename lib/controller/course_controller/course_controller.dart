@@ -22,7 +22,6 @@ class CourseController extends GetxController {
   RxString courseDocID = 'dd'.obs;
   RxString ontapCourseName = 'dd'.obs;
   RxString ontapCourseDocID = 'dd'.obs;
-  RxBool ontapReqStudent = false.obs;
 
   RxString level = 'Select Level'.obs;
   List<StudentModel> allstudentList = [];

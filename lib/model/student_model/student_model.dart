@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class StudentModel {
@@ -16,8 +15,10 @@ class StudentModel {
   String rtoName;
   String licenceNumber;
   String joiningDate;
-  String status; //
+  bool status;
   String level;
+  String batchId;
+  String batchName;
 
   String userRole = 'student';
 
@@ -38,6 +39,8 @@ class StudentModel {
     required this.joiningDate,
     required this.status,
     required this.level,
+    required this.batchId,
+    required this.batchName,
     required this.userRole,
   });
 
@@ -56,9 +59,10 @@ class StudentModel {
     String? rtoName,
     String? licenceNumber,
     String? joiningDate,
-    String? status,
+    bool? status,
     String? level,
-    String? feesStatus,
+    String? batchId,
+    String? batchName,
     String? userRole,
   }) {
     return StudentModel(
@@ -78,6 +82,8 @@ class StudentModel {
       joiningDate: joiningDate ?? this.joiningDate,
       status: status ?? this.status,
       level: level ?? this.level,
+      batchId: batchId ?? this.batchId,
+      batchName: batchName ?? this.batchName,
       userRole: userRole ?? this.userRole,
     );
   }
@@ -100,6 +106,8 @@ class StudentModel {
       'joiningDate': joiningDate,
       'status': status,
       'level': level,
+      'batchId': batchId,
+      'batchName': batchName,
       'userRole': userRole,
     };
   }
@@ -120,8 +128,10 @@ class StudentModel {
       rtoName: map['rtoName'] ?? "",
       licenceNumber: map['licenceNumber'] ?? "",
       joiningDate: map['joiningDate'] ?? "",
-      status: map['status'] ?? "",
+      status: map['status'] ?? false,
       level: map['level'] ?? "",
+      batchId: map['batchId'] ?? "",
+      batchName: map['batchName'] ?? "",
       userRole: map['userRole'] ?? "",
     );
   }
@@ -133,7 +143,7 @@ class StudentModel {
 
   @override
   String toString() {
-    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, level: $level, userRole: $userRole)';
+    return 'StudentModel(docid: $docid, password: $password, studentemail: $studentemail, studentName: $studentName, phoneNumber: $phoneNumber, dateofBirth: $dateofBirth, guardianName: $guardianName, address: $address, place: $place, profileImageId: $profileImageId, profileImageUrl: $profileImageUrl, rtoName: $rtoName, licenceNumber: $licenceNumber, joiningDate: $joiningDate, status: $status, level: $level, batchId: $batchId, batchName: $batchName, userRole: $userRole)';
   }
 
   @override
@@ -156,6 +166,8 @@ class StudentModel {
         other.joiningDate == joiningDate &&
         other.status == status &&
         other.level == level &&
+        other.batchId == batchId &&
+        other.batchName == batchName &&
         other.userRole == userRole;
   }
 
@@ -177,6 +189,8 @@ class StudentModel {
         joiningDate.hashCode ^
         status.hashCode ^
         level.hashCode ^
+        batchId.hashCode ^
+        batchName.hashCode ^
         userRole.hashCode;
   }
 }

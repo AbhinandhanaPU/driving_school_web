@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
-import 'package:new_project_driving/controller/mocktest_controller/model/answerModel.dart';
-import 'package:new_project_driving/controller/mocktest_controller/model/questionModel.dart';
+import 'package:new_project_driving/controller/mocktest_controller/model/answer_model.dart';
+import 'package:new_project_driving/controller/mocktest_controller/model/question_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:uuid/uuid.dart';
@@ -56,7 +56,7 @@ class MockTestController extends GetxController {
         .set(questionModel.toMap())
         .then((value) async {
       if (imagePath != null) {
-      final imageName = 'image_${DateTime.now()}.jpg';
+        final imageName = 'image_${DateTime.now()}.jpg';
         Reference storegeRef =
             serverStorage.ref().child('MockQuestionCollection/$imageName');
         // Upload the file
