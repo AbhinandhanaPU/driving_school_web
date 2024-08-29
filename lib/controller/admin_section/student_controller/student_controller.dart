@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/model/course_model/course_model.dart';
@@ -13,8 +12,6 @@ class StudentController extends GetxController {
   List<StudentModel> studentProfileList = [];
   Rxn<StudentModel> studentModelData = Rxn<StudentModel>();
   RxBool ontapStudent = false.obs;
-  final formKey = GlobalKey<FormState>();
-  TextEditingController amountController = TextEditingController();
   RxString batchId = ''.obs;
   RxString batchName = ''.obs;
 
@@ -167,102 +164,6 @@ class StudentController extends GetxController {
       });
     } catch (e) {
       log("Student level update error: $e");
-    }
-  }
-
-  Future<void> addStudentFeeColl(
-    StudentModel studentModel,
-    String status,
-    String courseID,
-  ) async {
-    try {
-      await _fbServer
-          .collection('FeeCollection')
-          .doc(courseID)
-          .set({'docId': courseID}).then((value) async {
-        await _fbServer
-            .collection('FeeCollection')
-            .doc(courseID)
-            .collection('Students')
-            .doc(studentModel.docid)
-            .set({
-          'studentName': studentModel.studentName,
-          'studentID': studentModel.docid,
-          'feeStatus': status,
-          'pendingAmount':
-              amountController.text == "" ? 0 : amountController.text,
-          'courseID': courseID
-        }).then((value) async {
-          await acceptStudentToCourse(studentModel, status, courseID);
-          amountController.clear();
-          update();
-          showToast(msg: 'student fees updated');
-          log("Fees Status Updated");
-        });
-      });
-    } catch (e) {
-      log(" FeeCollection error: $e");
-    }
-  }
-
-  Future<void> acceptStudentToCourse(
-    StudentModel studentModel,
-    String status,
-    String courseID,
-  ) async {
-    try {
-      final reqStudentDoc = await _fbServer
-          .collection('Courses')
-          .doc(courseID)
-          .collection("RequestedStudents")
-          .doc(studentModel.docid)
-          .get();
-
-      if (reqStudentDoc.exists) {
-        await reqStudentDoc.reference.delete();
-        await _fbServer
-            .collection('Courses')
-            .doc(courseID)
-            .collection("Students")
-            .doc(studentModel.docid)
-            .set(studentModel.toMap());
-        showToast(msg: 'Student Added to Course');
-        log("Student accepted and Added to the course.");
-      } else {
-        log("Student not found in RequestedStudents collection.");
-      }
-    } catch (e) {
-      log("Students approval error: $e");
-    }
-  }
-
-  Future<void> declineStudentToCourse(
-    StudentModel studentModel,
-    String courseID,
-  ) async {
-    try {
-      final reqStudentDoc = await _fbServer
-          .collection('Courses')
-          .doc(courseID)
-          .collection("RequestedStudents")
-          .doc(studentModel.docid)
-          .get();
-
-      if (reqStudentDoc.exists) {
-        await reqStudentDoc.reference.delete();
-        await _fbServer
-            .collection('Courses')
-            .doc(courseID)
-            .collection("RequestedStudents")
-            .doc(studentModel.docid)
-            .delete();
-        showToast(msg: 'Student request declined');
-        log("Student request declined");
-      } else {
-        log("Student not found in RequestedStudents collection.");
-      }
-    } catch (e) {
-      log("Students approval error: $e");
     }
   }
 

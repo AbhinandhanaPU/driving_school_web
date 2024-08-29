@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
+import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
@@ -8,11 +10,12 @@ import 'package:new_project_driving/view/widget/reusable_table_widgets/data_cont
 class ArchiveAllStudentDataList extends StatelessWidget {
   final StudentModel data;
   final int index;
-  const ArchiveAllStudentDataList({
+  ArchiveAllStudentDataList({
     required this.data,
     required this.index,
     super.key,
   });
+  final StudentController studentController = Get.put(StudentController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,69 +89,59 @@ class ArchiveAllStudentDataList extends StatelessWidget {
             width: 01,
           ),
           Expanded(
-            flex: 4,
-            child:  DataContainerWidget(
+            flex: 2,
+            child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                // width: 150,
                 index: index,
-                headerTitle: "  ${data.place}"),
-            // StreamBuilder<List<String>>(
-            //   stream: studentController.fetchStudentsCourse(data),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Center(child: CircularProgressIndicator());
-            //     } else if (snapshot.hasError) {
-            //       return Text('Error: ${snapshot.error}');
-            //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            //       return DataContainerWidget(
-            //         rowMainAccess: MainAxisAlignment.center,
-            //         color: cWhite,
-            //         index: index,
-            //         headerTitle: 'Course Not Found',
-            //       );
-            //     } else {
-            //       String courses = snapshot.data!.join(', ');
-            //       return DataContainerWidget(
-            //         rowMainAccess: MainAxisAlignment.center,
-            //         color: cWhite,
-            //         index: index,
-            //         headerTitle: courses,
-            //       );
-            //     }
-            //   },
-            // ),
+                headerTitle: data.place),
           ), //............................. Student courses type
           const SizedBox(
             width: 01,
           ),
           Expanded(
             flex: 2,
-            child: Center(
-              child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: stringTimeToDateConvert(data.joiningDate),
-              ),
+            child: DataContainerWidget(
+              rowMainAccess: MainAxisAlignment.center,
+              color: cWhite,
+              index: index,
+              headerTitle: stringTimeToDateConvert(data.joiningDate),
             ),
           ), //............................. Student join date
           const SizedBox(
             width: 01,
           ),
           Expanded(
-            flex: 2,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                // width: 150,
-                index: index,
-                headerTitle: ' Pass/Fail'),
-          ), //............................. Student Permission Status
+            flex: 4,
+            child: StreamBuilder<List<String>>(
+              stream: studentController.fetchStudentsCourse(data),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    index: index,
+                    headerTitle: 'Course Not Found',
+                  );
+                } else {
+                  String courses = snapshot.data!.join(', ');
+                  return DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    index: index,
+                    headerTitle: courses,
+                  );
+                }
+              },
+            ),
+          ), //............................. Student course
           const SizedBox(
             width: 01,
           ),
-         
         ],
       ),
     );

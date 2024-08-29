@@ -179,7 +179,7 @@ class AllCourseStudentDataList extends StatelessWidget {
 
                 return StdFeesLevelDropDown(
                   data: data,
-                  courseID: modelData.courseId,
+                  course: modelData,
                   feeData: feeStatus,
                 );
               },
