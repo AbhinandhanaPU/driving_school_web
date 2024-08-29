@@ -71,7 +71,7 @@ class StudentFeeDatalist extends StatelessWidget {
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
                 index: index,
-                headerTitle: feeData['pendingAmount'].toString()),
+                headerTitle: feeData['feeStatus']),
           ),
           const SizedBox(
             width: 02,
@@ -82,7 +82,20 @@ class StudentFeeDatalist extends StatelessWidget {
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
                 index: index,
-                headerTitle: feeData['feeStatus']),
+                headerTitle: feeData['amountPaid'].toString()),
+          ),
+          const SizedBox(
+            width: 02,
+          ),  Expanded(
+            flex: 2,
+            child: DataContainerWidget(
+                rowMainAccess: MainAxisAlignment.center,
+                color: cWhite,
+                index: index,
+                headerTitle: feeData['totalAmount'].toString()),
+          ),
+          const SizedBox(
+            width: 02,
           ),
         ],
       ),

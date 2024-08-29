@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
+import 'package:new_project_driving/controller/fee_controller/fee_controller.dart';
 import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
@@ -15,6 +16,7 @@ class FeeCoursesDetails extends StatelessWidget {
   FeeCoursesDetails({super.key});
 
   final CourseController courseController = Get.put(CourseController());
+  final FeeController feeController = Get.put(FeeController());
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class FeeCoursesDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Course Type'),
+                                      headerTitle: 'Course Name'),
                                 ),
                                 SizedBox(
                                   width: 01,
@@ -82,15 +84,7 @@ class FeeCoursesDetails extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Duration(In Days)'),
-                                ),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Rate'),
+                                      headerTitle: 'Initial Rate'),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -99,6 +93,30 @@ class FeeCoursesDetails extends StatelessWidget {
                                   flex: 2,
                                   child: CatrgoryTableHeaderWidget(
                                       headerTitle: 'Total Students'),
+                                ),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Amount Collected'),
+                                ),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Pending Amount'),
+                                ),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Total Amount'),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -157,16 +175,14 @@ class FeeCoursesDetails extends StatelessWidget {
                                     builder: (context, courseSnapshot) {
                                       if (courseSnapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return const Center(
-                                            child: CircularProgressIndicator());
+                                        return const SizedBox();
                                       }
-                                      if (!courseSnapshot.hasData ||
-                                          !courseSnapshot.data!.exists) {
-                                        return const SizedBox.shrink();
-                                      }
-
                                       final data = CourseModel.fromMap(
                                           courseSnapshot.data!.data()!);
+                                      feeController.pendingAmountCalculate(
+                                          data.courseId);
+                                      feeController.getFeeTotalAmount(
+                                          data.courseId, data.rate);
                                       return GestureDetector(
                                         onTap: () {
                                           courseController.setCourseData(data);
@@ -178,7 +194,9 @@ class FeeCoursesDetails extends StatelessWidget {
                                               .value = data.courseId;
                                         },
                                         child: FeeCoursesDataList(
-                                            data: data, index: index),
+                                            data: data,
+                                            feeModel: fee,
+                                            index: index),
                                       );
                                     },
                                   );

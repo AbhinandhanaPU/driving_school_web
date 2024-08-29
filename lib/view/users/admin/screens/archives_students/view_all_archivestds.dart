@@ -116,7 +116,7 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 4,
+                                    flex: 2,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'Place')),
                                 SizedBox(
@@ -130,9 +130,9 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 2,
+                                    flex: 4,
                                     child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Result')),
+                                        headerTitle: 'Course')),
                                 SizedBox(
                                   width: 02,
                                 ),
@@ -155,8 +155,8 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                 stream: server
                                     .collection('DrivingSchoolCollection')
                                     .doc(UserCredentialsController.schoolId)
-                                    .collection('Archives')
-                                    .orderBy('studentName')
+                                    .collection('Students')
+                                    .where('status', isEqualTo: false)
                                     .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {
@@ -165,7 +165,7 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                             child: Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
-                                                "Please create Students",
+                                                "No Students",
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.w400),
@@ -197,9 +197,8 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                                 height: 02,
                                               );
                                             },
-                                            itemCount: snaPS.data!.docs.length);
-                                  } else if (snaPS.data == null) {
-                                    return const LoadingWidget();
+                                            itemCount: snaPS.data!.docs.length,
+                                          );
                                   } else {
                                     return const LoadingWidget();
                                   }

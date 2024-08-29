@@ -106,7 +106,8 @@ class AllCoursesDataList extends StatelessWidget {
                       data.courseDes;
                   courseController.editcourseDurationController.text =
                       data.duration;
-                  courseController.editcourseRateController.text = data.rate;
+                  courseController.editcourseRateController.text =
+                      '${data.rate}';
                   editFunctionOfCourse(context, data);
                 },
                 child: DataContainerWidget(

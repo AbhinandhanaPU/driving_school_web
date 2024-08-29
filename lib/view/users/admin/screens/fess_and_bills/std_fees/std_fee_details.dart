@@ -101,14 +101,24 @@ class StudentsFeesStatus extends StatelessWidget {
                           Expanded(
                               flex: 2,
                               child: CatrgoryTableHeaderWidget(
-                                  headerTitle: 'Pending')),
+                                  headerTitle: 'Fee Status')),
                           SizedBox(
                             width: 02,
                           ),
                           Expanded(
                               flex: 2,
                               child: CatrgoryTableHeaderWidget(
-                                  headerTitle: 'Fee Status')),
+                                  headerTitle: 'Amount Paid')),
+                          SizedBox(
+                            width: 02,
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: CatrgoryTableHeaderWidget(
+                                  headerTitle: 'Total Amount')),
+                          SizedBox(
+                            width: 02,
+                          ),
                         ],
                       ),
                     ),

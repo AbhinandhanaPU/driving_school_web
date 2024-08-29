@@ -5,8 +5,6 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/controller/class_controller/class_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/profile_detail_widget/detail_tile_container.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
@@ -266,148 +264,153 @@ class ArchivesStudentDetailsContainer extends StatelessWidget {
                 ),
               ),
             ),
-            StreamBuilder(
-              stream: server
-                  .collection('DrivingSchoolCollection')
-                  .doc(UserCredentialsController.schoolId)
-                  .collection('Archives')
-                  .doc(data.docid)
-                  .collection('CoursesDetails')
-                  .doc(data.docid)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (!snapshot.hasData || !snapshot.data!.exists) {
-                  return const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Center(
-                        child: Text('No course and batch details found')),
-                  );
-                }
-                var data = snapshot.data!.data()!;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 20),
-                  child: Container(
-                    color: cWhite,
-                    height: 200,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 100,
-                                color: Colors.blue.withOpacity(0.1),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 10, top: 10),
-                                      child: TextFontWidget(
-                                        text: 'Course and Batch Details',
-                                        fontsize: 20,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 20, left: 10),
-                                      child: SizedBox(
-                                        width: 500,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ProfileDetailTileContainer(
-                                              flex: 1,
-                                              title: 'Course Name',
-                                              subtitle:
-                                                  data['courseName'] ?? 'N/A',
-                                            ),
-                                            ProfileDetailTileContainer(
-                                              flex: 1,
-                                              title: 'Batch Name',
-                                              subtitle:
-                                                  data['batchName'] ?? 'N/A',
-                                            ),
-                                            ProfileDetailTileContainer(
-                                              flex: 1,
-                                              title: 'Practice Schedule',
-                                              subtitle:
-                                                  data['practiceName'] ?? 'N/A',
-                                            ),
-                                            ProfileDetailTileContainer(
-                                              flex: 1,
-                                              title: 'Driving Test Date',
-                                              subtitle:
-                                                  data['testDate'] ?? 'N/A',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const TextFontWidget(
-                                            text: "Fee Status : ",
-                                            fontsize: 13,
-                                            color: cBlack,
-                                          ),
-                                          TextFontWidget(
-                                            text: data['feeStatus'] ?? 'N/A',
-                                            fontsize: 12,
-                                            color: cBlue,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          const TextFontWidget(
-                                            text: "Pending Amount : ",
-                                            fontsize: 13,
-                                            color: cBlack,
-                                          ),
-                                          TextFontWidget(
-                                            text: data['pendingAmount']
-                                                    ?.toString() ??
-                                                'N/A',
-                                            fontsize: 12,
-                                            color: cBlue,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+            Padding(
+              padding: const EdgeInsets.only(right: 20, left: 20),
+              child: Container(
+                color: cWhite,
+                height: 200,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 100,
+                            color: Colors.blue.withOpacity(0.1),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 10, top: 10),
+                                  child: TextFontWidget(
+                                    text: 'Course and Batch Details',
+                                    fontsize: 20,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 20, left: 10),
+                                  child: SizedBox(
+                                    width: 500,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        StreamBuilder<List<String>>(
+                                          stream: studentController
+                                              .fetchStudentsCourse(data),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            } else if (snapshot.hasError) {
+                                              return Text(
+                                                  'Error: ${snapshot.error}');
+                                            } else if (!snapshot.hasData ||
+                                                snapshot.data!.isEmpty) {
+                                              return const ProfileDetailTileContainer(
+                                                flex: 1,
+                                                title: 'Course Name',
+                                                subtitle: 'N/A',
+                                              );
+                                            } else {
+                                              String courses =
+                                                  snapshot.data!.join(', ');
+                                              return ProfileDetailTileContainer(
+                                                flex: 1,
+                                                title: 'Course Name',
+                                                subtitle: courses,
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        ProfileDetailTileContainer(
+                                          flex: 1,
+                                          title: 'Batch Name',
+                                          subtitle: data.batchName != ''
+                                              ? data.batchName
+                                              : "N/A",
+                                        ),
+                                        // const ProfileDetailTileContainer(
+                                        //   flex: 1,
+                                        //   title: 'Practice Schedule',
+                                        //   subtitle:
+                                        //       // data['practiceName'] ??
+                                        //       'N/A',
+                                        // ),
+                                        // const ProfileDetailTileContainer(
+                                        //   flex: 1,
+                                        //   title: 'Driving Test Date',
+                                        //   subtitle:
+                                        //       // data['testDate'] ??
+                                        //       'N/A',
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          color: Colors.blue,
-                          height: 2,
-                        ),
-                      ],
+                          // Expanded(
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.only(left: 20),
+                          //     child: Column(
+                          //       mainAxisAlignment:
+                          //           MainAxisAlignment.spaceEvenly,
+                          //       children: [
+                          //         Row(
+                          //           children: [
+                          //             const TextFontWidget(
+                          //               text: "Fee Status : ",
+                          //               fontsize: 13,
+                          //               color: cBlack,
+                          //             ),
+                          //             TextFontWidget(
+                          //               text: data.['feeStatus'] ?? 'N/A',
+                          //               fontsize: 12,
+                          //               color: cBlue,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //         Row(
+                          //           children: [
+                          //             const TextFontWidget(
+                          //               text: "Pending Amount : ",
+                          //               fontsize: 13,
+                          //               color: cBlack,
+                          //             ),
+                          //             TextFontWidget(
+                          //               text:
+                          //                   data['pendingAmount']?.toString() ??
+                          //                       'N/A',
+                          //               fontsize: 12,
+                          //               color: cBlue,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                    Container(
+                      width: double.infinity,
+                      color: Colors.blue,
+                      height: 2,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

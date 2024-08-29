@@ -168,6 +168,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                   .snapshots(),
               builder: (context, snapshot) {
                 String feeStatus = 'not paid';
+                bool isActive = false;
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -175,11 +176,16 @@ class AllCourseStudentDataList extends StatelessWidget {
                 if (snapshot.hasData && snapshot.data?.data() != null) {
                   final feeData = snapshot.data!.data();
                   feeStatus = feeData!['feeStatus'] ?? 'not paid';
+                  if (feeData['active'] is String) {
+                    isActive = feeData['active'] == "true";
+                  } else if (feeData['active'] is bool) {
+                    isActive = feeData['active'];
+                  }
                 }
 
                 return StdFeesLevelDropDown(
                   data: data,
-                  courseID: modelData.courseId,
+                  course: modelData,
                   feeData: feeStatus,
                 );
               },

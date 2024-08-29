@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
+import 'package:new_project_driving/controller/fee_controller/fee_controller.dart';
+import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/fee_edit_popup.dart';
 
 class StdFeesLevelDropDown extends StatefulWidget {
   final StudentModel data;
-  final String courseID;
+  final CourseModel course;
   final String feeData;
 
   const StdFeesLevelDropDown({
     super.key,
     required this.data,
-    required this.courseID,
+    required this.course,
     required this.feeData,
   });
 
@@ -21,7 +22,7 @@ class StdFeesLevelDropDown extends StatefulWidget {
 }
 
 class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
-  StudentController studentController = Get.put(StudentController());
+  FeeController studentController = Get.put(FeeController());
   String? selectStdLevel;
 
   @override
@@ -63,11 +64,11 @@ class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
               context,
               widget.data,
               val,
-              widget.courseID,
+              widget.course,
             );
           } else {
             studentController.addStudentFeeColl(
-                widget.data, val, widget.courseID);
+                widget.data, val, widget.course);
           }
         }
       },

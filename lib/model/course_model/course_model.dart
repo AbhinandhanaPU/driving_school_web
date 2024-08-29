@@ -5,7 +5,7 @@ class CourseModel {
   String courseName;
   String courseDes;
   String duration;
-  String rate;
+  int rate;
   String courseId;
   CourseModel({
     required this.courseName,
@@ -20,7 +20,7 @@ class CourseModel {
     String? courseDes,
     String? tutor,
     String? duration,
-    String? rate,
+    int? rate,
     String? courseId,
   }) {
     return CourseModel(
@@ -44,11 +44,11 @@ class CourseModel {
 
   factory CourseModel.fromMap(Map<String, dynamic> map) {
     return CourseModel(
-      courseName: map['courseName'] ??"",
-      courseDes: map['courseDes'] ??"",
-      duration: map['duration'] ??"",
-      rate: map['rate'] ??"",
-      courseId: map['courseId'] ??"",
+      courseName: map['courseName'] ?? "",
+      courseDes: map['courseDes'] ?? "",
+      duration: map['duration'] ?? "",
+      rate: map['rate'] ?? 0,
+      courseId: map['courseId'] ?? "",
     );
   }
 

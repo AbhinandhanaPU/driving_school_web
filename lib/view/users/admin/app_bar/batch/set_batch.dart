@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
@@ -32,9 +34,10 @@ bacthSettingFunction(BuildContext context) {
     ), ///////////////////////.......0
     GestureDetector(
       onTap: () {
-        //   if(batchController .formKey.currentState! .validate()){
-        // batchController .setBatchYear() ;
-        //   }
+        if (batchController.formKey.currentState!.validate()) {
+          batchController.onBatchWiseView.value = true;
+          Navigator.of(context).pop();
+        }
       },
       child: Container(
         height: 40,
@@ -54,6 +57,7 @@ bacthSettingFunction(BuildContext context) {
     ), ////////////////...............1
     GestureDetector(
       onTap: () {
+        batchController.onBatchWiseView.value = false;
         Navigator.of(context).pop();
       },
       child: Container(
@@ -65,7 +69,7 @@ bacthSettingFunction(BuildContext context) {
             borderRadius: BorderRadius.circular(05)),
         child: const Center(
           child: TextFontWidgetRouter(
-            text: "Cancel",
+            text: "Clear Batch",
             fontsize: 14, // fontWeight: FontWeight.w600,
             color: cWhite,
           ),
@@ -96,7 +100,12 @@ bacthSettingFunction(BuildContext context) {
                       const SizedBox(
                         height: 05,
                       ),
-                      BatchDropDown()
+                      BatchDropDown(
+                        onChanged: (batch) {
+                          batchController.batchView.value = batch!.batchId;
+                          log(batchController.batchView.value);
+                        },
+                      )
                     ],
                   ),
                 ),

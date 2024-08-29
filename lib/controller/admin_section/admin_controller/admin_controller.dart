@@ -8,7 +8,7 @@ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:progress_state_button/progress_button.dart';
 
-class AdminController extends GetxController {
+class  AdminController extends GetxController {
   RxBool ontapCreateAdmin = false.obs;
   RxBool ontapAdmin = false.obs;
   RxString dobSelectedDate = ''.obs;

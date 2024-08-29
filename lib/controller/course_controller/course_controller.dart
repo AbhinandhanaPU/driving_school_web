@@ -72,11 +72,13 @@ class CourseController extends GetxController {
   Future<void> createCourses() async {
     log("Creating Course .....");
     final uuid = const Uuid().v1();
+    int rate = int.tryParse(courseRateController.text) ?? 0;
+
     final courseDetails = CourseModel(
         courseName: courseNameController.text,
         courseDes: courseDesController.text,
         duration: courseDurationController.text,
-        rate: courseRateController.text,
+        rate: rate,
         courseId: uuid);
 
     try {
