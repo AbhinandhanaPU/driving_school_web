@@ -25,7 +25,7 @@ class AllCourseStudentDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modelData = courseController.courseModelData.value;
+    final modelData = courseController.courseModelData.value?.courseId;
     return
         // Obx(() =>
         Container(
@@ -149,7 +149,7 @@ class AllCourseStudentDataList extends StatelessWidget {
             flex: 2,
             child: StudentLevelDropDown(
               data: data,
-              courseID: modelData!.courseId,
+              courseID: modelData??"",
             ),
           ), //................................................. dropdwn
           const SizedBox(
@@ -162,12 +162,13 @@ class AllCourseStudentDataList extends StatelessWidget {
                   .collection('DrivingSchoolCollection')
                   .doc(UserCredentialsController.schoolId)
                   .collection('FeeCollection')
-                  .doc(modelData.courseId)
+                  .doc(modelData)
                   .collection('Students')
                   .doc(data.docid)
                   .snapshots(),
               builder: (context, snapshot) {
                 String feeStatus = 'not paid';
+                   bool isActive = false;
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -175,11 +176,16 @@ class AllCourseStudentDataList extends StatelessWidget {
                 if (snapshot.hasData && snapshot.data?.data() != null) {
                   final feeData = snapshot.data!.data();
                   feeStatus = feeData!['feeStatus'] ?? 'not paid';
+                    if (feeData['active'] is String) {
+          isActive = feeData['active'] == "true";
+        } else if (feeData['active'] is bool) {
+          isActive = feeData['active'];
+        }
                 }
 
                 return StdFeesLevelDropDown(
                   data: data,
-                  courseID: modelData.courseId,
+                  courseID: modelData??"",
                   feeData: feeStatus,
                 );
               },
