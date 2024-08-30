@@ -58,7 +58,7 @@ class StudentController extends GetxController {
         await deleteStudentFromDrivingTest(studentModel, isArchiving: false);
         await deleteStudentFromPracticeSchedule(studentModel,
             isArchiving: false);
-        await deleteStudentFromFee(studentModel, isArchiving: false);
+        // await deleteStudentFromFee(studentModel, isArchiving: false);
         log("Student deleted");
       });
     } catch (e) {
@@ -93,6 +93,32 @@ class StudentController extends GetxController {
         update();
         log("Student batch updated to $batchId");
       });
+      final docidofcourse = await _fbServer.collection("Courses").get();
+
+      if (docidofcourse.docs.isNotEmpty) {
+        for (var courseDoc in docidofcourse.docs) {
+          final courseDocid = courseDoc.id;
+
+          final std = await _fbServer
+              .collection("Courses")
+              .doc(courseDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (std.exists) {
+            await _fbServer
+                .collection("Courses")
+                .doc(courseDocid)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .update({
+              'batchId': batchId.value,
+              'batchName': batchName.value,
+            });
+          }
+        }
+      }
     } catch (e) {
       log('student batch update error $e');
     }
@@ -161,6 +187,7 @@ class StudentController extends GetxController {
         studentModel.level = newLevel;
         update();
         log("Student level updated to $newLevel");
+        showToast(msg: "Student level updated to $newLevel");
       });
     } catch (e) {
       log("Student level update error: $e");
@@ -214,7 +241,7 @@ class StudentController extends GetxController {
         await deleteStudentFromDrivingTest(studentModel, isArchiving: true);
         await deleteStudentFromPracticeSchedule(studentModel,
             isArchiving: true);
-        await deleteStudentFromFee(studentModel, isArchiving: true);
+        // await deleteStudentFromFee(studentModel, isArchiving: true);
         showToast(msg: 'Student Archived');
         Get.back();
       });
@@ -402,55 +429,55 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> deleteStudentFromFee(StudentModel studentModel,
-      {bool isArchiving = false}) async {
-    try {
-      final feeCollectionSnapshot =
-          await _fbServer.collection("FeeCollection").get();
+  // Future<void> deleteStudentFromFee(StudentModel studentModel,
+  //     {bool isArchiving = false}) async {
+  //   try {
+  //     final feeCollectionSnapshot =
+  //         await _fbServer.collection("FeesCollection").get();
 
-      if (feeCollectionSnapshot.docs.isNotEmpty) {
-        for (var feeDoc in feeCollectionSnapshot.docs) {
-          final feeDocid = feeDoc.id;
+  //     if (feeCollectionSnapshot.docs.isNotEmpty) {
+  //       for (var feeDoc in feeCollectionSnapshot.docs) {
+  //         final feeDocid = feeDoc.id;
 
-          final studentDoc = await _fbServer
-              .collection("FeeCollection")
-              .doc(feeDocid)
-              .collection('Students')
-              .doc(studentModel.docid)
-              .get();
+  //         final studentDoc = await _fbServer
+  //             .collection("FeesCollection")
+  //             .doc(feeDocid)
+  //             .collection('Students')
+  //             .doc(studentModel.docid)
+  //             .get();
 
-          if (studentDoc.exists) {
-            final feeStatus = studentDoc.data()!['feeStatus'];
-            final pendingAmount = studentDoc.data()!['pendingAmount'];
+  //         if (studentDoc.exists) {
+  //           final feeStatus = studentDoc.data()!['feeStatus'];
+  //           final pendingAmount = studentDoc.data()!['pendingAmount'];
 
-            if (isArchiving) {
-              await _fbServer
-                  .collection('Archives')
-                  .doc(studentModel.docid)
-                  .collection('CoursesDetails')
-                  .doc(studentModel.docid)
-                  .set({
-                'feeStatus': feeStatus,
-                'pendingAmount': pendingAmount,
-              }, SetOptions(merge: true));
-            }
-            await _fbServer
-                .collection("FeeCollection")
-                .doc(feeDocid)
-                .collection('Students')
-                .doc(studentModel.docid)
-                .delete()
-                .then((value) {
-              log('Student deleted from fee collection');
-            });
-          }
-        }
-        log('Student not added to any feescollection to delete');
-      }
-    } catch (e) {
-      log('deleteStudentFromFee error: $e');
-    }
-  }
+  //           if (isArchiving) {
+  //             await _fbServer
+  //                 .collection('Archives')
+  //                 .doc(studentModel.docid)
+  //                 .collection('CoursesDetails')
+  //                 .doc(studentModel.docid)
+  //                 .set({
+  //               'feeStatus': feeStatus,
+  //               'pendingAmount': pendingAmount,
+  //             }, SetOptions(merge: true));
+  //           }
+  //           await _fbServer
+  //               .collection("FeesCollection")
+  //               .doc(feeDocid)
+  //               .collection('Students')
+  //               .doc(studentModel.docid)
+  //               .delete()
+  //               .then((value) {
+  //             log('Student deleted from fee collection');
+  //           });
+  //         }
+  //       }
+  //       log('Student not added to any feescollection to delete');
+  //     }
+  //   } catch (e) {
+  //     log('deleteStudentFromFee error: $e');
+  //   }
+  // }
 
   Future<void> deleteStudentFromPracticeSchedule(StudentModel studentModel,
       {bool isArchiving = false}) async {

@@ -6,6 +6,7 @@ import 'package:new_project_driving/controller/fee_controller/fee_controller.dar
 import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/drop_down/batch_dp_dn.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/course_list/fee_courses_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
@@ -45,12 +46,27 @@ class FeeCoursesDetails extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10, top: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 20, top: 10, right: 10),
                         child: Row(
                           children: [
-                            RouteSelectedTextContainer(
-                                width: 180, title: 'All Courses'),
+                            const RouteSelectedTextContainer(
+                              width: 180,
+                              title: 'All Courses',
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              height: 50,
+                              width: 250,
+                              child: BatchDropDown(
+                                onChanged: (batchModel) {
+                                  feeController.onTapBtach.value = true;
+                                  feeController.batchId.value =
+                                      batchModel!.batchId;
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -137,16 +153,30 @@ class FeeCoursesDetails extends StatelessWidget {
                             border: Border.all(color: cWhite),
                           ),
                           child: StreamBuilder(
-                            stream: server
-                                .collection('DrivingSchoolCollection')
-                                .doc(UserCredentialsController.schoolId)
-                                .collection('FeeCollection')
-                                .snapshots(),
+                            stream: feeController.onTapBtach.value == true
+                                ? server
+                                    .collection('DrivingSchoolCollection')
+                                    .doc(UserCredentialsController.schoolId)
+                                    .collection('FeesCollection')
+                                    .doc(feeController.batchId.value)
+                                    .collection('Courses')
+                                    .snapshots()
+                                : null,
                             builder: (context, snapS) {
                               if (snapS.connectionState ==
                                   ConnectionState.waiting) {
                                 return const Center(
                                     child: CircularProgressIndicator());
+                              }
+                              if (feeController.onTapBtach.value == false) {
+                                return const Center(
+                                  child: Text(
+                                    'Select Batch',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                );
                               }
                               if (snapS.data == null ||
                                   snapS.data!.docs.isEmpty) {
@@ -164,7 +194,7 @@ class FeeCoursesDetails extends StatelessWidget {
                                 itemCount: snapS.data!.docs.length,
                                 itemBuilder: (context, index) {
                                   final fee = snapS.data!.docs[index].data();
-                                  final courseId = fee['docId'];
+                                  final courseId = fee['courseId'];
                                   return StreamBuilder(
                                     stream: server
                                         .collection('DrivingSchoolCollection')
@@ -180,9 +210,13 @@ class FeeCoursesDetails extends StatelessWidget {
                                       final data = CourseModel.fromMap(
                                           courseSnapshot.data!.data()!);
                                       feeController.pendingAmountCalculate(
-                                          data.courseId);
+                                        data.courseId,
+                                        feeController.batchId.value,
+                                      );
                                       feeController.getFeeTotalAmount(
-                                          data.courseId, data.rate);
+                                          data.courseId,
+                                          feeController.batchId.value,
+                                          data.rate);
                                       return GestureDetector(
                                         onTap: () {
                                           courseController.setCourseData(data);
