@@ -11,6 +11,7 @@ import 'package:new_project_driving/model/notification_model/notification_model.
 import 'package:new_project_driving/model/userDeviceModel/userDeviceModel.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/widget/notification_color/notification_color_widget.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:uuid/uuid.dart';
 
@@ -22,13 +23,11 @@ class NotificationController extends GetxController {
   RxBool selectStudent = false.obs;
   RxBool selectTeacher = false.obs;
 
-  
   Future<void> sendNotificationSelectedUsers(
       {required IconData icon,
       required Color whiteshadeColor,
       required Color containerColor}) async {
     try {
-
       final uuid = const Uuid().v1();
       NotificationModel messageDetails = NotificationModel(
           dateTime: DateTime.now().toString(),
@@ -45,8 +44,8 @@ class NotificationController extends GetxController {
             .doc(UserCredentialsController.schoolId)
             .collection('AllUsersDeviceID')
             .doc(selectedUSerUIDList[i].docId)
-            .set({'message': true,'docid':selectedUSerUIDList[i].docId}, SetOptions(merge: true)).then(
-                (value) async {
+            .set({'message': true, 'docid': selectedUSerUIDList[i].docId},
+                SetOptions(merge: true)).then((value) async {
           await server
               .collection('DrivingSchoolCollection')
               .doc(UserCredentialsController.schoolId)
@@ -85,9 +84,8 @@ class NotificationController extends GetxController {
     }
   }
 
-  List<UserDeviceIDModel> selectedUSerUIDList = [];// fetchUsersID 
+  List<UserDeviceIDModel> selectedUSerUIDList = []; // fetchUsersID
   Future<void> fetchUsersID({required String role}) async {
-    log('fetchStudentID');
     await server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
@@ -104,8 +102,9 @@ class NotificationController extends GetxController {
       }
     });
   }
-    Future<void> sendPushMessage(String token, String body, String title) async {
-   await  getPushNotification();
+
+  Future<void> sendPushMessage(String token, String body, String title) async {
+    await getPushNotification();
     final serverKey = pushNotficationKey.value;
     final Uri url = Uri.parse(
         'https://fcm.googleapis.com/v1/projects/driving-school-6e78e/messages:send');
@@ -158,8 +157,9 @@ class NotificationController extends GetxController {
     } catch (e) {
       print('Exception caught sending notification: $e');
     }
-  } 
-    RxString pushNotficationKey = ''.obs;
+  }
+
+  RxString pushNotficationKey = ''.obs;
   getPushNotification() async {
     FirebaseFirestore.instance
         .collection('PushNotification')
@@ -168,6 +168,77 @@ class NotificationController extends GetxController {
         .then((value) async {
       pushNotficationKey.value = value.data()?['key'];
     });
+  }
+
+  List<UserDeviceIDModel> fetchUnpaidUsersDeviceIDList = [];
+  Future<void> fetchUnpaidUsers({
+    required String batchID,
+    required String courseID,
+    required String bodyText,
+    required String titleText,
+  }) async {
+    final uuid = const Uuid().v1();
+    fetchUnpaidUsersDeviceIDList.clear();
+    NotificationModel messageDetails = NotificationModel(
+      dateTime: DateTime.now().toString(),
+      docid: uuid,
+      open: false,
+      icon: AlertNotifierSetup().icon,
+      messageText: bodyText,
+      headerText: titleText,
+      whiteshadeColor: AlertNotifierSetup().whiteshadeColor,
+      containerColor: AlertNotifierSetup().containerColor,
+    );
+    try {
+      showToast(msg: "Please wait......");
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('FeesCollection')
+          .doc(batchID)
+          .collection('Courses')
+          .doc(courseID)
+          .collection('Students')
+          .get()
+          .then((docvalue) async {
+        for (var i = 0; i < docvalue.docs.length; i++) {
+          if (docvalue.docs[i].data()['paidStatus'] == false) {
+            final userID = docvalue.docs[i].data()['studentID'];
+            try {
+              await server
+                  .collection('DrivingSchoolCollection')
+                  .doc(UserCredentialsController.schoolId)
+                  .collection('AllUsersDeviceID')
+                  .doc(userID)
+                  .get()
+                  .then((usersvalue) async {
+                fetchUnpaidUsersDeviceIDList
+                    .add(UserDeviceIDModel.fromMap(usersvalue.data()!));
+              });
+            } catch (e) {
+              log('fetch AllUsersDeviceID Collection Error: $e');
+            }
+          }
+        }
+      }).then((value) async {
+        for (var i = 0; i < fetchUnpaidUsersDeviceIDList.length; i++) {
+          await sendPushMessage(fetchUnpaidUsersDeviceIDList[i].devideID,
+              bodyText, titleText); // Push notification
+          await server
+              .collection('DrivingSchoolCollection')
+              .doc(UserCredentialsController.schoolId)
+              .collection('AllUsersDeviceID')
+              .doc(fetchUnpaidUsersDeviceIDList[i].docId)
+              .collection("Notification_Message")
+              .doc(uuid)
+              .set(messageDetails.toMap());
+        }
+      }).then((value) {
+        showToast(msg: "Notification sent successfully");
+      });
+    } catch (e) {
+      log('fetchUnpaidUsers Error: $e');
+    }
   }
 }
 
