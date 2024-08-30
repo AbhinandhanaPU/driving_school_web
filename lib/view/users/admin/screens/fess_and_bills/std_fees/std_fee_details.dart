@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
+import 'package:new_project_driving/controller/fee_controller/fee_controller.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
@@ -15,9 +16,11 @@ import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route
 class StudentsFeesStatus extends StatelessWidget {
   StudentsFeesStatus({super.key});
   final CourseController courseController = Get.put(CourseController());
+  final FeeController feeController = Get.put(FeeController());
   @override
   Widget build(BuildContext context) {
     final courseid = courseController.ontapCourseDocID.value;
+    final batchId = feeController.batchId.value;
 
     return SingleChildScrollView(
       scrollDirection:
@@ -61,8 +64,7 @@ class StudentsFeesStatus extends StatelessWidget {
                 width: ResponsiveWebSite.isDesktop(context)
                     ? double.infinity
                     : 1200,
-                height: // ResponsiveWebSite.isMobile(context) ? 800 :
-                    500,
+                height: 500,
                 color: cWhite,
                 child: Column(
                   children: [
@@ -130,7 +132,9 @@ class StudentsFeesStatus extends StatelessWidget {
                           stream: server
                               .collection('DrivingSchoolCollection')
                               .doc(UserCredentialsController.schoolId)
-                              .collection('FeeCollection')
+                              .collection('FeesCollection')
+                              .doc(batchId)
+                              .collection('Courses')
                               .doc(courseid)
                               .collection('Students')
                               .snapshots(),
@@ -150,10 +154,10 @@ class StudentsFeesStatus extends StatelessWidget {
                                       builder: (context, snapshot) {
                                         final modeldata =
                                             snapshot.data?.data() ?? {};
-                                        final stddata =
+                                        final studentModel =
                                             StudentModel.fromMap(modeldata);
                                         return StudentFeeDatalist(
-                                          stdData: stddata,
+                                          stdData: studentModel,
                                           index: index,
                                           feeData: data,
                                         );

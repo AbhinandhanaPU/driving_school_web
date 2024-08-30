@@ -70,7 +70,7 @@ class FeeCoursesDataList extends StatelessWidget {
           Expanded(
             flex: 2,
             child: TextFontWidget(
-              text: feeModel['amountPaid']?.toString() ?? 'N/A',
+              text: feeModel['amountCollected']?.toString() ?? 'N/A',
               fontsize: 12,
               overflow: TextOverflow.ellipsis,
             ),

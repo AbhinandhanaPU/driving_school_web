@@ -45,6 +45,7 @@ class BatchController extends GetxController {
           .doc(batchDetails.batchId)
           .set(batchDetails.toMap())
           .then((value) async {
+        Get.back();
         batchNameController.clear();
         dateController.clear();
         buttonstate.value = ButtonState.success;
