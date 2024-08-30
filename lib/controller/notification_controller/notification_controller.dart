@@ -235,9 +235,11 @@ class NotificationController extends GetxController {
         }
       }).then((value) {
         showToast(msg: "Notification sent successfully");
+        fetchUnpaidUsersDeviceIDList.clear();
       });
     } catch (e) {
       log('fetchUnpaidUsers Error: $e');
+      fetchUnpaidUsersDeviceIDList.clear();
     }
   }
 }
