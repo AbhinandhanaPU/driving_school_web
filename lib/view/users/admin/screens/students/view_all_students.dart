@@ -127,7 +127,7 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 3,
+                                    flex: 4,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'Name')),
                                 SizedBox(
@@ -141,7 +141,7 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 3,
+                                    flex: 4,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'courses type')),
                                 SizedBox(
@@ -155,7 +155,7 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'Batch')),
                                 SizedBox(
@@ -197,8 +197,9 @@ class AllStudentListContainer extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5, left: 5),
-                            child: SizedBox(
-                              // width: 1100,
+                            child: Container(
+                              color: cWhite,
+                              height: 40,
                               child: StreamBuilder(
                                 stream: batchController.onBatchWiseView.value ==
                                         true

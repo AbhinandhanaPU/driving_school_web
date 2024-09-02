@@ -9,7 +9,8 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/drop_down/batch_dp_dn.dart';
 
-updateStudentBatch({required BuildContext context, required StudentModel studentModel}) {
+updateStudentBatch(
+    {required BuildContext context, required StudentModel studentModel}) {
   final StudentController studentController = Get.put(StudentController());
   showDialog(
     context: context,
@@ -40,7 +41,6 @@ updateStudentBatch({required BuildContext context, required StudentModel student
           child: BatchDropDown(
             onChanged: (batch) {
               studentController.batchId.value = batch!.batchId;
-              studentController.batchName.value = batch.batchName;
               log('New batch of ${studentModel.studentName}: ${batch.batchId} - ${batch.batchName}');
             },
           ),

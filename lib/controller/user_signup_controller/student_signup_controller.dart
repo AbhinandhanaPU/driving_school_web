@@ -72,7 +72,6 @@ class StudentSignUpController extends GetxController {
           status: true, //change
           level: "Beginner",
           batchId: '',
-          batchName: '',
         );
         await server
             .collection('DrivingSchoolCollection')
