@@ -34,7 +34,6 @@ class FeeController extends GetxController {
           .collection('FeesCollection')
           .doc(studentModel.batchId)
           .set({
-        'batchName': studentModel.batchName,
         'batchId': studentModel.batchId,
       });
     }
@@ -53,8 +52,7 @@ class FeeController extends GetxController {
           .doc(course.courseId)
           .set({
         'courseId': course.courseId,
-        'courseName': course.courseName,
-      });
+       });
     }
     await _fbServer
         .collection('FeesCollection')
@@ -97,7 +95,6 @@ class FeeController extends GetxController {
             .collection('FeesCollection')
             .doc(studentModel.batchId)
             .set({
-          'batchName': studentModel.batchName,
           'batchId': studentModel.batchId,
         });
       }
@@ -116,7 +113,6 @@ class FeeController extends GetxController {
             .doc(course.courseId)
             .set({
           'courseId': course.courseId,
-          'courseName': course.courseName,
         });
       }
       DocumentSnapshot studentDoc = await _fbServer

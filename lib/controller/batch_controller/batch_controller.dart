@@ -101,13 +101,19 @@ class BatchController extends GetxController {
 
   Future<void> addStudent() async {
     try {
-      final studentResult = await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .collection('Students')
-          .doc(courseCtrl.studentDocID.value)
-          .get();
       if (courseCtrl.studentDocID.value != '') {
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Students')
+            .doc(courseCtrl.studentDocID.value)
+            .update({"batchId": batchId.value});
+        final studentResult = await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Students')
+            .doc(courseCtrl.studentDocID.value)
+            .get();
         final data = StudentModel.fromMap(studentResult.data()!);
         await server
             .collection('DrivingSchoolCollection')
@@ -154,7 +160,13 @@ class BatchController extends GetxController {
           .collection('Students')
           .doc(docId)
           .delete()
-          .then((value) {
+          .then((value) async {
+        server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Students')
+            .doc(docId)
+            .update({'batchId': ''});
         showToast(msg: "Deleted Successfully");
         log("Deleted Successfully");
         Get.back();

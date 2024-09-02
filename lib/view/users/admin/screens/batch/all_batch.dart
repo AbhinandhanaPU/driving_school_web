@@ -8,9 +8,6 @@ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/batch_std_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/data_table_batch/batch_datalist.dart';
-import 'package:new_project_driving/view/users/admin/screens/batch/functions/batch_shift.dart';
-import 'package:new_project_driving/view/users/admin/screens/batch/functions/create_batch.dart';
-import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
@@ -19,8 +16,7 @@ import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route
 class AllBatchsListContainer extends StatelessWidget {
   AllBatchsListContainer({super.key});
 
-  final BatchController batchController =
-      Get.put(BatchController());
+  final BatchController batchController = Get.put(BatchController());
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -54,52 +50,52 @@ class AllBatchsListContainer extends StatelessWidget {
                       const SizedBox(
                         height: 30,
                       ),
-                      Row(
+                      const Row(
                         children: [
-                          const RouteSelectedTextContainer(
+                          RouteSelectedTextContainer(
                             title: 'All Students',
                             width: 200,
                           ),
-                          const Spacer(),
-                           Padding(
-                             padding: const EdgeInsets.all(8.0),
-                             child: GestureDetector(
-                              onTap: () {
-                                batchShift(context);
-                              },
-                              child: ButtonContainerWidget(
-                                  curving: 10,
-                                  colorindex: 2,
-                                  height: 35,
-                                  width: 120,
-                                  child: const Center(
-                                    child: TextFontWidgetRouter(
-                                      text: 'Shift Batch',
-                                      fontsize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: cWhite,
-                                    ),
-                                  )),
-                                                       ),
-                           ),
-                          GestureDetector(
-                            onTap: () {
-                              createBatchFunction(context);
-                            },
-                            child: ButtonContainerWidget(
-                                curving: 30,
-                                colorindex: 0,
-                                height: 35,
-                                width: 120,
-                                child: const Center(
-                                  child: TextFontWidgetRouter(
-                                    text: 'Create Batch',
-                                    fontsize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: cWhite,
-                                  ),
-                                )),
-                          ),
+                          Spacer(),
+                          //  Padding(
+                          //    padding: const EdgeInsets.all(8.0),
+                          //    child: GestureDetector(
+                          //     onTap: () {
+                          //       batchShift(context);
+                          //     },
+                          //     child: ButtonContainerWidget(
+                          //         curving: 10,
+                          //         colorindex: 2,
+                          //         height: 35,
+                          //         width: 120,
+                          //         child: const Center(
+                          //           child: TextFontWidgetRouter(
+                          //             text: 'Shift Batch',
+                          //             fontsize: 14,
+                          //             fontWeight: FontWeight.bold,
+                          //             color: cWhite,
+                          //           ),
+                          //         )),
+                          //                              ),
+                          //  ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     createBatchFunction(context);
+                          //   },
+                          //   child: ButtonContainerWidget(
+                          //       curving: 30,
+                          //       colorindex: 0,
+                          //       height: 35,
+                          //       width: 120,
+                          //       child: const Center(
+                          //         child: TextFontWidgetRouter(
+                          //           text: 'Create Batch',
+                          //           fontsize: 14,
+                          //           fontWeight: FontWeight.bold,
+                          //           color: cWhite,
+                          //         ),
+                          //       )),
+                          // ),
                         ],
                       ),
                       const SizedBox(
@@ -130,7 +126,6 @@ class AllBatchsListContainer extends StatelessWidget {
                                 SizedBox(
                                   width: 02,
                                 ),
-                               
                                 Expanded(
                                   flex: 3,
                                   child: CatrgoryTableHeaderWidget(
@@ -183,7 +178,7 @@ class AllBatchsListContainer extends StatelessWidget {
                                     .collection('DrivingSchoolCollection')
                                     .doc(UserCredentialsController.schoolId)
                                     .collection('Batch')
-                                    .orderBy('date',descending: true)
+                                    .orderBy('date', descending: true)
                                     .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {
@@ -201,19 +196,17 @@ class AllBatchsListContainer extends StatelessWidget {
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
-                                              final data =
-                                                  BatchModel.fromMap(
-                                                      snaPS.data!.docs[index]
-                                                          .data());
+                                              final data = BatchModel.fromMap(
+                                                  snaPS.data!.docs[index]
+                                                      .data());
                                               return GestureDetector(
                                                 onTap: () {
                                                   batchController
-                                                      .onTapBtach
-                                                      .value = true;
-                                                  batchController
-                                                      .batchId
+                                                      .onTapBtach.value = true;
+                                                  batchController.batchId
                                                       .value = data.batchId;
-                                                      batchController.ontapBatchName.value=data.batchName;
+                                                  batchController.ontapBatchName
+                                                      .value = data.batchName;
                                                 },
                                                 child: BatchDataList(
                                                   data: data,

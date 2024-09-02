@@ -13,7 +13,6 @@ class StudentController extends GetxController {
   Rxn<StudentModel> studentModelData = Rxn<StudentModel>();
   RxBool ontapStudent = false.obs;
   RxString batchId = ''.obs;
-  RxString batchName = ''.obs;
 
   final _fbServer = server
       .collection('DrivingSchoolCollection')
@@ -86,15 +85,14 @@ class StudentController extends GetxController {
     try {
       await _fbServer.collection('Students').doc(studentModel.docid).update({
         'batchId': batchId.value,
-        'batchName': batchName.value,
       }).then((value) {
         studentModel.batchId = batchId.value;
-        studentModel.batchName = batchName.value;
         update();
         log("Student batch updated to $batchId");
       });
+      await addStudentToBatch(studentModel);
+      await checkStudentInBatches(studentModel);
       final docidofcourse = await _fbServer.collection("Courses").get();
-
       if (docidofcourse.docs.isNotEmpty) {
         for (var courseDoc in docidofcourse.docs) {
           final courseDocid = courseDoc.id;
@@ -114,7 +112,6 @@ class StudentController extends GetxController {
                 .doc(studentModel.docid)
                 .update({
               'batchId': batchId.value,
-              'batchName': batchName.value,
             });
           }
         }
@@ -123,6 +120,128 @@ class StudentController extends GetxController {
       log('student batch update error $e');
     }
   }
+
+  Future<void> addStudentToBatch(StudentModel studentModel) async {
+    try {
+      final batches = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Batch')
+          .get();
+
+      for (var batchDoc in batches.docs) {
+        final batchDocid = batchDoc.id;
+        final studentsCollection = server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Batch')
+            .doc(batchDocid)
+            .collection('Students');
+
+        final studentDoc =
+            await studentsCollection.doc(studentModel.docid).get();
+
+        if (studentDoc.exists) {
+          await studentsCollection.doc(studentModel.docid).delete();
+          log('Student removed from batch $batchDocid');
+          break;
+        }
+      }
+      if (batchId.value.isNotEmpty) {
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Batch')
+            .doc(batchId.value)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .set(studentModel.toMap());
+        log('Student added to new batch $batchId');
+      } else {
+        log('No new batch ID provided.');
+      }
+    } catch (e) {
+      log('Error adding student to batch: $e');
+    }
+  }
+
+  Future<void> checkStudentInBatches(StudentModel studentModel) async {
+    try {
+      final batchDoc = await _fbServer.collection('FeesCollection').get();
+
+      for (var batchDoc in batchDoc.docs) {
+        final batch = batchDoc.id;
+        final coursecol = await _fbServer
+            .collection('FeesCollection')
+            .doc(batch)
+            .collection('Courses')
+            .get();
+        for (var courseDoc in coursecol.docs) {
+          final courseId = courseDoc.id;
+          final stdDoc = await _fbServer
+              .collection('FeesCollection')
+              .doc(batch)
+              .collection('Courses')
+              .doc(courseId)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+          if (stdDoc.exists) {
+            final studentData = stdDoc.data()!;
+            DocumentSnapshot batchDoc = await _fbServer
+                .collection('FeesCollection')
+                .doc(batchId.value)
+                .get();
+
+            if (!batchDoc.exists) {
+              await _fbServer
+                  .collection('FeesCollection')
+                  .doc(batchId.value)
+                  .set({
+                'batchId': batchId.value,
+              });
+            }
+            DocumentSnapshot courseDoc = await _fbServer
+                .collection('FeesCollection')
+                .doc(studentModel.batchId)
+                .collection('Courses')
+                .doc(courseId)
+                .get();
+
+            if (!courseDoc.exists) {
+              await _fbServer
+                  .collection('FeesCollection')
+                  .doc(studentModel.batchId)
+                  .collection('Courses')
+                  .doc(courseId)
+                  .set({
+                'courseId': courseId,
+              });
+            }
+            await _fbServer
+                .collection('FeesCollection')
+                .doc(batchId.value)
+                .collection('Courses')
+                .doc(courseId)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .set(studentData);
+            await _fbServer
+                .collection('FeesCollection')
+                .doc(batch)
+                .collection('Courses')
+                .doc(courseId)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .delete();
+          }
+        }
+      }
+    } catch (e) {
+      log('checkStudentInBatches error $e ');
+    }
+  }
+
   //   Future<void> updateStudentCourse(StudentModel student, String newCourseId) async {
   //   try {
   //     await _fbServer

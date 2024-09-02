@@ -41,25 +41,30 @@ class StudentsFeesStatus extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: GestureDetector(
-                onTap: () {
-                  courseController.ontapStudentDetail.value = false;
-                },
-                child: const SizedBox(
-                  height: 35,
-                  width: 100,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 05, left: 05),
-                    child: RouteNonSelectedTextContainer(
-                      title: 'Back',
+              padding: const EdgeInsets.only(bottom: 10, top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      courseController.ontapStudentDetail.value = false;
+                    },
+                    child: const SizedBox(
+                      height: 35,
+                      width: 100,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 05, left: 05),
+                        child: RouteNonSelectedTextContainer(
+                          title: 'Back',
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 25),
+              padding: const EdgeInsets.only(top: 25),
               child: Container(
                 width: ResponsiveWebSite.isDesktop(context)
                     ? double.infinity
