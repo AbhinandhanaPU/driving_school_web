@@ -37,6 +37,10 @@ class _StudentLevelDropDownState extends State<StudentLevelDropDown> {
           value: 'intermediate',
           child: Text('Intermediate'),
         ),
+        DropdownMenuItem(
+          value: 'advanced',
+          child: Text('Advanced'),
+        ),
       ],
       onChanged: (val) {
         if (val != null) {

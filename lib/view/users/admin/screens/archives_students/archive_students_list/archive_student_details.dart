@@ -5,6 +5,9 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/controller/class_controller/class_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
+import 'package:new_project_driving/model/batch_model/batch_model.dart';
+import 'package:new_project_driving/utils/firebase/firebase.dart';
+import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/profile_detail_widget/detail_tile_container.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
@@ -331,13 +334,28 @@ class ArchivesStudentDetailsContainer extends StatelessWidget {
                                             }
                                           },
                                         ),
-                                        ProfileDetailTileContainer(
-                                          flex: 1,
-                                          title: 'Batch Name',
-                                          subtitle: data.batchName != ''
-                                              ? data.batchName
-                                              : "N/A",
-                                        ),
+                                        StreamBuilder(
+                                            stream: server
+                                                .collection(
+                                                    'DrivingSchoolCollection')
+                                                .doc(UserCredentialsController
+                                                    .schoolId)
+                                                .collection('Batch')
+                                                .doc(data.batchId)
+                                                .snapshots(),
+                                            builder: (context, snapshot) {
+                                              final batchData =
+                                                  BatchModel.fromMap(
+                                                      snapshot.data!.data()!);
+                                              return ProfileDetailTileContainer(
+                                                flex: 1,
+                                                title: 'Batch Name',
+                                                subtitle:
+                                                    batchData.batchName != ''
+                                                        ? batchData.batchName
+                                                        : "N/A",
+                                              );
+                                            }),
                                         // const ProfileDetailTileContainer(
                                         //   flex: 1,
                                         //   title: 'Practice Schedule',

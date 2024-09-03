@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
+import 'package:new_project_driving/model/batch_model/batch_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
+import 'package:new_project_driving/utils/firebase/firebase.dart';
+import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/crud/archives_function/archive_std.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/crud/update_std_batch.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
@@ -28,7 +33,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
   @override
   Widget build(BuildContext context) {
     StudentController studentController = Get.put(StudentController());
-
+    log('batchid : ${widget.data.batchId},${widget.data.studentName}');
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -69,7 +74,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
               ],
             ),
           ), //........................................... Student Name
-          const SizedBox(width: 1),
+          const SizedBox(width: 2),
           Expanded(
             flex: 3,
             child: Row(
@@ -92,7 +97,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
               ],
             ),
           ), //....................................... Student Phone Number
-          const SizedBox(width: 1),
+          const SizedBox(width: 2),
           Expanded(
             flex: 3,
             child: StreamBuilder<List<String>>(
@@ -121,7 +126,9 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
               },
             ),
           ), //............................. Student courses type
-          const SizedBox(width: 1),
+          const SizedBox(
+            width: 2,
+          ),
           Expanded(
             flex: 2,
             child: Center(
@@ -133,18 +140,57 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
               ),
             ),
           ), //............................. Student join date
-          const SizedBox(width: 1),
+          const SizedBox(
+            width: 2,
+          ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextFontWidget(
-                  text: widget.data.batchName == ''
-                      ? " Not found"
-                      : widget.data.batchName,
-                  fontsize: 12,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                widget.data.batchId.isEmpty
+                    ? Expanded(
+                        child: DataContainerWidget(
+                          index: widget.index,
+                          headerTitle: 'Batch not Assigned',
+                          rowMainAccess: MainAxisAlignment.center,
+                        ),
+                      )
+                    : StreamBuilder(
+                        stream: server
+                            .collection('DrivingSchoolCollection')
+                            .doc(UserCredentialsController.schoolId)
+                            .collection('Batch')
+                            .doc(widget.data.batchId)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            log('Error fetching batch data: ${snapshot.error}');
+                            return Text('Error: ${snapshot.error}');
+                          } else if (!snapshot.hasData ||
+                              !snapshot.data!.exists) {
+                            log('No data found for batchId: ${widget.data.batchId}');
+                            return const Text('Batch Not Found');
+                          } else {
+                            final batchData =
+                                BatchModel.fromMap(snapshot.data!.data()!);
+                            String batchName = batchData.batchName.isEmpty
+                                ? "Not found"
+                                : batchData.batchName;
+                            log('Batch name for batchId ${widget.data.batchId}: $batchName');
+                            return Expanded(
+                              child: DataContainerWidget(
+                                index: widget.index,
+                                headerTitle: batchName,
+                                rowMainAccess: MainAxisAlignment.center,
+                              ),
+                            );
+                          }
+                        },
+                      ),
                 IconButton(
                     onPressed: () {
                       updateStudentBatch(
@@ -157,10 +203,8 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                     ))
               ],
             ),
-          ),
-
-          //............................. Student Permission Status
-          const SizedBox(width: 1),
+          ), //............................. Student batch
+          const SizedBox(width: 2),
           Expanded(
             flex: 2,
             child: Row(
@@ -178,15 +222,18 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                     },
                   ),
                 ),
-                TextFontWidget(
-                  text: widget.data.status == true ? "  Active" : "  Inactive",
-                  fontsize: 12,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                Expanded(
+                  child: DataContainerWidget(
+                    index: widget.index,
+                    headerTitle:
+                        widget.data.status == true ? "  Active" : "  Inactive",
+                    rowMainAccess: MainAxisAlignment.center,
+                  ),
+                )
               ],
             ),
           ), //............................. Status [Active or DeActivate]
-          const SizedBox(width: 1),
+          const SizedBox(width: 2),
           Expanded(
             flex: 2,
             child: Center(
@@ -195,7 +242,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                   archivesStudentsFunction(context, widget.data);
                 },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(
                       width: 15,
@@ -203,20 +250,17 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                         'webassets/png/shape.png',
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: TextFontWidget(
-                        text: "Archive",
-                        fontsize: 12,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    DataContainerWidget(
+                      index: widget.index,
+                      headerTitle: 'Archive',
+                      rowMainAccess: MainAxisAlignment.center,
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 1),
+          const SizedBox(width: 2),
           Expanded(
             flex: 2,
             child: Center(
@@ -239,7 +283,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
               ),
             ),
           ), //........................................... delete
-          const SizedBox(width: 1),
+          const SizedBox(width: 2),
         ],
       ),
     );

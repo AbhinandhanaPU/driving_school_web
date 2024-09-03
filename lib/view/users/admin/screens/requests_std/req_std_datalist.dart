@@ -264,7 +264,9 @@ approvalDialogBox(
                 stream: server
                     .collection('DrivingSchoolCollection')
                     .doc(UserCredentialsController.schoolId)
-                    .collection('FeeCollection')
+                    .collection('FeesCollection')
+                    .doc(data.batchId)
+                    .collection('Courses')
                     .doc(modelData.courseId)
                     .collection('Students')
                     .doc(data.docid)

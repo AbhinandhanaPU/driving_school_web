@@ -13,7 +13,11 @@ createBatchFunction(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const TextFontWidget(text: 'Create Batch', fontsize: 14),
+        title: const TextFontWidget(
+          text: 'Create Batch',
+          fontsize: 14,
+          fontWeight: FontWeight.bold,
+        ),
         content: SizedBox(
           height: 200,
           child: SingleChildScrollView(

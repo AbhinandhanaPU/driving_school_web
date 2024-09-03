@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/constant/const.dart';
@@ -217,5 +218,33 @@ class CourseController extends GetxController {
     } catch (e) {
       log("Student deletion error:$e");
     }
+  }
+
+  Stream<List<StudentModel>> fetchStudentsWithStatusTrue(String courseId) {
+    return server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Courses')
+        .doc(courseId)
+        .collection('Students')
+        .snapshots()
+        .asyncMap((snapshot) async {
+      List<String> studentIds = snapshot.docs.map((doc) => doc.id).toList();
+
+      if (studentIds.isEmpty) return [];
+
+      QuerySnapshot studentSnapshot = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Students')
+          .where('status', isEqualTo: true)
+          .where('docid', whereIn: studentIds)
+          .get();
+
+      return studentSnapshot.docs
+          .map(
+              (doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+    });
   }
 }

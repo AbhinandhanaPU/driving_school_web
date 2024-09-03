@@ -116,9 +116,9 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Place')),
+                                        headerTitle: 'Course Type')),
                                 SizedBox(
                                   width: 02,
                                 ),
@@ -130,9 +130,16 @@ class AllArchivesStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 4,
+                                    flex: 3,
                                     child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'Course')),
+                                        headerTitle: 'Batch')),
+                                SizedBox(
+                                  width: 02,
+                                ),
+                                Expanded(
+                                    flex: 2,
+                                    child: CatrgoryTableHeaderWidget(
+                                        headerTitle: 'Status')),
                                 SizedBox(
                                   width: 02,
                                 ),

@@ -5,6 +5,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/batch_controller/batch_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/batch_model/batch_model.dart';
+import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/functions/edit_batch.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
@@ -63,7 +64,7 @@ class BatchDataList extends StatelessWidget {
           const SizedBox(
             width: 02,
           ),
-         
+
           Expanded(
             flex: 3,
             child: Center(
@@ -72,7 +73,8 @@ class BatchDataList extends StatelessWidget {
                   color: cWhite,
                   // width: 150,
                   index: index,
-                  headerTitle:DateFormat("dd-MMMM-yyyy").format( DateFormat("dd-MM-yyyy").parse(data.date)) ),
+                  headerTitle: DateFormat("dd-MMMM-yyyy")
+                      .format(DateFormat("dd-MM-yyyy").parse(data.date))),
             ),
           ), //............................. batch date
           const SizedBox(
@@ -80,21 +82,21 @@ class BatchDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: StreamBuilder<int>(
-                stream: batchController
-                    .fetchTotalStudents(data.batchId),
-                builder: (context, snapshot) {
-                  return Center(
-                    child: DataContainerWidget(
-                      rowMainAccess: MainAxisAlignment.center,
-                      color: cWhite,
-                      // width: 150,
-                      index: index,
-                      headerTitle:
-                          snapshot.hasData ? snapshot.data.toString() : '0',
-                    ),
-                  );
-                }),
+            child: StreamBuilder<List<StudentModel>>(
+              stream: batchController.fetchFilteredStudents(data.batchId),
+              builder: (context, snapshot) {
+                final studentCount =
+                    snapshot.hasData ? snapshot.data!.length : 0;
+                return Center(
+                  child: DataContainerWidget(
+                    rowMainAccess: MainAxisAlignment.center,
+                    color: cWhite,
+                    index: index,
+                    headerTitle: studentCount.toString(),
+                  ),
+                );
+              },
+            ),
           ), //............................. Student count
           const SizedBox(
             width: 02,
@@ -104,10 +106,8 @@ class BatchDataList extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  batchController.batchNameController.text =
-                      data.batchName;
-                  batchController.dateController.text =
-                      data.date;
+                  batchController.batchNameController.text = data.batchName;
+                  batchController.dateController.text = data.date;
                   editFunctionOfbatch(context, data);
                 },
                 child: DataContainerWidget(

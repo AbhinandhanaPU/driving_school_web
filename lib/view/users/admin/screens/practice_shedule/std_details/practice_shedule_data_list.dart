@@ -4,6 +4,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
+import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practise_functions/practice_shedule_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
@@ -93,18 +94,19 @@ class PracticeSheduleDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: StreamBuilder<int>(
+            child: StreamBuilder<List<StudentModel>>(
                 stream: practiceshedulecontroller
-                    .fetchTotalStudents(data.practiceId),
+                    .fetchStudentsWithStatusTrue(data.practiceId),
                 builder: (context, snapshot) {
+                  final studentCount =
+                      snapshot.hasData ? snapshot.data!.length : 0;
                   return Center(
                     child: DataContainerWidget(
                       rowMainAccess: MainAxisAlignment.center,
                       color: cWhite,
                       // width: 150,
                       index: index,
-                      headerTitle:
-                          snapshot.hasData ? snapshot.data.toString() : '0',
+                      headerTitle: studentCount.toString(),
                     ),
                   );
                 }),

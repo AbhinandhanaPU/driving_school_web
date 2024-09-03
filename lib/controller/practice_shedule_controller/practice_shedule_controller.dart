@@ -150,14 +150,31 @@ class PracticeSheduleController extends GetxController {
     }
   }
 
-  Stream<int> fetchTotalStudents(String courseId) {
-    CollectionReference coursesRef = server
+  Stream<List<StudentModel>> fetchStudentsWithStatusTrue(String practiseId) {
+    return server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
         .collection('PracticeSchedule')
-        .doc(courseId)
-        .collection('Students');
+        .doc(practiseId)
+        .collection('Students')
+        .snapshots()
+        .asyncMap((snapshot) async {
+      List<String> studentIds = snapshot.docs.map((doc) => doc.id).toList();
 
-    return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
+      if (studentIds.isEmpty) return [];
+
+      QuerySnapshot studentSnapshot = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Students')
+          .where('status', isEqualTo: true)
+          .where('docid', whereIn: studentIds)
+          .get();
+
+      return studentSnapshot.docs
+          .map(
+              (doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+    });
   }
 }

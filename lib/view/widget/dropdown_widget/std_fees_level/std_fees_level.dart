@@ -66,9 +66,18 @@ class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
               val,
               widget.course,
             );
+          } else if (val == 'fully paid') {
+            studentController.addStudentfeeFullyPaid(
+              widget.data,
+              val,
+              widget.course,
+            );
           } else {
             studentController.addStudentFeeColl(
-                widget.data, val, widget.course);
+              widget.data,
+              val,
+              widget.course,
+            );
           }
         }
       },

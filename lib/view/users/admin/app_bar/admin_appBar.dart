@@ -3,7 +3,7 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/admin_profile/admin_profile.dart';
-import 'package:new_project_driving/view/users/admin/app_bar/batch/set_batch.dart';
+import 'package:new_project_driving/view/users/admin/app_bar/batch/create_batch.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:sidebar_drawer/sidebar_drawer.dart';
 
@@ -58,42 +58,37 @@ class AppBarAdminPanel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 5,
-                        ),
+                        padding: const EdgeInsets.only(bottom: 5),
                         child: Container(
                           height: 45,
-                          width: 280,
+                          width: 150,
+                          padding: const EdgeInsets.only(right: 10, left: 10),
                           decoration: BoxDecoration(
                             color: Colors.grey.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.calendar_month_outlined),
+                              const TextFontWidget(
+                                text: 'Create Batch',
+                                fontsize: 14,
+                                fontWeight: FontWeight.w500,
                               ),
-                              const TextFontWidget(text: ' ', fontsize: 12),
                               const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    bacthSettingFunction(context);
-                                  },
-                                  child: Container(
-                                    height: 34,
-                                    width: 34,
-                                    decoration: BoxDecoration(
-                                        color: cWhite,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.settings_outlined,
-                                        color: cBlack,
-                                      ),
+                              GestureDetector(
+                                onTap: () {
+                                  createBatchFunction(context);
+                                },
+                                child: Container(
+                                  height: 34,
+                                  width: 34,
+                                  decoration: BoxDecoration(
+                                      color: cWhite,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.add,
+                                      color: cBlack,
                                     ),
                                   ),
                                 ),
@@ -105,32 +100,25 @@ class AppBarAdminPanel extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: 100,
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                UserCredentialsController.adminModel!.adminName,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 0),
-                                child: Text(
-                                  'Admin',
-                                  style: TextStyle(
-                                      color: cBlack.withOpacity(0.5),
-                                      fontSize: 10.7),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      Text(
+                        UserCredentialsController.adminModel!.adminName,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 0),
+                        child: Text(
+                          'Admin',
+                          style: TextStyle(
+                              color: cBlack.withOpacity(0.5), fontSize: 10.7),
+                        ),
                       ),
                     ],
                   ),

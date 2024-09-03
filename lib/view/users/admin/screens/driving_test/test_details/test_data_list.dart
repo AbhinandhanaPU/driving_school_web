@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
+import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_edit.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
@@ -85,17 +86,19 @@ class TestDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: StreamBuilder<int>(
-                stream: testController.fetchTotalStudents(data.docId),
+            child: StreamBuilder<List<StudentModel>>(
+                stream: testController.fetchStudentsWithStatusTrue(data.docId),
                 builder: (context, snapshot) {
+                  final studentCount =
+                      snapshot.hasData ? snapshot.data!.length : 0;
+
                   return Center(
                     child: DataContainerWidget(
                       rowMainAccess: MainAxisAlignment.center,
                       color: cWhite,
                       // width: 150,
                       index: index,
-                      headerTitle:
-                          snapshot.hasData ? snapshot.data.toString() : '0',
+                      headerTitle: studentCount.toString(),
                     ),
                   );
                 }),

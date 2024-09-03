@@ -10,12 +10,68 @@ import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 
 class FeeController extends GetxController {
+  RxBool onTapBtach = false.obs;
+  RxString batchId = ''.obs;
+  Rx<bool> onTapUnpaid = Rx<bool>(false);
+
   final formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
 
-  final _fbServer = server
-      .collection('DrivingSchoolCollection')
-      .doc(UserCredentialsController.schoolId);
+  final _fbServer =
+      server.collection('DrivingSchoolCollection').doc(UserCredentialsController.schoolId);
+
+  addStudentfeeFullyPaid(
+    StudentModel studentModel,
+    String status,
+    CourseModel course,
+  ) async {
+    DocumentSnapshot batchDoc =
+        await _fbServer.collection('FeesCollection').doc(studentModel.batchId).get();
+
+    if (!batchDoc.exists) {
+      await _fbServer.collection('FeesCollection').doc(studentModel.batchId).set({
+        'batchId': studentModel.batchId,
+      });
+    }
+    DocumentSnapshot courseDoc = await _fbServer
+        .collection('FeesCollection')
+        .doc(studentModel.batchId)
+        .collection('Courses')
+        .doc(course.courseId)
+        .get();
+
+    if (!courseDoc.exists) {
+      await _fbServer
+          .collection('FeesCollection')
+          .doc(studentModel.batchId)
+          .collection('Courses')
+          .doc(course.courseId)
+          .set({
+        'courseId': course.courseId,
+      });
+    }
+    await _fbServer
+        .collection('FeesCollection')
+        .doc(studentModel.batchId)
+        .collection('Courses')
+        .doc(course.courseId)
+        .collection('Students')
+        .doc(studentModel.docid)
+        .set({
+      'studentName': studentModel.studentName,
+      'studentID': studentModel.docid,
+      'feeStatus': status,
+      'amountPaid': course.rate,
+      'totalAmount': course.rate,
+      'paidStatus': true
+    }).then((value) async {
+      await getFeeTotalAmount(course.courseId, studentModel.batchId, course.rate);
+      await pendingAmountCalculate(course.courseId, studentModel.batchId);
+      await acceptStudentToCourse(studentModel, status, course.courseId);
+      showToast(msg: 'Student fees updated');
+      log("Fees Status Updated");
+    });
+  }
 
   Future<void> addStudentFeeColl(
     StudentModel studentModel,
@@ -24,47 +80,58 @@ class FeeController extends GetxController {
   ) async {
     try {
       int amountPaid = int.tryParse(amountController.text) ?? 0;
+      DocumentSnapshot batchDoc =
+          await _fbServer.collection('FeesCollection').doc(studentModel.batchId).get();
 
-      // Fetch the course document
+      if (!batchDoc.exists) {
+        await _fbServer.collection('FeesCollection').doc(studentModel.batchId).set({
+          'batchId': studentModel.batchId,
+        });
+      }
       DocumentSnapshot courseDoc = await _fbServer
-          .collection('FeeCollection')
+          .collection('FeesCollection')
+          .doc(studentModel.batchId)
+          .collection('Courses')
           .doc(course.courseId)
           .get();
 
-      int paidAmount = 0;
-      int totalStudents = 0;
-      int totalAmount = 0;
-
-      if (courseDoc.exists) {
-        Map<String, dynamic> courseData =
-            courseDoc.data() as Map<String, dynamic>;
-        paidAmount = courseData['amountPaid'] ?? 0;
-        totalStudents = courseData['totalStudents'] ?? 0;
-        totalAmount = courseData['totalAmount'] ?? 0;
+      if (!courseDoc.exists) {
+        await _fbServer
+            .collection('FeesCollection')
+            .doc(studentModel.batchId)
+            .collection('Courses')
+            .doc(course.courseId)
+            .set({
+          'courseId': course.courseId,
+        });
       }
       DocumentSnapshot studentDoc = await _fbServer
-          .collection('FeeCollection')
+          .collection('FeesCollection')
+          .doc(studentModel.batchId)
+          .collection('Courses')
           .doc(course.courseId)
           .collection('Students')
           .doc(studentModel.docid)
           .get();
 
-      if (studentDoc.exists) {
-        // If the student exists, update the amount paid
+      if (studentDoc.exists && studentDoc['amountPaid'] != course.rate) {
         await _fbServer
-            .collection('FeeCollection')
+            .collection('FeesCollection')
+            .doc(studentModel.batchId)
+            .collection('Courses')
             .doc(course.courseId)
             .collection('Students')
             .doc(studentModel.docid)
             .update({
           'feeStatus': status,
           'amountPaid': FieldValue.increment(amountPaid),
+          'paidStatus': false
         });
-
-        paidAmount += amountPaid;
       } else {
         await _fbServer
-            .collection('FeeCollection')
+            .collection('FeesCollection')
+            .doc(studentModel.batchId)
+            .collection('Courses')
             .doc(course.courseId)
             .collection('Students')
             .doc(studentModel.docid)
@@ -73,21 +140,12 @@ class FeeController extends GetxController {
           'studentID': studentModel.docid,
           'feeStatus': status,
           'amountPaid': amountPaid,
-          'totalAmount': course.rate
+          'totalAmount': course.rate,
+          'paidStatus': false,
         });
-
-        paidAmount += amountPaid;
-        totalStudents += 1;
-        totalAmount += amountPaid;
       }
-
-      await _fbServer.collection('FeeCollection').doc(course.courseId).update({
-        'amountPaid': paidAmount,
-        'totalStudents': totalStudents,
-        'totalAmount': totalAmount,
-        'pendingAmount': totalAmount - paidAmount,
-      });
-
+      await getFeeTotalAmount(course.courseId, studentModel.batchId, course.rate);
+      await pendingAmountCalculate(course.courseId, studentModel.batchId);
       await acceptStudentToCourse(studentModel, status, course.courseId);
 
       amountController.clear();
@@ -95,7 +153,7 @@ class FeeController extends GetxController {
       showToast(msg: 'Student fees updated');
       log("Fees Status Updated");
     } catch (e) {
-      log("FeeCollection error: $e");
+      log("FeesCollection error: $e");
     }
   }
 
@@ -156,12 +214,15 @@ class FeeController extends GetxController {
 
   Future<void> getFeeTotalAmount(
     String courseId,
+    String batchId,
     int fee,
   ) async {
     await server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
-        .collection('FeeCollection')
+        .collection('FeesCollection')
+        .doc(batchId)
+        .collection('Courses')
         .doc(courseId)
         .collection('Students')
         .get()
@@ -169,37 +230,63 @@ class FeeController extends GetxController {
       await server
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
-          .collection('FeeCollection')
+          .collection('FeesCollection')
+          .doc(batchId)
+          .collection('Courses')
           .doc(courseId)
           .set({
         'totalStudents': value.docs.length,
         'totalAmount': fee * value.docs.length,
       }, SetOptions(merge: true));
+      log('Total studnets and amount added');
     });
   }
 
-  Future<void> pendingAmountCalculate(String courseID) async {
-    try {
-      final courseDoc = await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .collection('FeeCollection')
-          .doc(courseID)
-          .get();
+  Future<void> pendingAmountCalculate(String courseID, String batchId) async {
+    int paidFee = 0;
+    int studenttotalAmount = 0;
 
-      int totalAmount = courseDoc.data()?['totalAmount'] ?? 0;
-      int amountPaid = courseDoc.data()?['amountPaid'] ?? 0;
-      int pendingAmount = totalAmount - amountPaid;
-      log('Pending amount: $pendingAmount');
+    await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('FeesCollection')
+        .doc(batchId)
+        .collection('Courses')
+        .doc(courseID)
+        .collection('Students')
+        .get()
+        .then((value) async {
+      for (var i = 0; i < value.docs.length; i++) {
+        final int totaladdesult = value.docs[i].data()['amountPaid'];
+        studenttotalAmount = studenttotalAmount + totaladdesult;
+      }
 
+      paidFee = studenttotalAmount;
       await server
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
-          .collection('FeeCollection')
+          .collection('FeesCollection')
+          .doc(batchId)
+          .collection('Courses')
           .doc(courseID)
-          .update({'pendingAmount': pendingAmount});
-    } catch (e) {
-      log('Error calculating pending amount: $e');
-    }
+          .get()
+          .then((value) async {
+        int totalAmount = value.data()?['totalAmount'] ?? 0;
+        int result = totalAmount - paidFee;
+
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('FeesCollection')
+            .doc(batchId)
+            .collection('Courses')
+            .doc(courseID)
+            .update({
+          'pendingAmount': result,
+          'amountCollected': paidFee,
+        });
+        log('Pending amount added');
+      });
+    });
   }
 }

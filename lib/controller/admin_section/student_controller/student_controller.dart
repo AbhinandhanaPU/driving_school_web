@@ -13,19 +13,16 @@ class StudentController extends GetxController {
   Rxn<StudentModel> studentModelData = Rxn<StudentModel>();
   RxBool ontapStudent = false.obs;
   RxString batchId = ''.obs;
-  RxString batchName = ''.obs;
 
-  final _fbServer = server
-      .collection('DrivingSchoolCollection')
-      .doc(UserCredentialsController.schoolId);
+  final _fbServer =
+      server.collection('DrivingSchoolCollection').doc(UserCredentialsController.schoolId);
 
   Future<void> fetchAllStudents() async {
     try {
       log("fetchAllStudents......................");
       studentProfileList = [];
       final data = await _fbServer.collection('Students').get();
-      studentProfileList =
-          data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      studentProfileList = data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
     } catch (e) {
       showToast(msg: "User Data Error");
@@ -37,8 +34,7 @@ class StudentController extends GetxController {
       log("fetchAllArchivesStudents......................");
       studentProfileList = [];
       final data = await _fbServer.collection('Archives').get();
-      studentProfileList =
-          data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
+      studentProfileList = data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
     } catch (e) {
       showToast(msg: "User Data Error");
@@ -47,18 +43,13 @@ class StudentController extends GetxController {
 
   Future<void> deleteStudents(StudentModel studentModel) async {
     try {
-      await _fbServer
-          .collection('Students')
-          .doc(studentModel.docid)
-          .delete()
-          .then((value) async {
+      await _fbServer.collection('Students').doc(studentModel.docid).delete().then((value) async {
         await deleteStudentFromAllStudents(studentModel, isArchiving: false);
         await deleteStudentFromCourse(studentModel, isArchiving: false);
         await deleteStudentFromBatch(studentModel, isArchiving: false);
         await deleteStudentFromDrivingTest(studentModel, isArchiving: false);
-        await deleteStudentFromPracticeSchedule(studentModel,
-            isArchiving: false);
-        await deleteStudentFromFee(studentModel, isArchiving: false);
+        await deleteStudentFromPracticeSchedule(studentModel, isArchiving: false);
+        // await deleteStudentFromFee(studentModel, isArchiving: false);
         log("Student deleted");
       });
     } catch (e) {
@@ -66,8 +57,7 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> updateStudentStatus(
-      StudentModel studentModel, bool newStatus) async {
+  Future<void> updateStudentStatus(StudentModel studentModel, bool newStatus) async {
     try {
       await _fbServer
           .collection('Students')
@@ -86,17 +76,163 @@ class StudentController extends GetxController {
     try {
       await _fbServer.collection('Students').doc(studentModel.docid).update({
         'batchId': batchId.value,
-        'batchName': batchName.value,
       }).then((value) {
         studentModel.batchId = batchId.value;
-        studentModel.batchName = batchName.value;
         update();
         log("Student batch updated to $batchId");
       });
+      await addStudentToBatch(studentModel);
+      await checkStudentInBatches(studentModel);
+      final docidofcourse = await _fbServer.collection("Courses").get();
+      if (docidofcourse.docs.isNotEmpty) {
+        for (var courseDoc in docidofcourse.docs) {
+          final courseDocid = courseDoc.id;
+
+          final std = await _fbServer
+              .collection("Courses")
+              .doc(courseDocid)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+
+          if (std.exists) {
+            await _fbServer
+                .collection("Courses")
+                .doc(courseDocid)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .update({
+              'batchId': batchId.value,
+            });
+          }
+        }
+      }
     } catch (e) {
       log('student batch update error $e');
     }
   }
+
+  Future<void> addStudentToBatch(StudentModel studentModel) async {
+    try {
+      final batches = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Batch')
+          .get();
+
+      for (var batchDoc in batches.docs) {
+        final batchDocid = batchDoc.id;
+        final studentsCollection = server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Batch')
+            .doc(batchDocid)
+            .collection('Students');
+
+        final studentDoc =
+            await studentsCollection.doc(studentModel.docid).get();
+
+        if (studentDoc.exists) {
+          await studentsCollection.doc(studentModel.docid).delete();
+          log('Student removed from batch $batchDocid');
+          break;
+        }
+      }
+      if (batchId.value.isNotEmpty) {
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Batch')
+            .doc(batchId.value)
+            .collection('Students')
+            .doc(studentModel.docid)
+            .set(studentModel.toMap());
+        log('Student added to new batch $batchId');
+      } else {
+        log('No new batch ID provided.');
+      }
+    } catch (e) {
+      log('Error adding student to batch: $e');
+    }
+  }
+
+  Future<void> checkStudentInBatches(StudentModel studentModel) async {
+    try {
+      final batchDoc = await _fbServer.collection('FeesCollection').get();
+
+      for (var batchDoc in batchDoc.docs) {
+        final batch = batchDoc.id;
+        final coursecol = await _fbServer
+            .collection('FeesCollection')
+            .doc(batch)
+            .collection('Courses')
+            .get();
+        for (var courseDoc in coursecol.docs) {
+          final courseId = courseDoc.id;
+          final stdDoc = await _fbServer
+              .collection('FeesCollection')
+              .doc(batch)
+              .collection('Courses')
+              .doc(courseId)
+              .collection('Students')
+              .doc(studentModel.docid)
+              .get();
+          if (stdDoc.exists) {
+            final studentData = stdDoc.data()!;
+            DocumentSnapshot batchDoc = await _fbServer
+                .collection('FeesCollection')
+                .doc(batchId.value)
+                .get();
+
+            if (!batchDoc.exists) {
+              await _fbServer
+                  .collection('FeesCollection')
+                  .doc(batchId.value)
+                  .set({
+                'batchId': batchId.value,
+              });
+            }
+            DocumentSnapshot courseDoc = await _fbServer
+                .collection('FeesCollection')
+                .doc(studentModel.batchId)
+                .collection('Courses')
+                .doc(courseId)
+                .get();
+
+            if (!courseDoc.exists) {
+              await _fbServer
+                  .collection('FeesCollection')
+                  .doc(studentModel.batchId)
+                  .collection('Courses')
+                  .doc(courseId)
+                  .set({
+                'courseId': courseId,
+              });
+            }
+            await _fbServer
+                .collection('FeesCollection')
+                .doc(batchId.value)
+                .collection('Courses')
+                .doc(courseId)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .set(studentData);
+            await _fbServer
+                .collection('FeesCollection')
+                .doc(batch)
+                .collection('Courses')
+                .doc(courseId)
+                .collection('Students')
+                .doc(studentModel.docid)
+                .delete();
+          }
+        }
+      }
+    } catch (e) {
+      log('checkStudentInBatches error $e ');
+    }
+  }
+
   //   Future<void> updateStudentCourse(StudentModel student, String newCourseId) async {
   //   try {
   //     await _fbServer
@@ -130,8 +266,7 @@ class StudentController extends GetxController {
 
           if (std.exists) {
             // fetch the course document to get the course name
-            final courseDocument =
-                await _fbServer.collection("Courses").doc(courseDocid).get();
+            final courseDocument = await _fbServer.collection("Courses").doc(courseDocid).get();
 
             if (courseDocument.exists) {
               final courseName = courseDocument.data()?['courseName'];
@@ -161,6 +296,7 @@ class StudentController extends GetxController {
         studentModel.level = newLevel;
         update();
         log("Student level updated to $newLevel");
+        showToast(msg: "Student level updated to $newLevel");
       });
     } catch (e) {
       log("Student level update error: $e");
@@ -212,8 +348,7 @@ class StudentController extends GetxController {
         await deleteStudentFromCourse(studentModel, isArchiving: true);
         await deleteStudentFromBatch(studentModel, isArchiving: true);
         await deleteStudentFromDrivingTest(studentModel, isArchiving: true);
-        await deleteStudentFromPracticeSchedule(studentModel,
-            isArchiving: true);
+        await deleteStudentFromPracticeSchedule(studentModel, isArchiving: true);
         await deleteStudentFromFee(studentModel, isArchiving: true);
         showToast(msg: 'Student Archived');
         Get.back();
@@ -251,11 +386,31 @@ class StudentController extends GetxController {
             .delete();
         log('documents removed');
       }
-
+      await _deleteAllSubcollections(studentModel.docid, 'AdminChatCounter');
+      await _deleteAllSubcollections(studentModel.docid, 'AdminChats');
+      await _deleteAllSubcollections(studentModel.docid, 'TeacherChats');
+      await _deleteAllSubcollections(studentModel.docid, 'TutorChatCounter');
       await _fbServer.collection('Students').doc(studentModel.docid).delete();
       log('Student removed');
     } catch (e) {
       log('deleteStudentFromAllStudents error: $e');
+    }
+  }
+
+  Future<void> _deleteAllSubcollections(
+    String parentId,
+    String subcollection,
+  ) async {
+    final documents =
+        await _fbServer.collection('Students').doc(parentId).collection('Documents').get();
+    for (var doc in documents.docs) {
+      await _fbServer
+          .collection('Students')
+          .doc(parentId)
+          .collection(subcollection)
+          .doc(doc.id)
+          .delete();
+      log('$subcollection removed');
     }
   }
 
@@ -307,8 +462,7 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> deleteStudentFromBatch(StudentModel studentModel,
-      {bool isArchiving = false}) async {
+  Future<void> deleteStudentFromBatch(StudentModel studentModel, {bool isArchiving = false}) async {
     try {
       final batchesSnapshot = await _fbServer.collection("Batch").get();
 
@@ -357,8 +511,7 @@ class StudentController extends GetxController {
   Future<void> deleteStudentFromDrivingTest(StudentModel studentModel,
       {bool isArchiving = false}) async {
     try {
-      final drivingTestsSnapshot =
-          await _fbServer.collection("DrivingTest").get();
+      final drivingTestsSnapshot = await _fbServer.collection("DrivingTest").get();
 
       if (drivingTestsSnapshot.docs.isNotEmpty) {
         for (var drivingTestDoc in drivingTestsSnapshot.docs) {
@@ -402,18 +555,22 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> deleteStudentFromFee(StudentModel studentModel,
-      {bool isArchiving = false}) async {
+  Future<void> deleteStudentFromFee(StudentModel studentModel, {bool isArchiving = false}) async {
     try {
-      final feeCollectionSnapshot =
-          await _fbServer.collection("FeeCollection").get();
+      final feeCollectionSnapshot = await _fbServer
+          .collection("FeesCollection")
+          .doc(studentModel.batchId)
+          .collection('Courses')
+          .get();
 
       if (feeCollectionSnapshot.docs.isNotEmpty) {
         for (var feeDoc in feeCollectionSnapshot.docs) {
           final feeDocid = feeDoc.id;
 
           final studentDoc = await _fbServer
-              .collection("FeeCollection")
+              .collection("FeesCollection")
+              .doc(studentModel.batchId)
+              .collection('Courses')
               .doc(feeDocid)
               .collection('Students')
               .doc(studentModel.docid)
@@ -435,7 +592,9 @@ class StudentController extends GetxController {
               }, SetOptions(merge: true));
             }
             await _fbServer
-                .collection("FeeCollection")
+                .collection("FeesCollection")
+                .doc(studentModel.batchId)
+                .collection('Courses')
                 .doc(feeDocid)
                 .collection('Students')
                 .doc(studentModel.docid)
@@ -455,8 +614,7 @@ class StudentController extends GetxController {
   Future<void> deleteStudentFromPracticeSchedule(StudentModel studentModel,
       {bool isArchiving = false}) async {
     try {
-      final practiceScheduleSnapshot =
-          await _fbServer.collection("PracticeSchedule").get();
+      final practiceScheduleSnapshot = await _fbServer.collection("PracticeSchedule").get();
 
       if (practiceScheduleSnapshot.docs.isNotEmpty) {
         for (var practiceDoc in practiceScheduleSnapshot.docs) {

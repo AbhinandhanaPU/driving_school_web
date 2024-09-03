@@ -45,6 +45,7 @@ class BatchController extends GetxController {
           .doc(batchDetails.batchId)
           .set(batchDetails.toMap())
           .then((value) async {
+        Get.back();
         batchNameController.clear();
         dateController.clear();
         buttonstate.value = ButtonState.success;
@@ -100,13 +101,19 @@ class BatchController extends GetxController {
 
   Future<void> addStudent() async {
     try {
-      final studentResult = await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .collection('Students')
-          .doc(courseCtrl.studentDocID.value)
-          .get();
       if (courseCtrl.studentDocID.value != '') {
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Students')
+            .doc(courseCtrl.studentDocID.value)
+            .update({"batchId": batchId.value});
+        final studentResult = await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Students')
+            .doc(courseCtrl.studentDocID.value)
+            .get();
         final data = StudentModel.fromMap(studentResult.data()!);
         await server
             .collection('DrivingSchoolCollection')
@@ -153,7 +160,13 @@ class BatchController extends GetxController {
           .collection('Students')
           .doc(docId)
           .delete()
-          .then((value) {
+          .then((value) async {
+        server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('Students')
+            .doc(docId)
+            .update({'batchId': ''});
         showToast(msg: "Deleted Successfully");
         log("Deleted Successfully");
         Get.back();
@@ -163,15 +176,36 @@ class BatchController extends GetxController {
     }
   }
 
-  Stream<int> fetchTotalStudents(String batchId) {
-    CollectionReference coursesRef = server
+  Stream<List<StudentModel>> fetchFilteredStudents(String batchId) {
+    CollectionReference batchStudentsRef = server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
         .collection('Batch')
         .doc(batchId)
         .collection('Students');
 
-    return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
+    CollectionReference allStudentsRef = server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Students');
+
+    return batchStudentsRef.snapshots().asyncMap((batchSnapshot) async {
+      List<String> batchStudentIds =
+          batchSnapshot.docs.map((doc) => doc.id).toList();
+
+      QuerySnapshot filteredStudentsSnapshot = await allStudentsRef
+          .where('docid', whereIn: batchStudentIds)
+          .where('status', isEqualTo: true)
+          .get();
+
+      // Convert the documents to a list of StudentModel instances
+      List<StudentModel> filteredStudents = filteredStudentsSnapshot.docs
+          .map(
+              (doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+
+      return filteredStudents;
+    });
   }
 
   Future<void> shiftStudentToAnotherBatch({

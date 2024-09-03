@@ -7,6 +7,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/drop_down/batch_dp_dn.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/crud/search_students/search_student_name.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_details.dart';
@@ -75,11 +76,34 @@ class AllStudentListContainer extends StatelessWidget {
                       const SizedBox(
                         height: 30,
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          RouteSelectedTextContainer(
+                          const RouteSelectedTextContainer(
                             title: 'All Students',
                             width: 200,
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: 200,
+                            height: 95,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const TextFontWidget(
+                                    text: 'Select Batch*', fontsize: 12.5),
+                                const SizedBox(
+                                  height: 05,
+                                ),
+                                BatchDropDown(
+                                  onChanged: (batch) {
+                                    batchController.onBatchWiseView.value =
+                                        true;
+                                    batchController.batchView.value =
+                                        batch!.batchId;
+                                  },
+                                )
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -119,7 +143,7 @@ class AllStudentListContainer extends StatelessWidget {
                                 Expanded(
                                     flex: 3,
                                     child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'courses type')),
+                                        headerTitle: 'Course Type')),
                                 SizedBox(
                                   width: 02,
                                 ),
@@ -131,7 +155,7 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'Batch')),
                                 SizedBox(
@@ -173,8 +197,9 @@ class AllStudentListContainer extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5, left: 5),
-                            child: SizedBox(
-                              // width: 1100,
+                            child: Container(
+                              color: cWhite,
+                              height: 40,
                               child: StreamBuilder(
                                 stream: batchController.onBatchWiseView.value ==
                                         true
@@ -185,12 +210,13 @@ class AllStudentListContainer extends StatelessWidget {
                                         .where('batchId',
                                             isEqualTo:
                                                 batchController.batchView.value)
+                                        .where('status', isEqualTo: true)
                                         .snapshots()
                                     : server
                                         .collection('DrivingSchoolCollection')
                                         .doc(UserCredentialsController.schoolId)
                                         .collection('Students')
-                                        .orderBy('studentName')
+                                        .where('status', isEqualTo: true)
                                         .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {
@@ -199,7 +225,7 @@ class AllStudentListContainer extends StatelessWidget {
                                             child: Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
-                                                "Please create Students",
+                                                "No Students added",
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.w400),
