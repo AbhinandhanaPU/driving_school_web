@@ -60,7 +60,7 @@ class StudentsFeesStatus extends StatelessWidget {
                               batchID: batchId,
                               courseID: courseid,
                               bodyText: 'bodyText',
-                              titleText: 'titleText',
+                              titleText: 'Please pay on time',
                             );
                           },
                           child: const TextFontWidgetRouter(
