@@ -176,15 +176,36 @@ class BatchController extends GetxController {
     }
   }
 
-  Stream<int> fetchTotalStudents(String batchId) {
-    CollectionReference coursesRef = server
+  Stream<List<StudentModel>> fetchFilteredStudents(String batchId) {
+    CollectionReference batchStudentsRef = server
         .collection('DrivingSchoolCollection')
         .doc(UserCredentialsController.schoolId)
         .collection('Batch')
         .doc(batchId)
         .collection('Students');
 
-    return coursesRef.snapshots().map((snapshot) => snapshot.docs.length);
+    CollectionReference allStudentsRef = server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('Students');
+
+    return batchStudentsRef.snapshots().asyncMap((batchSnapshot) async {
+      List<String> batchStudentIds =
+          batchSnapshot.docs.map((doc) => doc.id).toList();
+
+      QuerySnapshot filteredStudentsSnapshot = await allStudentsRef
+          .where('docid', whereIn: batchStudentIds)
+          .where('status', isEqualTo: true)
+          .get();
+
+      // Convert the documents to a list of StudentModel instances
+      List<StudentModel> filteredStudents = filteredStudentsSnapshot.docs
+          .map(
+              (doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+
+      return filteredStudents;
+    });
   }
 
   Future<void> shiftStudentToAnotherBatch({

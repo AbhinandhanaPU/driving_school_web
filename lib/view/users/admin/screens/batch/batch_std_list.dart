@@ -1,16 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/batch_controller/batch_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/batch/functions/add_students_batch.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/data_table_batch/batch_studentsdatalist.dart';
+import 'package:new_project_driving/view/users/admin/screens/batch/functions/add_students_batch.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
@@ -19,12 +16,13 @@ import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route
 
 class BatchStudentListContainer extends StatelessWidget {
   BatchStudentListContainer({super.key});
-   final BatchController batchController = Get.put(BatchController());
+  final BatchController batchController = Get.put(BatchController());
 
   @override
   Widget build(BuildContext context) {
-   // final namebth = batchController.batchModelData.value;
+    // final namebth = batchController.batchModelData.value;
     log(batchController.batchId.value);
+
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -37,19 +35,17 @@ class BatchStudentListContainer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Row(
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextFontWidget(
-                    text: batchController. ontapBatchName.toString(),
+                    text: batchController.ontapBatchName.toString(),
                     fontsize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               Row(
                 children: [
                   GestureDetector(
@@ -91,7 +87,6 @@ class BatchStudentListContainer extends StatelessWidget {
                   const SizedBox(
                     width: 20,
                   ),
-                 
                 ],
               ),
               const SizedBox(
@@ -120,9 +115,10 @@ class BatchStudentListContainer extends StatelessWidget {
                         SizedBox(
                           width: 02,
                         ),
-                         Expanded(
+                        Expanded(
                           flex: 4,
-                          child: CatrgoryTableHeaderWidget(headerTitle: 'Course'),
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Course'),
                         ),
                         SizedBox(
                           width: 02,
@@ -164,55 +160,48 @@ class BatchStudentListContainer extends StatelessWidget {
                     border: Border.all(color: cWhite),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 5, left: 5),
-                    child: SizedBox(
-                      child: StreamBuilder(
-                        stream: server
-                            .collection('DrivingSchoolCollection')
-                            .doc(UserCredentialsController.schoolId)
-                            .collection('Batch')
-                            .doc(batchController.batchId.value)
-                            .collection('Students')
-                            .snapshots(),
-                        builder: (context, studentSnapshot) {
-                          if (studentSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const LoadingWidget();
-                          }
-                          if (studentSnapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${studentSnapshot.error}'));
-                          }
-                          if (studentSnapshot.data == null ||
-                              studentSnapshot.data!.docs.isEmpty) {
-                            return const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Please add Students",
-                                  style: TextStyle(fontWeight: FontWeight.w400),
-                                ),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: StreamBuilder<List<StudentModel>>(
+                      stream: batchController
+                          .fetchFilteredStudents(batchController.batchId.value),
+                      builder: (context, studentSnapshot) {
+                        if (studentSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const LoadingWidget();
+                        }
+                        if (studentSnapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${studentSnapshot.error}'));
+                        }
+                        if (studentSnapshot.data == null ||
+                            studentSnapshot.data!.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "Please add Students",
+                                style: TextStyle(fontWeight: FontWeight.w400),
                               ),
-                            );
-                          }
-                          return ListView.separated(
-                            itemBuilder: (context, index) {
-                              final data = StudentModel.fromMap(
-                                  studentSnapshot.data!.docs[index].data());
-                              return BatchStdDataList(
-                                data: data,
-                                index: index,
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                height: 2,
-                              );
-                            },
-                            itemCount: studentSnapshot.data!.docs.length,
+                            ),
                           );
-                        },
-                      ),
+                        }
+
+                        final students = studentSnapshot.data!;
+
+                        return ListView.separated(
+                          itemBuilder: (context, index) {
+                            final studentModel = students[index];
+                            return BatchStdDataList(
+                              data: studentModel,
+                              index: index,
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(height: 2);
+                          },
+                          itemCount: students.length,
+                        );
+                      },
                     ),
                   ),
                 ),

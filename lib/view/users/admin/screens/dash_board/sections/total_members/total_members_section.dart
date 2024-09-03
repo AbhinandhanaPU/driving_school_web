@@ -16,39 +16,38 @@ class TotalMembersSection extends StatelessWidget {
       child: Row(
         children: [
           StreamBuilder(
-            stream: server
-                                    .collection('DrivingSchoolCollection')
-                                    .doc(UserCredentialsController.schoolId)
-                                    .collection('Students')
-                                    .snapshots(),
-            builder: (context, snapStCount) {
-              return TotalMemberContainerWidget(
-                  imageradius: 20,
-                  imagepath: 'webassets/images/students.png',
-                  imageColor: const Color.fromARGB(255, 60, 184, 120),
-                  color: const Color.fromARGB(255, 209, 243, 224),
-                  count: snapStCount.data?.docs.length??0,
-                  title: 'Students');
-            }
-          ),
+              stream: server
+                  .collection('DrivingSchoolCollection')
+                  .doc(UserCredentialsController.schoolId)
+                  .collection('Students')
+                  .where('status', isEqualTo: true)
+                  .snapshots(),
+              builder: (context, snapStCount) {
+                return TotalMemberContainerWidget(
+                    imageradius: 20,
+                    imagepath: 'webassets/images/students.png',
+                    imageColor: const Color.fromARGB(255, 60, 184, 120),
+                    color: const Color.fromARGB(255, 209, 243, 224),
+                    count: snapStCount.data?.docs.length ?? 0,
+                    title: 'Students');
+              }),
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: StreamBuilder(
-              stream: server
-                                    .collection('DrivingSchoolCollection')
-                                    .doc(UserCredentialsController.schoolId)
-                                    .collection('Teachers')
-                                    .snapshots(),
-              builder: (context, snapTutorCount) {
-                return TotalMemberContainerWidget(
-                    imageradius: 18,
-                    imagepath: 'webassets/images/teachers.png',
-                    imageColor: const Color.fromARGB(255, 63, 122, 252),
-                    color: const Color.fromARGB(255, 225, 241, 255),
-                    count: snapTutorCount.data?.docs.length??0,
-                    title: 'Tutors');
-              }
-            ),
+                stream: server
+                    .collection('DrivingSchoolCollection')
+                    .doc(UserCredentialsController.schoolId)
+                    .collection('Teachers')
+                    .snapshots(),
+                builder: (context, snapTutorCount) {
+                  return TotalMemberContainerWidget(
+                      imageradius: 18,
+                      imagepath: 'webassets/images/teachers.png',
+                      imageColor: const Color.fromARGB(255, 63, 122, 252),
+                      color: const Color.fromARGB(255, 225, 241, 255),
+                      count: snapTutorCount.data?.docs.length ?? 0,
+                      title: 'Tutors');
+                }),
           ),
         ],
       ),

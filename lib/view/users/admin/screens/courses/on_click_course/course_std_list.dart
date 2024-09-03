@@ -4,8 +4,6 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/crud_functions/add_studentfunction.dart';
 import 'package:new_project_driving/view/users/admin/screens/courses/on_click_course/student_datalist.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
@@ -33,7 +31,7 @@ class StudentsInCoursesDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Students List ',
+              'Students List',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -44,8 +42,9 @@ class StudentsInCoursesDetails extends StatelessWidget {
               child: Row(
                 children: [
                   RouteSelectedTextContainer(
-                      width: 180,
-                      title: courseController.ontapCourseName.toString()),
+                    width: 180,
+                    title: courseController.ontapCourseName.toString(),
+                  ),
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
@@ -53,18 +52,19 @@ class StudentsInCoursesDetails extends StatelessWidget {
                           context, courseController.ontapCourseDocID.value);
                     },
                     child: ButtonContainerWidget(
-                        curving: 30,
-                        colorindex: 0,
-                        height: 40,
-                        width: 180,
-                        child: const Center(
-                          child: TextFontWidgetRouter(
-                            text: 'ADD STUDENT',
-                            fontsize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: cWhite,
-                          ),
-                        )),
+                      curving: 30,
+                      colorindex: 0,
+                      height: 40,
+                      width: 180,
+                      child: const Center(
+                        child: TextFontWidgetRouter(
+                          text: 'ADD STUDENT',
+                          fontsize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: cWhite,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -90,10 +90,7 @@ class StudentsInCoursesDetails extends StatelessWidget {
             Container(
               color: cWhite,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 5,
-                  right: 5,
-                ),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: Container(
                   color: cWhite,
                   height: 40,
@@ -105,55 +102,47 @@ class StudentsInCoursesDetails extends StatelessWidget {
                       SizedBox(
                         width: 01,
                       ),
+                      SizedBox(width: 01),
                       Expanded(
                           flex: 2,
                           child: CatrgoryTableHeaderWidget(
                               headerTitle: 'License No.')),
                       SizedBox(
-                        width: 01,
+                        width: 02,
                       ),
                       Expanded(
-                          flex: 3,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Name')),
+                        flex: 3,
+                        child: CatrgoryTableHeaderWidget(headerTitle: 'Name'),
+                      ),
                       SizedBox(
                         width: 02,
                       ),
                       Expanded(
-                          flex: 3,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'E mail')),
-                      SizedBox(
-                        width: 02,
+                        flex: 3,
+                        child: CatrgoryTableHeaderWidget(headerTitle: 'E mail'),
                       ),
+                      SizedBox(width: 02),
                       Expanded(
-                          flex: 2,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Ph.No')),
-                      SizedBox(
-                        width: 02,
+                        flex: 2,
+                        child: CatrgoryTableHeaderWidget(headerTitle: 'Ph.No'),
                       ),
+                      SizedBox(width: 02),
                       Expanded(
-                          flex: 2,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Level')),
-                      SizedBox(
-                        width: 02,
+                        flex: 2,
+                        child: CatrgoryTableHeaderWidget(headerTitle: 'Level'),
                       ),
+                      SizedBox(width: 02),
                       Expanded(
-                          flex: 3,
-                          child: CatrgoryTableHeaderWidget(
-                              headerTitle: 'Fees Status')),
-                      SizedBox(
-                        width: 02,
+                        flex: 3,
+                        child: CatrgoryTableHeaderWidget(
+                            headerTitle: 'Fees Status'),
                       ),
+                      SizedBox(width: 02),
                       Expanded(
-                          flex: 2,
-                          child:
-                              CatrgoryTableHeaderWidget(headerTitle: 'Delete')),
-                      SizedBox(
-                        width: 02,
+                        flex: 2,
+                        child: CatrgoryTableHeaderWidget(headerTitle: 'Delete'),
                       ),
+                      SizedBox(width: 02),
                     ],
                   ),
                 ),
@@ -169,41 +158,39 @@ class StudentsInCoursesDetails extends StatelessWidget {
                   color: cWhite,
                   border: Border.all(color: cWhite),
                 ),
-                child: StreamBuilder(
-                    stream: server
-                        .collection('DrivingSchoolCollection')
-                        .doc(UserCredentialsController.schoolId)
-                        .collection('Courses')
-                        .doc(courseid)
-                        .collection("Students")
-                        //  .orderBy('studentName')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      // ignore: prefer_is_empty
-                      if (snapshot.data!.docs.length == 0) {
-                        return const Center(
-                            child: Text(
+                child: StreamBuilder<List<StudentModel>>(
+                  stream:
+                      courseController.fetchStudentsWithStatusTrue(courseid),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    final students = snapshot.data ?? [];
+                    if (students.isEmpty) {
+                      return const Center(
+                        child: Text(
                           'No Students',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
-                        ));
-                      }
-                      return ListView.separated(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final data = StudentModel.fromMap(
-                              snapshot.data!.docs[index].data());
-                          return AllCourseStudentDataList(
-                              data: data, index: index);
-                        },
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 02,
                         ),
                       );
-                    }),
+                    }
+                    return ListView.separated(
+                      itemCount: students.length,
+                      itemBuilder: (context, index) {
+                        return AllCourseStudentDataList(
+                          data: students[index],
+                          index: index,
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 2),
+                    );
+                  },
+                ),
               ),
             ),
           ],

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -7,8 +5,6 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/practise_functions/add_students.dart';
 import 'package:new_project_driving/view/users/admin/screens/practice_shedule/std_details/std_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
@@ -24,7 +20,12 @@ class PracticeStudentListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(practiceSheduleController.scheduleId.value);
+    final scheduleId = practiceSheduleController.scheduleId.value;
+
+    if (scheduleId.isEmpty) {
+      return const Center(child: Text('Schedule data is not available'));
+    }
+
     return SingleChildScrollView(
       scrollDirection:
           ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
@@ -112,12 +113,11 @@ class PracticeStudentListContainer extends StatelessWidget {
               ),
               Container(
                 color: cWhite,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: Container(
-                    color: cWhite,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 5, right: 5),
+                  child: SizedBox(
                     height: 40,
-                    child: const Row(
+                    child: Row(
                       children: [
                         Expanded(
                           flex: 1,
@@ -171,54 +171,44 @@ class PracticeStudentListContainer extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5, left: 5),
-                    child: SizedBox(
-                      child: StreamBuilder(
-                        stream: server
-                            .collection('DrivingSchoolCollection')
-                            .doc(UserCredentialsController.schoolId)
-                            .collection('PracticeSchedule')
-                            .doc(practiceSheduleController.scheduleId.value)
-                            .collection('Students')
-                            .snapshots(),
-                        builder: (context, studentSnapshot) {
-                          if (studentSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const LoadingWidget();
-                          }
-                          if (studentSnapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${studentSnapshot.error}'));
-                          }
-                          if (studentSnapshot.data == null ||
-                              studentSnapshot.data!.docs.isEmpty) {
-                            return const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Please add Students",
-                                  style: TextStyle(fontWeight: FontWeight.w400),
-                                ),
+                    child: StreamBuilder<List<StudentModel>>(
+                      stream: practiceSheduleController
+                          .fetchStudentsWithStatusTrue(scheduleId),
+                      builder: (context, studentSnapshot) {
+                        if (studentSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const LoadingWidget();
+                        }
+                        if (studentSnapshot.hasError) {
+                          return Center(
+                              child: Text(
+                                  'Error: ${studentSnapshot.error.toString()}'));
+                        }
+                        final students = studentSnapshot.data ?? [];
+                        if (students.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "Please add Students",
+                                style: TextStyle(fontWeight: FontWeight.w400),
                               ),
-                            );
-                          }
-                          return ListView.separated(
-                            itemBuilder: (context, index) {
-                              final data = StudentModel.fromMap(
-                                  studentSnapshot.data!.docs[index].data());
-                              return PracticeStdDataList(
-                                data: data,
-                                index: index,
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                height: 2,
-                              );
-                            },
-                            itemCount: studentSnapshot.data!.docs.length,
+                            ),
                           );
-                        },
-                      ),
+                        }
+                        return ListView.separated(
+                          itemBuilder: (context, index) {
+                            return PracticeStdDataList(
+                              data: students[index],
+                              index: index,
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(height: 2);
+                          },
+                          itemCount: students.length,
+                        );
+                      },
                     ),
                   ),
                 ),

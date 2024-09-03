@@ -53,7 +53,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
           ),
           const SizedBox(width: 1),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Row(
               children: [
                 SizedBox(
@@ -99,7 +99,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
           ), //....................................... Student Phone Number
           const SizedBox(width: 2),
           Expanded(
-            flex: 4,
+            flex: 3,
             child: StreamBuilder<List<String>>(
               stream: studentController.fetchStudentsCourse(widget.data),
               builder: (context, snapshot) {
@@ -146,12 +146,15 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
           Expanded(
             flex: 3,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 widget.data.batchId.isEmpty
-                    ? const TextFontWidget(
-                        text: 'Batch not Assigned',
-                        fontsize: 11,
-                        overflow: TextOverflow.ellipsis,
+                    ? Expanded(
+                        child: DataContainerWidget(
+                          index: widget.index,
+                          headerTitle: 'Batch not Assigned',
+                          rowMainAccess: MainAxisAlignment.center,
+                        ),
                       )
                     : StreamBuilder(
                         stream: server
@@ -178,15 +181,16 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                                 ? "Not found"
                                 : batchData.batchName;
                             log('Batch name for batchId ${widget.data.batchId}: $batchName');
-                            return TextFontWidget(
-                              text: batchName,
-                              fontsize: 13,
-                              overflow: TextOverflow.ellipsis,
+                            return Expanded(
+                              child: DataContainerWidget(
+                                index: widget.index,
+                                headerTitle: batchName,
+                                rowMainAccess: MainAxisAlignment.center,
+                              ),
                             );
                           }
                         },
                       ),
-                const Spacer(),
                 IconButton(
                     onPressed: () {
                       updateStudentBatch(
@@ -218,11 +222,14 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                     },
                   ),
                 ),
-                TextFontWidget(
-                  text: widget.data.status == true ? "  Active" : "  Inactive",
-                  fontsize: 12,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                Expanded(
+                  child: DataContainerWidget(
+                    index: widget.index,
+                    headerTitle:
+                        widget.data.status == true ? "  Active" : "  Inactive",
+                    rowMainAccess: MainAxisAlignment.center,
+                  ),
+                )
               ],
             ),
           ), //............................. Status [Active or DeActivate]
@@ -235,7 +242,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                   archivesStudentsFunction(context, widget.data);
                 },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(
                       width: 15,
@@ -243,13 +250,10 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                         'webassets/png/shape.png',
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: TextFontWidget(
-                        text: "Archive",
-                        fontsize: 12,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    DataContainerWidget(
+                      index: widget.index,
+                      headerTitle: 'Archive',
+                      rowMainAccess: MainAxisAlignment.center,
                     ),
                   ],
                 ),

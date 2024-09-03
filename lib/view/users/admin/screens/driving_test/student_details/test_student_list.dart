@@ -5,8 +5,6 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_add_students.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_std_data_list.dart';
 import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
@@ -23,7 +21,7 @@ class TestStudentListContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final testData = testController.testModelData.value;
     // log(testController.testId.value);
-   // print('Test ID: ${testData?.docId}');
+    // print('Test ID: ${testData?.docId}');
 
     if (testData == null) {
       return const Center(child: Text('Test data is not available'));
@@ -91,7 +89,7 @@ class TestStudentListContainer extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
@@ -99,12 +97,11 @@ class TestStudentListContainer extends StatelessWidget {
               ),
               Container(
                 color: cWhite,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: Container(
-                    color: cWhite,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 5, right: 5),
+                  child: SizedBox(
                     height: 40,
-                    child: const Row(
+                    child: Row(
                       children: [
                         Expanded(
                           flex: 1,
@@ -166,54 +163,44 @@ class TestStudentListContainer extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5, left: 5),
-                    child: SizedBox(
-                      child: StreamBuilder(
-                        stream: server
-                            .collection('DrivingSchoolCollection')
-                            .doc(UserCredentialsController.schoolId)
-                            .collection('DrivingTest')
-                            .doc(testData.docId)
-                            .collection('Students')
-                            .snapshots(),
-                        builder: (context, studentSnapshot) {
-                          if (studentSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const LoadingWidget();
-                          }
-                          if (studentSnapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${studentSnapshot.error}'));
-                          }
-                          if (studentSnapshot.data == null ||
-                              studentSnapshot.data!.docs.isEmpty) {
-                            return const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Please add Students",
-                                  style: TextStyle(fontWeight: FontWeight.w400),
-                                ),
+                    child: StreamBuilder<List<StudentModel>>(
+                      stream: testController
+                          .fetchStudentsWithStatusTrue(testData.docId),
+                      builder: (context, studentSnapshot) {
+                        if (studentSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const LoadingWidget();
+                        }
+                        if (studentSnapshot.hasError) {
+                          return Center(
+                              child: Text(
+                                  'Error: ${studentSnapshot.error.toString()}'));
+                        }
+                        final students = studentSnapshot.data ?? [];
+                        if (students.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "Please add Students",
+                                style: TextStyle(fontWeight: FontWeight.w400),
                               ),
-                            );
-                          }
-                          return ListView.separated(
-                            itemBuilder: (context, index) {
-                              final data = StudentModel.fromMap(
-                                  studentSnapshot.data!.docs[index].data());
-                              return TestStdDataList(
-                                data: data,
-                                index: index,
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                height: 2,
-                              );
-                            },
-                            itemCount: studentSnapshot.data!.docs.length,
+                            ),
                           );
-                        },
-                      ),
+                        }
+                        return ListView.separated(
+                          itemBuilder: (context, index) {
+                            return TestStdDataList(
+                              data: students[index],
+                              index: index,
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(height: 2);
+                          },
+                          itemCount: students.length,
+                        );
+                      },
                     ),
                   ),
                 ),

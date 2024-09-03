@@ -127,7 +127,7 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 4,
+                                    flex: 3,
                                     child: CatrgoryTableHeaderWidget(
                                         headerTitle: 'Name')),
                                 SizedBox(
@@ -141,9 +141,9 @@ class AllStudentListContainer extends StatelessWidget {
                                   width: 02,
                                 ),
                                 Expanded(
-                                    flex: 4,
+                                    flex: 3,
                                     child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'courses type')),
+                                        headerTitle: 'Course Type')),
                                 SizedBox(
                                   width: 02,
                                 ),
@@ -210,12 +210,13 @@ class AllStudentListContainer extends StatelessWidget {
                                         .where('batchId',
                                             isEqualTo:
                                                 batchController.batchView.value)
+                                        .where('status', isEqualTo: true)
                                         .snapshots()
                                     : server
                                         .collection('DrivingSchoolCollection')
                                         .doc(UserCredentialsController.schoolId)
                                         .collection('Students')
-                                        .orderBy('studentName')
+                                        .where('status', isEqualTo: true)
                                         .snapshots(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {

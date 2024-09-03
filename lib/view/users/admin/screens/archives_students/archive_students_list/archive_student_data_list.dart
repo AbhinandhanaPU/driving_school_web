@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
+import 'package:new_project_driving/model/batch_model/batch_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
+import 'package:new_project_driving/utils/firebase/firebase.dart';
+import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class ArchiveAllStudentDataList extends StatelessWidget {
@@ -35,9 +40,7 @@ class ArchiveAllStudentDataList extends StatelessWidget {
                 index: index,
                 headerTitle: '  ${index + 1}'), //....................No
           ),
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 1),
           Expanded(
             flex: 3,
             child: Row(
@@ -60,9 +63,7 @@ class ArchiveAllStudentDataList extends StatelessWidget {
               ],
             ),
           ), //........................................... Student Name
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 2),
           Expanded(
             flex: 3,
             child: Row(
@@ -85,34 +86,9 @@ class ArchiveAllStudentDataList extends StatelessWidget {
               ],
             ),
           ), //....................................... Student Phone Number
-          const SizedBox(
-            width: 01,
-          ),
+          const SizedBox(width: 2),
           Expanded(
-            flex: 2,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: data.place),
-          ), //............................. Student courses type
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
-            flex: 2,
-            child: DataContainerWidget(
-              rowMainAccess: MainAxisAlignment.center,
-              color: cWhite,
-              index: index,
-              headerTitle: stringTimeToDateConvert(data.joiningDate),
-            ),
-          ), //............................. Student join date
-          const SizedBox(
-            width: 01,
-          ),
-          Expanded(
-            flex: 4,
+            flex: 3,
             child: StreamBuilder<List<String>>(
               stream: studentController.fetchStudentsCourse(data),
               builder: (context, snapshot) {
@@ -138,10 +114,104 @@ class ArchiveAllStudentDataList extends StatelessWidget {
                 }
               },
             ),
-          ), //............................. Student course
+          ), //............................. Student courses type
           const SizedBox(
-            width: 01,
+            width: 2,
           ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: DataContainerWidget(
+                rowMainAccess: MainAxisAlignment.center,
+                color: cWhite,
+                index: index,
+                headerTitle: stringTimeToDateConvert(data.joiningDate),
+              ),
+            ),
+          ), //............................. Student join date
+          const SizedBox(
+            width: 2,
+          ),
+          Expanded(
+            flex: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                data.batchId.isEmpty
+                    ? Expanded(
+                        child: DataContainerWidget(
+                          index: index,
+                          headerTitle: 'Batch not Assigned',
+                          rowMainAccess: MainAxisAlignment.center,
+                        ),
+                      )
+                    : StreamBuilder(
+                        stream: server
+                            .collection('DrivingSchoolCollection')
+                            .doc(UserCredentialsController.schoolId)
+                            .collection('Batch')
+                            .doc(data.batchId)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            log('Error fetching batch data: ${snapshot.error}');
+                            return Text('Error: ${snapshot.error}');
+                          } else if (!snapshot.hasData ||
+                              !snapshot.data!.exists) {
+                            log('No data found for batchId: ${data.batchId}');
+                            return const Text('Batch Not Found');
+                          } else {
+                            final batchData =
+                                BatchModel.fromMap(snapshot.data!.data()!);
+                            String batchName = batchData.batchName.isEmpty
+                                ? "Not found"
+                                : batchData.batchName;
+                            log('Batch name for batchId ${data.batchId}: $batchName');
+                            return Expanded(
+                              child: DataContainerWidget(
+                                index: index,
+                                headerTitle: batchName,
+                                rowMainAccess: MainAxisAlignment.center,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+              ],
+            ),
+          ), //............................. Student batch
+          const SizedBox(width: 2),
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Transform.scale(
+                  scale: 0.65,
+                  child: Switch(
+                    activeColor: Colors.green,
+                    value: data.status == true,
+                    onChanged: (value) {
+                      final newStatus = value ? true : false;
+                      studentController.updateStudentStatus(data, newStatus);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: DataContainerWidget(
+                    index: index,
+                    headerTitle:
+                        data.status == true ? "  Active" : "  Inactive",
+                    rowMainAccess: MainAxisAlignment.center,
+                  ),
+                )
+              ],
+            ),
+          ), //............................. Status [Active or DeActivate]
+          const SizedBox(width: 2),
         ],
       ),
     );
