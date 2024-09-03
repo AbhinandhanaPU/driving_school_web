@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
@@ -54,7 +52,7 @@ class StudentsFeesStatus extends StatelessWidget {
                       curving: 0,
                       colorindex: 6,
                       height: 35,
-                      width: 220,
+                      width: 230,
                       child: Center(
                         child: GestureDetector(
                           onTap: () {
@@ -77,9 +75,8 @@ class StudentsFeesStatus extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10, top: 20),
+              padding: const EdgeInsets.only(top: 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -96,11 +93,36 @@ class StudentsFeesStatus extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const Spacer(),
+                  const SizedBox(
+                    height: 40,
+                    width: 200,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 05, left: 05),
+                      child: RouteNonSelectedTextContainer(
+                        title: 'Show Unpaid Student',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Obx(
+                    () => Checkbox(
+                      value: feeController.onTapUnpaid.value,
+                      checkColor: cWhite,
+                      activeColor: cBlue,
+                      // fillColor: const MaterialStatePropertyAll(cBlue),
+                      onChanged: (value) {
+                        feeController.onTapUnpaid.value = value!;
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 25),
+              padding: const EdgeInsets.only(top: 15),
               child: Container(
                 width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
                 height: 500,
@@ -153,62 +175,75 @@ class StudentsFeesStatus extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                        child: StreamBuilder(
-                          stream: server
-                              .collection('DrivingSchoolCollection')
-                              .doc(UserCredentialsController.schoolId)
-                              .collection('FeesCollection')
-                              .doc(batchId)
-                              .collection('Courses')
-                              .doc(courseid)
-                              .collection('Students')
-                              .snapshots(),
-                          builder: (context, snaps) {
-                            if (snaps.hasData && snaps.data!.docs.isNotEmpty) {
-                              return ListView.separated(
-                                itemBuilder: (context, index) {
-                                  final data = snaps.data!.docs[index].data();
-                                  return StreamBuilder(
-                                      stream: server
-                                          .collection('DrivingSchoolCollection')
-                                          .doc(UserCredentialsController.schoolId)
-                                          .collection('Students')
-                                          .doc(data['studentID'])
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        final modeldata = snapshot.data?.data() ?? {};
-                                        final studentModel = StudentModel.fromMap(modeldata);
-                                        return StudentFeeDatalist(
-                                          stdData: studentModel,
-                                          index: index,
-                                          feeData: data,
-                                        );
-                                      });
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 2,
-                                  );
-                                },
-                                itemCount: snaps.data!.docs.length,
-                              );
-                            } else if (snaps.data == null) {
-                              return const LoadingWidget();
-                            } else {
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "No students Added to fees collection",
-                                    style: TextStyle(fontWeight: FontWeight.w400),
+                    Obx(
+                      () => Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                          child: StreamBuilder(
+                            stream: feeController.onTapUnpaid.value == true
+                                ? server
+                                    .collection('DrivingSchoolCollection')
+                                    .doc(UserCredentialsController.schoolId)
+                                    .collection('FeesCollection')
+                                    .doc(batchId)
+                                    .collection('Courses')
+                                    .doc(courseid)
+                                    .collection('Students')
+                                    .where('amountPaid', isGreaterThan: 0)
+                                    .snapshots()
+                                : server
+                                    .collection('DrivingSchoolCollection')
+                                    .doc(UserCredentialsController.schoolId)
+                                    .collection('FeesCollection')
+                                    .doc(batchId)
+                                    .collection('Courses')
+                                    .doc(courseid)
+                                    .collection('Students')
+                                    .snapshots(),
+                            builder: (context, snaps) {
+                              if (snaps.hasData && snaps.data!.docs.isNotEmpty) {
+                                return ListView.separated(
+                                  itemBuilder: (context, index) {
+                                    final data = snaps.data!.docs[index].data();
+                                    return StreamBuilder(
+                                        stream: server
+                                            .collection('DrivingSchoolCollection')
+                                            .doc(UserCredentialsController.schoolId)
+                                            .collection('Students')
+                                            .doc(data['studentID'])
+                                            .snapshots(),
+                                        builder: (context, snapshot) {
+                                          final modeldata = snapshot.data?.data() ?? {};
+                                          final studentModel = StudentModel.fromMap(modeldata);
+                                          return StudentFeeDatalist(
+                                            stdData: studentModel,
+                                            index: index,
+                                            feeData: data,
+                                          );
+                                        });
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const SizedBox(
+                                      height: 2,
+                                    );
+                                  },
+                                  itemCount: snaps.data!.docs.length,
+                                );
+                              } else if (snaps.data == null) {
+                                return const LoadingWidget();
+                              } else {
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "No students Added to fees collection",
+                                      style: TextStyle(fontWeight: FontWeight.w400),
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-                          },
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     )

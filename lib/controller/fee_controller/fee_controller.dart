@@ -12,28 +12,24 @@ import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 class FeeController extends GetxController {
   RxBool onTapBtach = false.obs;
   RxString batchId = ''.obs;
+  Rx<bool> onTapUnpaid = Rx<bool>(false);
+
   final formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
 
-  final _fbServer = server
-      .collection('DrivingSchoolCollection')
-      .doc(UserCredentialsController.schoolId);
+  final _fbServer =
+      server.collection('DrivingSchoolCollection').doc(UserCredentialsController.schoolId);
 
   addStudentfeeFullyPaid(
     StudentModel studentModel,
     String status,
     CourseModel course,
   ) async {
-    DocumentSnapshot batchDoc = await _fbServer
-        .collection('FeesCollection')
-        .doc(studentModel.batchId)
-        .get();
+    DocumentSnapshot batchDoc =
+        await _fbServer.collection('FeesCollection').doc(studentModel.batchId).get();
 
     if (!batchDoc.exists) {
-      await _fbServer
-          .collection('FeesCollection')
-          .doc(studentModel.batchId)
-          .set({
+      await _fbServer.collection('FeesCollection').doc(studentModel.batchId).set({
         'batchId': studentModel.batchId,
       });
     }
@@ -52,7 +48,7 @@ class FeeController extends GetxController {
           .doc(course.courseId)
           .set({
         'courseId': course.courseId,
-       });
+      });
     }
     await _fbServer
         .collection('FeesCollection')
@@ -69,8 +65,7 @@ class FeeController extends GetxController {
       'totalAmount': course.rate,
       'paidStatus': true
     }).then((value) async {
-      await getFeeTotalAmount(
-          course.courseId, studentModel.batchId, course.rate);
+      await getFeeTotalAmount(course.courseId, studentModel.batchId, course.rate);
       await pendingAmountCalculate(course.courseId, studentModel.batchId);
       await acceptStudentToCourse(studentModel, status, course.courseId);
       showToast(msg: 'Student fees updated');
@@ -85,16 +80,11 @@ class FeeController extends GetxController {
   ) async {
     try {
       int amountPaid = int.tryParse(amountController.text) ?? 0;
-      DocumentSnapshot batchDoc = await _fbServer
-          .collection('FeesCollection')
-          .doc(studentModel.batchId)
-          .get();
+      DocumentSnapshot batchDoc =
+          await _fbServer.collection('FeesCollection').doc(studentModel.batchId).get();
 
       if (!batchDoc.exists) {
-        await _fbServer
-            .collection('FeesCollection')
-            .doc(studentModel.batchId)
-            .set({
+        await _fbServer.collection('FeesCollection').doc(studentModel.batchId).set({
           'batchId': studentModel.batchId,
         });
       }
@@ -154,8 +144,7 @@ class FeeController extends GetxController {
           'paidStatus': false,
         });
       }
-      await getFeeTotalAmount(
-          course.courseId, studentModel.batchId, course.rate);
+      await getFeeTotalAmount(course.courseId, studentModel.batchId, course.rate);
       await pendingAmountCalculate(course.courseId, studentModel.batchId);
       await acceptStudentToCourse(studentModel, status, course.courseId);
 
