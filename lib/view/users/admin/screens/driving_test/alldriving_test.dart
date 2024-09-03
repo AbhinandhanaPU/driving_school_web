@@ -24,22 +24,19 @@ class AllDrivingTestDetails extends StatelessWidget {
       () => testController.onTapTest.value == true
           ? TestStudentListContainer()
           : SingleChildScrollView(
-              scrollDirection: ResponsiveWebSite.isMobile(context)
-                  ? Axis.horizontal
-                  : Axis.vertical,
+              scrollDirection:
+                  ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
               child: Container(
                 color: screenContainerbackgroundColor,
                 height: 650,
-                width: ResponsiveWebSite.isDesktop(context)
-                    ? double.infinity
-                    : 1200,
+                width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextFontWidget(
                             text: 'Test details',
@@ -58,6 +55,27 @@ class AllDrivingTestDetails extends StatelessWidget {
                             width: 200,
                           ),
                           const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                
+                              },
+                              child: ButtonContainerWidget(
+                                  curving: 0,
+                                  colorindex: 6,
+                                  height: 35,
+                                  width: 180,
+                                  child: const Center(
+                                    child: TextFontWidgetRouter(
+                                      text: 'Notify Test Date',
+                                      fontsize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: cWhite,
+                                    ),
+                                  )),
+                            ),
+                          ),
                           GestureDetector(
                             onTap: () {
                               sheduleTestDate(context);
@@ -183,23 +201,18 @@ class AllDrivingTestDetails extends StatelessWidget {
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
                                                 "Please schedule test",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                                style: TextStyle(fontWeight: FontWeight.w400),
                                               ),
                                             ),
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
-                                              final data = TestModel.fromMap(snaPS
-                                                  .data!.docs[index]
-                                                  .data());
+                                              final data =
+                                                  TestModel.fromMap(snaPS.data!.docs[index].data());
                                               return GestureDetector(
                                                 onTap: () {
-                                                  testController
-                                                      .onTapTest.value = true;
-                                                  testController.testModelData.value =
-                                                      data;
+                                                  testController.onTapTest.value = true;
+                                                  testController.testModelData.value = data;
                                                 },
                                                 child: TestDataList(
                                                   data: data,
