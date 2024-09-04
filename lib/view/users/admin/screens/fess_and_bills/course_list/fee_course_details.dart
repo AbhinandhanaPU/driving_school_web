@@ -3,21 +3,36 @@ import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/controller/fee_controller/fee_controller.dart';
+import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
 import 'package:new_project_driving/model/course_model/course_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/drop_down/batch_dp_dn.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/course_list/fee_courses_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
+import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
-class FeeCoursesDetails extends StatelessWidget {
-  FeeCoursesDetails({super.key});
+class FeeCoursesDetails extends StatefulWidget {
+  const FeeCoursesDetails({super.key});
 
+  @override
+  State<FeeCoursesDetails> createState() => _FeeCoursesDetailsState();
+}
+
+class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
   final CourseController courseController = Get.put(CourseController());
   final FeeController feeController = Get.put(FeeController());
+  final NotificationController notificationController =
+      Get.put(NotificationController());
+  @override
+  void initState() {
+    feeController.onTapBtach.value = false;
+    courseController.ontapStudentDetail.value = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +71,27 @@ class FeeCoursesDetails extends StatelessWidget {
                               title: 'All Courses',
                             ),
                             const Spacer(),
+                            feeController.onTapBtach.value == true
+                                ? Obx(
+                                    () => Padding(
+                                      padding: const EdgeInsets.only(right: 15),
+                                      child: ProgressButtonWidget(
+                                        function: () async {
+                                          // Get.find<NotificationController>()
+                                          //     .fetchUnpaidUsers(
+                                          //   batchID:
+                                          //       feeController.batchId.value,
+                                          //   bodyText: 'bodyText',
+                                          //   titleText: 'Please pay on time',
+                                          // );
+                                        },
+                                        buttonstate: notificationController
+                                            .buttonstate.value,
+                                        text: 'Send Notification',
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox(),
                             SizedBox(
                               height: 50,
                               width: 250,

@@ -193,12 +193,15 @@ class BatchController extends GetxController {
       List<String> batchStudentIds =
           batchSnapshot.docs.map((doc) => doc.id).toList();
 
+      if (batchStudentIds.isEmpty) {
+        return [];
+      }
+
       QuerySnapshot filteredStudentsSnapshot = await allStudentsRef
           .where('docid', whereIn: batchStudentIds)
           .where('status', isEqualTo: true)
           .get();
 
-      // Convert the documents to a list of StudentModel instances
       List<StudentModel> filteredStudents = filteredStudentsSnapshot.docs
           .map(
               (doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))

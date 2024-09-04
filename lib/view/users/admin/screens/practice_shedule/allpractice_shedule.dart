@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
 import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
@@ -18,19 +20,26 @@ import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route
 class AllPracticeShedules extends StatelessWidget {
   AllPracticeShedules({super.key});
 
-  final PracticeSheduleController practiceSheduleController = Get.put(PracticeSheduleController());
+  final PracticeSheduleController practiceSheduleController =
+      Get.put(PracticeSheduleController());
+  final NotificationController notificationController =
+      Get.put(NotificationController());
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => practiceSheduleController.onTapSchedule.value == true
           ? PracticeStudentListContainer()
           : SingleChildScrollView(
-              scrollDirection:
-                  ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+              scrollDirection: ResponsiveWebSite.isMobile(context)
+                  ? Axis.horizontal
+                  : Axis.vertical,
               child: Container(
                 color: screenContainerbackgroundColor,
                 height: 650,
-                width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+                width: ResponsiveWebSite.isDesktop(context)
+                    ? double.infinity
+                    : 1200,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: Column(
@@ -56,26 +65,25 @@ class AllPracticeShedules extends StatelessWidget {
                             width: 200,
                           ),
                           const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: GestureDetector(
-                              onTap: () {
-                                
-                              },
-                              child: ButtonContainerWidget(
-                                  curving: 0,
-                                  colorindex: 6,
-                                  height: 35,
-                                  width: 180,
-                                  child: const Center(
-                                    child: TextFontWidgetRouter(
-                                      text: 'Notify Test Date',
-                                      fontsize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: cWhite,
-                                    ),
-                                  )),
+                          GestureDetector(
+                            onTap: () {},
+                            child: ButtonContainerWidget(
+                              curving: 0,
+                              colorindex: 6,
+                              height: 35,
+                              width: 220,
+                              child: const Center(
+                                child: TextFontWidgetRouter(
+                                  text: 'Send practice schedule to Students',
+                                  fontsize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: cWhite,
+                                ),
+                              ),
                             ),
+                          ),
+                          const SizedBox(
+                            width: 20,
                           ),
                           GestureDetector(
                             onTap: () {
@@ -111,28 +119,32 @@ class AllPracticeShedules extends StatelessWidget {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: CatrgoryTableHeaderWidget(headerTitle: 'No'),
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'No'),
                                 ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                   flex: 3,
-                                  child: CatrgoryTableHeaderWidget(headerTitle: 'Slot Name'),
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Slot Name'),
                                 ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                   flex: 3,
-                                  child: CatrgoryTableHeaderWidget(headerTitle: ' Start Time'),
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: ' Start Time'),
                                 ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                   flex: 3,
-                                  child: CatrgoryTableHeaderWidget(headerTitle: 'End Time'),
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'End Time'),
                                 ),
                                 SizedBox(
                                   width: 02,
@@ -148,14 +160,16 @@ class AllPracticeShedules extends StatelessWidget {
                                 ),
                                 Expanded(
                                   flex: 3,
-                                  child: CatrgoryTableHeaderWidget(headerTitle: 'Edit'),
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Edit'),
                                 ),
                                 SizedBox(
                                   width: 02,
                                 ),
                                 Expanded(
                                   flex: 3,
-                                  child: CatrgoryTableHeaderWidget(headerTitle: 'Delete'),
+                                  child: CatrgoryTableHeaderWidget(
+                                      headerTitle: 'Delete'),
                                 ),
                               ],
                             ),
@@ -188,20 +202,26 @@ class AllPracticeShedules extends StatelessWidget {
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
                                                 "Please create Students",
-                                                style: TextStyle(fontWeight: FontWeight.w400),
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                               ),
                                             ),
                                           )
                                         : ListView.separated(
                                             itemBuilder: (context, index) {
-                                              final data = PracticeSheduleModel.fromMap(
-                                                  snaPS.data!.docs[index].data());
+                                              final data =
+                                                  PracticeSheduleModel.fromMap(
+                                                      snaPS.data!.docs[index]
+                                                          .data());
                                               return GestureDetector(
                                                 onTap: () {
-                                                  practiceSheduleController.onTapSchedule.value =
-                                                      true;
-                                                  practiceSheduleController.scheduleId.value =
-                                                      data.practiceId;
+                                                  practiceSheduleController
+                                                      .onTapSchedule
+                                                      .value = true;
+                                                  practiceSheduleController
+                                                      .scheduleId
+                                                      .value = data.practiceId;
                                                 },
                                                 child: PracticeSheduleDataList(
                                                   data: data,

@@ -170,6 +170,7 @@ class BatchStudentListContainer extends StatelessWidget {
                           return const LoadingWidget();
                         }
                         if (studentSnapshot.hasError) {
+                          log('error : ${studentSnapshot.error}');
                           return Center(
                               child: Text('Error: ${studentSnapshot.error}'));
                         }

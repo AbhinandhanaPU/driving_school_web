@@ -158,23 +158,34 @@ class AllCourseStudentDataList extends StatelessWidget {
           Expanded(
             flex: 3,
             child: StreamBuilder(
-              stream: server
-                  .collection('DrivingSchoolCollection')
-                  .doc(UserCredentialsController.schoolId)
-                  .collection('FeesCollection')
-                  .doc(data.batchId)
-                  .collection('Courses')
-                  .doc(modelData.courseId)
-                  .collection('Students')
-                  .doc(data.docid)
-                  .snapshots(),
+              stream: data.batchId.isNotEmpty && data.docid.isNotEmpty
+                  ? server
+                      .collection('DrivingSchoolCollection')
+                      .doc(UserCredentialsController.schoolId)
+                      .collection('FeesCollection')
+                      .doc(data.batchId)
+                      .collection('Courses')
+                      .doc(modelData.courseId)
+                      .collection('Students')
+                      .doc(data.docid)
+                      .snapshots()
+                  : null,
               builder: (context, snapshot) {
-                String feeStatus = 'not paid';
-                bool isActive = false;
+                if (data.batchId.isEmpty || data.docid.isEmpty) {
+                  return const Center(
+                    child: Text('Batch Not Assigned'),
+                  );
+                }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+                bool isActive = false;
+                String? feeStatus;
                 if (snapshot.hasData && snapshot.data?.data() != null) {
                   final feeData = snapshot.data!.data();
                   feeStatus = feeData!['feeStatus'] ?? 'not paid';
