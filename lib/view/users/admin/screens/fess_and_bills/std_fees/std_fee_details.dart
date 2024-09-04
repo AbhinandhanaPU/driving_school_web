@@ -19,7 +19,8 @@ class StudentsFeesStatus extends StatelessWidget {
   StudentsFeesStatus({super.key});
   final CourseController courseController = Get.put(CourseController());
   final FeeController feeController = Get.put(FeeController());
-  final NotificationController notificationController = Get.put(NotificationController());
+  final NotificationController notificationController =
+      Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,8 @@ class StudentsFeesStatus extends StatelessWidget {
     final batchId = feeController.batchId.value;
 
     return SingleChildScrollView(
-      scrollDirection: ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+      scrollDirection:
+          ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
       child: Container(
         color: screenContainerbackgroundColor,
         height: 650,
@@ -56,11 +58,11 @@ class StudentsFeesStatus extends StatelessWidget {
                       child: Center(
                         child: GestureDetector(
                           onTap: () {
-                            notificationController.fetchUnpaidUsers(
+                            Get.find<NotificationController>().fetchUnpaidUsers(
                               batchID: batchId,
                               courseID: courseid,
                               bodyText: 'bodyText',
-                              titleText: 'titleText',
+                              titleText: 'Please pay on time',
                             );
                           },
                           child: const TextFontWidgetRouter(
@@ -124,7 +126,9 @@ class StudentsFeesStatus extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 15),
               child: Container(
-                width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+                width: ResponsiveWebSite.isDesktop(context)
+                    ? double.infinity
+                    : 1200,
                 height: 500,
                 color: cWhite,
                 child: Column(
@@ -133,42 +137,52 @@ class StudentsFeesStatus extends StatelessWidget {
                       padding: EdgeInsets.only(top: 8, left: 8, right: 8),
                       child: Row(
                         children: [
-                          Expanded(flex: 1, child: CatrgoryTableHeaderWidget(headerTitle: 'No')),
+                          Expanded(
+                              flex: 1,
+                              child:
+                                  CatrgoryTableHeaderWidget(headerTitle: 'No')),
                           SizedBox(
                             width: 02,
                           ),
                           Expanded(
                               flex: 3,
-                              child: CatrgoryTableHeaderWidget(headerTitle: 'Student Name')),
+                              child: CatrgoryTableHeaderWidget(
+                                  headerTitle: 'Student Name')),
                           SizedBox(
                             width: 02,
                           ),
                           Expanded(
                               flex: 2,
-                              child: CatrgoryTableHeaderWidget(headerTitle: 'Joining Date')),
+                              child: CatrgoryTableHeaderWidget(
+                                  headerTitle: 'Joining Date')),
                           SizedBox(
                             width: 02,
                           ),
                           Expanded(
                               flex: 2,
-                              child: CatrgoryTableHeaderWidget(headerTitle: 'Completed Days')),
-                          SizedBox(
-                            width: 02,
-                          ),
-                          Expanded(
-                              flex: 2, child: CatrgoryTableHeaderWidget(headerTitle: 'Fee Status')),
-                          SizedBox(
-                            width: 02,
-                          ),
-                          Expanded(
-                              flex: 2,
-                              child: CatrgoryTableHeaderWidget(headerTitle: 'Amount Paid')),
+                              child: CatrgoryTableHeaderWidget(
+                                  headerTitle: 'Completed Days')),
                           SizedBox(
                             width: 02,
                           ),
                           Expanded(
                               flex: 2,
-                              child: CatrgoryTableHeaderWidget(headerTitle: 'Total Amount')),
+                              child: CatrgoryTableHeaderWidget(
+                                  headerTitle: 'Fee Status')),
+                          SizedBox(
+                            width: 02,
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: CatrgoryTableHeaderWidget(
+                                  headerTitle: 'Amount Paid')),
+                          SizedBox(
+                            width: 02,
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: CatrgoryTableHeaderWidget(
+                                  headerTitle: 'Total Amount')),
                           SizedBox(
                             width: 02,
                           ),
@@ -178,7 +192,8 @@ class StudentsFeesStatus extends StatelessWidget {
                     Obx(
                       () => Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                          padding: const EdgeInsets.only(
+                              bottom: 8, left: 8, right: 8),
                           child: StreamBuilder(
                             stream: feeController.onTapUnpaid.value == true
                                 ? server
@@ -201,20 +216,25 @@ class StudentsFeesStatus extends StatelessWidget {
                                     .collection('Students')
                                     .snapshots(),
                             builder: (context, snaps) {
-                              if (snaps.hasData && snaps.data!.docs.isNotEmpty) {
+                              if (snaps.hasData &&
+                                  snaps.data!.docs.isNotEmpty) {
                                 return ListView.separated(
                                   itemBuilder: (context, index) {
                                     final data = snaps.data!.docs[index].data();
                                     return StreamBuilder(
                                         stream: server
-                                            .collection('DrivingSchoolCollection')
-                                            .doc(UserCredentialsController.schoolId)
+                                            .collection(
+                                                'DrivingSchoolCollection')
+                                            .doc(UserCredentialsController
+                                                .schoolId)
                                             .collection('Students')
                                             .doc(data['studentID'])
                                             .snapshots(),
                                         builder: (context, snapshot) {
-                                          final modeldata = snapshot.data?.data() ?? {};
-                                          final studentModel = StudentModel.fromMap(modeldata);
+                                          final modeldata =
+                                              snapshot.data?.data() ?? {};
+                                          final studentModel =
+                                              StudentModel.fromMap(modeldata);
                                           return StudentFeeDatalist(
                                             stdData: studentModel,
                                             index: index,
@@ -237,7 +257,8 @@ class StudentsFeesStatus extends StatelessWidget {
                                     padding: EdgeInsets.all(8.0),
                                     child: Text(
                                       "No students Added to fees collection",
-                                      style: TextStyle(fontWeight: FontWeight.w400),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400),
                                     ),
                                   ),
                                 );
