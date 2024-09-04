@@ -19,8 +19,8 @@ class SuccessNotifierSetup {
 }
 
 class InfoNotifierSetup {
-  final Color whiteshadeColor = const Color.fromARGB(255, 206, 222, 253);
-  final Color containerColor = const Color.fromARGB(255, 35, 105, 246);
+  Color whiteshadeColor = const Color.fromARGB(255, 63, 162, 232);
+  Color containerColor = const Color.fromARGB(255, 4, 130, 225);
   final IconData icon = Icons.info_outline_rounded;
 }
 

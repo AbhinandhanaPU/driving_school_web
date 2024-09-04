@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/colors/notification_color/notification_color_widget.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
 import 'package:new_project_driving/view/widget/blue_container_widget/blue_container_widget.dart';
@@ -143,8 +144,8 @@ class AdminNotificationCreate extends StatelessWidget {
                     await notificationCntrl.fetchUsersID(role: role);
                     await notificationCntrl.sendNotificationSelectedUsers(
                       icon: Icons.warning_rounded,
-                      whiteshadeColor: InfoNotification().whiteshadeColor,
-                      containerColor: InfoNotification().containerColor,
+                      whiteshadeColor:InfoNotifierSetup().whiteshadeColor,
+                      containerColor: InfoNotifierSetup().containerColor,
                     );
                   }
 

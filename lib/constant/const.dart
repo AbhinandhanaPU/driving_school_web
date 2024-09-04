@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 const circularPIndicator = Center(
   child: CircularProgressIndicator(),
 );
-void showToast({required String msg}) {
+void showToast({required String msg ,}) {
   Fluttertoast.showToast(
     msg: msg,
     toastLength: Toast.LENGTH_LONG,
