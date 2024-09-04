@@ -10,10 +10,12 @@ import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/batch/drop_down/batch_dp_dn.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/course_list/fee_courses_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_details.dart';
+import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/unpaid_std/unpaid_stds.dart';
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
+import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
 
 class FeeCoursesDetails extends StatefulWidget {
   const FeeCoursesDetails({super.key});
@@ -71,10 +73,33 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                               title: 'All Courses',
                             ),
                             const Spacer(),
-                            feeController.onTapBtach.value == true
+                            const SizedBox(
+                              height: 40,
+                              width: 200,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 05, left: 05),
+                                child: RouteNonSelectedTextContainer(
+                                  title: 'Show Unpaid Student',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            Obx(
+                              () => Checkbox(
+                                value: feeController.onTapUnpaid.value,
+                                checkColor: cWhite,
+                                activeColor: cBlue,
+                                onChanged: (value) {
+                                  feeController.onTapUnpaid.value = value!;
+                                },
+                              ),
+                            ),
+                            feeController.onTapUnpaid.value == true
                                 ? Obx(
                                     () => Padding(
-                                      padding: const EdgeInsets.only(right: 15),
+                                      padding: const EdgeInsets.only(left: 15),
                                       child: ProgressButtonWidget(
                                         function: () async {
                                           // Get.find<NotificationController>()
@@ -91,193 +116,237 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                                       ),
                                     ),
                                   )
-                                : const SizedBox(),
-                            SizedBox(
-                              height: 50,
-                              width: 250,
-                              child: BatchDropDown(
-                                onChanged: (batchModel) {
-                                  feeController.onTapBtach.value = true;
-                                  feeController.batchId.value =
-                                      batchModel!.batchId;
-                                },
-                              ),
-                            ),
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 250,
+                                      child: BatchDropDown(
+                                        onChanged: (batchModel) {
+                                          feeController.onTapBtach.value = true;
+                                          feeController.batchId.value =
+                                              batchModel!.batchId;
+                                        },
+                                      ),
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
-                      Container(
-                        color: cWhite,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 5,
-                            right: 5,
-                          ),
-                          child: Container(
-                            color: cWhite,
-                            height: 40,
-                            child: const Row(
-                              children: [
-                                Expanded(
-                                    flex: 1,
-                                    child: CatrgoryTableHeaderWidget(
-                                        headerTitle: 'No')),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Course Name'),
-                                ),
-                                SizedBox(
-                                  width: 01,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Initial Rate'),
-                                ),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Total Students'),
-                                ),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Amount Collected'),
-                                ),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Pending Amount'),
-                                ),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: CatrgoryTableHeaderWidget(
-                                      headerTitle: 'Total Amount'),
-                                ),
-                                SizedBox(
-                                  width: 02,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: ResponsiveWebSite.isDesktop(context)
-                              ? double.infinity
-                              : 1200,
-                          padding: const EdgeInsets.only(left: 5, right: 5),
-                          decoration: BoxDecoration(
-                            color: cWhite,
-                            border: Border.all(color: cWhite),
-                          ),
-                          child: StreamBuilder(
-                            stream: feeController.onTapBtach.value == true
-                                ? server
-                                    .collection('DrivingSchoolCollection')
-                                    .doc(UserCredentialsController.schoolId)
-                                    .collection('FeesCollection')
-                                    .doc(feeController.batchId.value)
-                                    .collection('Courses')
-                                    .snapshots()
-                                : null,
-                            builder: (context, snapS) {
-                              if (snapS.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              if (feeController.onTapBtach.value == false) {
-                                return const Center(
-                                  child: Text(
-                                    'Select Batch',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
+                      feeController.onTapUnpaid.value == true
+                          ? UnpaidStudentDataTable()
+                          : Expanded(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    color: cWhite,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 5,
+                                        right: 5,
+                                      ),
+                                      child: Container(
+                                        color: cWhite,
+                                        height: 40,
+                                        child: const Row(
+                                          children: [
+                                            Expanded(
+                                                flex: 1,
+                                                child:
+                                                    CatrgoryTableHeaderWidget(
+                                                        headerTitle: 'No')),
+                                            SizedBox(
+                                              width: 02,
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: CatrgoryTableHeaderWidget(
+                                                  headerTitle: 'Course Name'),
+                                            ),
+                                            SizedBox(
+                                              width: 01,
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: CatrgoryTableHeaderWidget(
+                                                  headerTitle: 'Initial Rate'),
+                                            ),
+                                            SizedBox(
+                                              width: 02,
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: CatrgoryTableHeaderWidget(
+                                                  headerTitle:
+                                                      'Total Students'),
+                                            ),
+                                            SizedBox(
+                                              width: 02,
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: CatrgoryTableHeaderWidget(
+                                                  headerTitle:
+                                                      'Amount Collected'),
+                                            ),
+                                            SizedBox(
+                                              width: 02,
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: CatrgoryTableHeaderWidget(
+                                                  headerTitle:
+                                                      'Pending Amount'),
+                                            ),
+                                            SizedBox(
+                                              width: 02,
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: CatrgoryTableHeaderWidget(
+                                                  headerTitle: 'Total Amount'),
+                                            ),
+                                            SizedBox(
+                                              width: 02,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                );
-                              }
-                              if (snapS.data == null ||
-                                  snapS.data!.docs.isEmpty) {
-                                return const Center(
-                                  child: Text(
-                                    'No courses',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                );
-                              }
+                                  Expanded(
+                                    child: Container(
+                                      width:
+                                          ResponsiveWebSite.isDesktop(context)
+                                              ? double.infinity
+                                              : 1200,
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 5),
+                                      decoration: BoxDecoration(
+                                        color: cWhite,
+                                        border: Border.all(color: cWhite),
+                                      ),
+                                      child: StreamBuilder(
+                                        stream: feeController
+                                                    .onTapBtach.value ==
+                                                true
+                                            ? server
+                                                .collection(
+                                                    'DrivingSchoolCollection')
+                                                .doc(UserCredentialsController
+                                                    .schoolId)
+                                                .collection('FeesCollection')
+                                                .doc(
+                                                    feeController.batchId.value)
+                                                .collection('Courses')
+                                                .snapshots()
+                                            : null,
+                                        builder: (context, snapS) {
+                                          if (snapS.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          }
+                                          if (feeController.onTapBtach.value ==
+                                              false) {
+                                            return const Center(
+                                              child: Text(
+                                                'Select Batch',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            );
+                                          }
+                                          if (snapS.data == null ||
+                                              snapS.data!.docs.isEmpty) {
+                                            return const Center(
+                                              child: Text(
+                                                'No courses',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            );
+                                          }
 
-                              return ListView.separated(
-                                itemCount: snapS.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final fee = snapS.data!.docs[index].data();
-                                  final courseId = fee['courseId'];
-                                  return StreamBuilder(
-                                    stream: server
-                                        .collection('DrivingSchoolCollection')
-                                        .doc(UserCredentialsController.schoolId)
-                                        .collection('Courses')
-                                        .doc(courseId)
-                                        .snapshots(),
-                                    builder: (context, courseSnapshot) {
-                                      if (courseSnapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const SizedBox();
-                                      }
-                                      final data = CourseModel.fromMap(
-                                          courseSnapshot.data!.data()!);
-                                      feeController.pendingAmountCalculate(
-                                        data.courseId,
-                                        feeController.batchId.value,
-                                      );
-                                      feeController.getFeeTotalAmount(
-                                          data.courseId,
-                                          feeController.batchId.value,
-                                          data.rate);
-                                      return GestureDetector(
-                                        onTap: () {
-                                          courseController.setCourseData(data);
-                                          courseController
-                                              .ontapStudentDetail.value = true;
-                                          courseController.ontapCourseName
-                                              .value = data.courseName;
-                                          courseController.ontapCourseDocID
-                                              .value = data.courseId;
+                                          return ListView.separated(
+                                            itemCount: snapS.data!.docs.length,
+                                            itemBuilder: (context, index) {
+                                              final fee = snapS
+                                                  .data!.docs[index]
+                                                  .data();
+                                              final courseId = fee['courseId'];
+                                              return StreamBuilder(
+                                                stream: server
+                                                    .collection(
+                                                        'DrivingSchoolCollection')
+                                                    .doc(
+                                                        UserCredentialsController
+                                                            .schoolId)
+                                                    .collection('Courses')
+                                                    .doc(courseId)
+                                                    .snapshots(),
+                                                builder:
+                                                    (context, courseSnapshot) {
+                                                  if (courseSnapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const SizedBox();
+                                                  }
+                                                  final data =
+                                                      CourseModel.fromMap(
+                                                          courseSnapshot.data!
+                                                              .data()!);
+                                                  feeController
+                                                      .pendingAmountCalculate(
+                                                    data.courseId,
+                                                    feeController.batchId.value,
+                                                  );
+                                                  feeController
+                                                      .getFeeTotalAmount(
+                                                          data.courseId,
+                                                          feeController
+                                                              .batchId.value,
+                                                          data.rate);
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      courseController
+                                                          .setCourseData(data);
+                                                      courseController
+                                                          .ontapStudentDetail
+                                                          .value = true;
+                                                      courseController
+                                                              .ontapCourseName
+                                                              .value =
+                                                          data.courseName;
+                                                      courseController
+                                                              .ontapCourseDocID
+                                                              .value =
+                                                          data.courseId;
+                                                    },
+                                                    child: FeeCoursesDataList(
+                                                        data: data,
+                                                        feeModel: fee,
+                                                        index: index),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const SizedBox(height: 2),
+                                          );
                                         },
-                                        child: FeeCoursesDataList(
-                                            data: data,
-                                            feeModel: fee,
-                                            index: index),
-                                      );
-                                    },
-                                  );
-                                },
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 2),
-                              );
-                            },
-                          ),
-                        ),
-                      )
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
                     ],
                   ),
                 ),

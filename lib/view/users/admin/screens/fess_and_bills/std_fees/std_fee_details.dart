@@ -68,30 +68,6 @@ class StudentsFeesStatus extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  const SizedBox(
-                    height: 40,
-                    width: 200,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 05, left: 05),
-                      child: RouteNonSelectedTextContainer(
-                        title: 'Show Unpaid Student',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Obx(
-                    () => Checkbox(
-                      value: feeController.onTapUnpaid.value,
-                      checkColor: cWhite,
-                      activeColor: cBlue,
-                      // fillColor: const MaterialStatePropertyAll(cBlue),
-                      onChanged: (value) {
-                        feeController.onTapUnpaid.value = value!;
-                      },
-                    ),
-                  )
                 ],
               ),
             ),
