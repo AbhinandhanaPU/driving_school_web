@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
@@ -214,5 +215,35 @@ class TestController extends GetxController {
               (doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     });
+  }
+
+  Future<List<Map<String, dynamic>>> fetchOrderedDrivingTests() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('DrivingTest')
+          .get();
+
+      List<Map<String, dynamic>> tests = snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        try {
+          DateTime parsedDate =
+              DateFormat('dd-MM-yyyy').parse(data['testDate']);
+          data['parsedTestDate'] = parsedDate;
+        } catch (e) {
+          log('Error parsing date: ${data['testDate']}, Error: $e');
+          data['parsedTestDate'] = DateTime(1970, 1, 1);
+        }
+        return data;
+      }).toList();
+
+      tests.sort((a, b) => b['parsedTestDate'].compareTo(a['parsedTestDate']));
+
+      return tests;
+    } catch (e) {
+      log('Error fetching driving tests: $e');
+      return [];
+    }
   }
 }

@@ -19,7 +19,7 @@ class StudentFeeDatalist extends StatelessWidget {
     return Container(
       height: 45,
       color: feeData['paidStatus'] == false
-          ? Colors.red.withOpacity(0.1)
+          ? Colors.red.withOpacity(0.2)
           : Colors.green.withOpacity(0.1),
       child: Row(
         children: [

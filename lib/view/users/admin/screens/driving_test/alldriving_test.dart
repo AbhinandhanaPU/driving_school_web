@@ -5,8 +5,6 @@ import 'package:new_project_driving/controller/notification_controller/notificat
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/test_model/test_model.dart';
-import 'package:new_project_driving/utils/firebase/firebase.dart';
-import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/student_details/test_student_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/schedule_test.dart';
 import 'package:new_project_driving/view/users/admin/screens/driving_test/test_details/test_data_list.dart';
@@ -19,18 +17,22 @@ import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route
 class AllDrivingTestDetails extends StatelessWidget {
   AllDrivingTestDetails({super.key});
   final TestController testController = Get.put(TestController());
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => testController.onTapTest.value == true
           ? TestStudentListContainer()
           : SingleChildScrollView(
-              scrollDirection:
-                  ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+              scrollDirection: ResponsiveWebSite.isMobile(context)
+                  ? Axis.horizontal
+                  : Axis.vertical,
               child: Container(
                 color: screenContainerbackgroundColor,
                 height: 650,
-                width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
+                width: ResponsiveWebSite.isDesktop(context)
+                    ? double.infinity
+                    : 1200,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: Column(
@@ -60,9 +62,10 @@ class AllDrivingTestDetails extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 20),
                             child: GestureDetector(
                               onTap: () {
-                                Get.find<NotificationController>().fetchDrivingTestAllUsers(
+                                Get.find<NotificationController>()
+                                    .fetchDrivingTestAllUsers(
                                   bodyText: 'Location',
-                                  titleText: 'Drivning Test Notification',
+                                  titleText: 'Driving Test Notification',
                                 );
                               },
                               child: ButtonContainerWidget(
@@ -191,46 +194,48 @@ class AllDrivingTestDetails extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5, left: 5),
                             child: SizedBox(
-                              child: StreamBuilder(
-                                stream: server
-                                    .collection('DrivingSchoolCollection')
-                                    .doc(UserCredentialsController.schoolId)
-                                    .collection('DrivingTest')
-                                    .snapshots(),
+                              child: FutureBuilder<List<Map<String, dynamic>>>(
+                                future:
+                                    testController.fetchOrderedDrivingTests(),
                                 builder: (context, snaPS) {
                                   if (snaPS.hasData) {
-                                    return snaPS.data!.docs.isEmpty
-                                        ? const Center(
-                                            child: Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "Please schedule test",
-                                                style: TextStyle(fontWeight: FontWeight.w400),
-                                              ),
+                                    if (snaPS.data!.isEmpty) {
+                                      return const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Please schedule a test",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      return ListView.separated(
+                                        itemBuilder: (context, index) {
+                                          final data = TestModel.fromMap(
+                                              snaPS.data![index]);
+                                          return GestureDetector(
+                                            onTap: () {
+                                              testController.onTapTest.value =
+                                                  true;
+                                              testController
+                                                  .testModelData.value = data;
+                                            },
+                                            child: TestDataList(
+                                              data: data,
+                                              index: index,
                                             ),
-                                          )
-                                        : ListView.separated(
-                                            itemBuilder: (context, index) {
-                                              final data =
-                                                  TestModel.fromMap(snaPS.data!.docs[index].data());
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  testController.onTapTest.value = true;
-                                                  testController.testModelData.value = data;
-                                                },
-                                                child: TestDataList(
-                                                  data: data,
-                                                  index: index,
-                                                ),
-                                              );
-                                            },
-                                            separatorBuilder: (context, index) {
-                                              return const SizedBox(
-                                                height: 02,
-                                              );
-                                            },
-                                            itemCount: snaPS.data!.docs.length,
                                           );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return const SizedBox(
+                                            height: 02,
+                                          );
+                                        },
+                                        itemCount: snaPS.data!.length,
+                                      );
+                                    }
                                   } else {
                                     return const LoadingWidget();
                                   }
