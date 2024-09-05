@@ -10,7 +10,6 @@ import 'package:new_project_driving/view/widget/button_container_widget/button_c
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
-import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
 
 class StudentsInCoursesDetails extends StatelessWidget {
   StudentsInCoursesDetails({super.key});
@@ -41,6 +40,18 @@ class StudentsInCoursesDetails extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10, top: 10),
               child: Row(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        courseController.ontapStudentDetail.value = false;
+                      },
+                      child: const RouteSelectedTextContainer(
+                        title: 'Back',
+                        width: 100,
+                      ),
+                    ),
+                  ),
                   RouteSelectedTextContainer(
                     width: 180,
                     title: courseController.ontapCourseName.toString(),
@@ -67,24 +78,6 @@ class StudentsInCoursesDetails extends StatelessWidget {
                     ),
                   )
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: GestureDetector(
-                onTap: () {
-                  courseController.ontapStudentDetail.value = false;
-                },
-                child: const SizedBox(
-                  height: 35,
-                  width: 100,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 05, left: 05),
-                    child: RouteNonSelectedTextContainer(
-                      title: 'Back',
-                    ),
-                  ),
-                ),
               ),
             ),
             Container(

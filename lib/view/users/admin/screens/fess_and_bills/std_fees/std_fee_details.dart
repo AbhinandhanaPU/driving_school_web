@@ -12,7 +12,7 @@ import 'package:new_project_driving/view/widget/loading_widget/loading_widget.da
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
-import 'package:new_project_driving/view/widget/routeSelectedTextContainer/route_NonSelectedContainer.dart';
+import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
 class StudentsFeesStatus extends StatelessWidget {
   StudentsFeesStatus({super.key});
@@ -53,25 +53,22 @@ class StudentsFeesStatus extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      courseController.ontapStudentDetail.value = false;
-                    },
-                    child: const SizedBox(
-                      height: 35,
-                      width: 100,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 05, left: 05),
-                        child: RouteNonSelectedTextContainer(
-                          title: 'Back',
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        courseController.ontapStudentDetail.value = false;
+                      },
+                      child: const RouteSelectedTextContainer(
+                        title: 'Back',
+                        width: 100,
                       ),
                     ),
                   ),
                   const Spacer(),
                   Obx(
                     () => Padding(
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: const EdgeInsets.only(left: 15, bottom: 10),
                       child: ProgressButtonWidget(
                         function: () async {
                           Get.find<NotificationController>().fetchUnpaidUsers(
@@ -159,8 +156,8 @@ class StudentsFeesStatus extends StatelessWidget {
                     //   () =>
                     Expanded(
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                        padding: const EdgeInsets.only(
+                            bottom: 8, left: 8, right: 8, top: 2),
                         child: StreamBuilder(
                           stream:
                               // feeController.onTapUnpaid.value == true
