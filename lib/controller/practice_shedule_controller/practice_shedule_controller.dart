@@ -16,7 +16,9 @@ class PracticeSheduleController extends GetxController {
   final courseCtrl = Get.put(CourseController());
 
   final formKey = GlobalKey<FormState>();
-
+  RxList<PracticeSheduleModel> allScheduleList = RxList<PracticeSheduleModel>();
+  RxList<PracticeSheduleModel> selectedScheduleList = RxList<PracticeSheduleModel>();
+  RxBool selectAllSchedule = false.obs;
   Rx<ButtonState> buttonstate = ButtonState.idle.obs;
 
   TextEditingController practiceNameController = TextEditingController();
@@ -25,6 +27,23 @@ class PracticeSheduleController extends GetxController {
 
   RxBool onTapSchedule = false.obs;
   RxString scheduleId = ''.obs;
+
+  Future<RxList<PracticeSheduleModel>> fetchClass() async {
+    allScheduleList.clear();
+    selectedScheduleList.clear();
+
+    final firebase = await server
+        .collection('DrivingSchoolCollection')
+        .doc(UserCredentialsController.schoolId)
+        .collection('PracticeSchedule')
+        .get();
+
+    for (var i = 0; i < firebase.docs.length; i++) {
+      final list = firebase.docs.map((e) => PracticeSheduleModel.fromMap(e.data())).toList();
+      allScheduleList.add(list[i]);
+    }
+    return allScheduleList;
+  }
 
   Future<void> createPracticeShedule() async {
     final uuid = const Uuid().v1();
@@ -172,8 +191,7 @@ class PracticeSheduleController extends GetxController {
           .get();
 
       return studentSnapshot.docs
-          .map(
-              (doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     });
   }
