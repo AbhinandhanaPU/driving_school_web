@@ -4,12 +4,10 @@ import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/controller/course_controller/course_controller.dart';
 import 'package:new_project_driving/controller/fee_controller/fee_controller.dart';
 import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
-import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/users/admin/screens/fess_and_bills/std_fees/std_fee_datalist.dart';
-import 'package:new_project_driving/view/widget/button_container_widget/button_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/category_table_header.dart';
@@ -38,41 +36,15 @@ class StudentsFeesStatus extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Students List ',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ButtonContainerWidget(
-                      curving: 0,
-                      colorindex: 6,
-                      height: 35,
-                      width: 230,
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.find<NotificationController>().fetchUnpaidUsers(
-                              batchID: batchId,
-                              courseID: courseid,
-                              bodyText: 'bodyText',
-                              titleText: 'Please pay on time',
-                            );
-                          },
-                          child: const TextFontWidgetRouter(
-                            text: 'Send Message For Unpaid Students',
-                            fontsize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: cWhite,
-                          ),
-                        ),
-                      )),
                 ),
               ],
             ),
@@ -96,30 +68,6 @@ class StudentsFeesStatus extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  const SizedBox(
-                    height: 40,
-                    width: 200,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 05, left: 05),
-                      child: RouteNonSelectedTextContainer(
-                        title: 'Show Unpaid Student',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Obx(
-                    () => Checkbox(
-                      value: feeController.onTapUnpaid.value,
-                      checkColor: cWhite,
-                      activeColor: cBlue,
-                      // fillColor: const MaterialStatePropertyAll(cBlue),
-                      onChanged: (value) {
-                        feeController.onTapUnpaid.value = value!;
-                      },
-                    ),
-                  )
                 ],
               ),
             ),

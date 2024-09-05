@@ -89,8 +89,8 @@ class ArchiveAllStudentDataList extends StatelessWidget {
           const SizedBox(width: 2),
           Expanded(
             flex: 3,
-            child: StreamBuilder<List<String>>(
-              stream: studentController.fetchStudentsCourse(data),
+            child: FutureBuilder<List<String>>(
+              future: studentController.fetchStudentsCourse(data),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
 import 'package:new_project_driving/controller/test_controller/test_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/test_model/test_model.dart';
@@ -59,7 +60,10 @@ class AllDrivingTestDetails extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 20),
                             child: GestureDetector(
                               onTap: () {
-                                
+                                Get.find<NotificationController>().fetchDrivingTestAllUsers(
+                                  bodyText: 'Location',
+                                  titleText: 'Drivning Test Notification',
+                                );
                               },
                               child: ButtonContainerWidget(
                                   curving: 0,

@@ -18,7 +18,6 @@ class BatchStdDataList extends StatelessWidget {
     super.key,
   });
 
- 
   final BatchController batchController = Get.put(BatchController());
 
   @override
@@ -71,8 +70,8 @@ class BatchStdDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 4,
-            child: StreamBuilder<List<String>>(
-              stream: studentController.fetchStudentsCourse(data),
+            child: FutureBuilder<List<String>>(
+              future: studentController.fetchStudentsCourse(data),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -133,8 +132,7 @@ class BatchStdDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () async {
-                      await batchController.deleteStudent(
-                          docId: data.docid);
+                      await batchController.deleteStudent(docId: data.docid);
                     },
                   );
                 },

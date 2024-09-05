@@ -17,19 +17,25 @@ class FeeController extends GetxController {
   final formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
 
-  final _fbServer =
-      server.collection('DrivingSchoolCollection').doc(UserCredentialsController.schoolId);
+  final _fbServer = server
+      .collection('DrivingSchoolCollection')
+      .doc(UserCredentialsController.schoolId);
 
   addStudentfeeFullyPaid(
     StudentModel studentModel,
     String status,
     CourseModel course,
   ) async {
-    DocumentSnapshot batchDoc =
-        await _fbServer.collection('FeesCollection').doc(studentModel.batchId).get();
+    DocumentSnapshot batchDoc = await _fbServer
+        .collection('FeesCollection')
+        .doc(studentModel.batchId)
+        .get();
 
     if (!batchDoc.exists) {
-      await _fbServer.collection('FeesCollection').doc(studentModel.batchId).set({
+      await _fbServer
+          .collection('FeesCollection')
+          .doc(studentModel.batchId)
+          .set({
         'batchId': studentModel.batchId,
       });
     }
@@ -65,7 +71,8 @@ class FeeController extends GetxController {
       'totalAmount': course.rate,
       'paidStatus': true
     }).then((value) async {
-      await getFeeTotalAmount(course.courseId, studentModel.batchId, course.rate);
+      await getFeeTotalAmount(
+          course.courseId, studentModel.batchId, course.rate);
       await pendingAmountCalculate(course.courseId, studentModel.batchId);
       await acceptStudentToCourse(studentModel, status, course.courseId);
       showToast(msg: 'Student fees updated');
@@ -80,11 +87,16 @@ class FeeController extends GetxController {
   ) async {
     try {
       int amountPaid = int.tryParse(amountController.text) ?? 0;
-      DocumentSnapshot batchDoc =
-          await _fbServer.collection('FeesCollection').doc(studentModel.batchId).get();
+      DocumentSnapshot batchDoc = await _fbServer
+          .collection('FeesCollection')
+          .doc(studentModel.batchId)
+          .get();
 
       if (!batchDoc.exists) {
-        await _fbServer.collection('FeesCollection').doc(studentModel.batchId).set({
+        await _fbServer
+            .collection('FeesCollection')
+            .doc(studentModel.batchId)
+            .set({
           'batchId': studentModel.batchId,
         });
       }
@@ -124,7 +136,8 @@ class FeeController extends GetxController {
             .doc(studentModel.docid)
             .update({
           'feeStatus': status,
-          'amountPaid': FieldValue.increment(amountPaid),
+          'amountPaid':
+              status == 'not paid' ? 0 : FieldValue.increment(amountPaid),
           'paidStatus': false
         });
       } else {
@@ -144,7 +157,8 @@ class FeeController extends GetxController {
           'paidStatus': false,
         });
       }
-      await getFeeTotalAmount(course.courseId, studentModel.batchId, course.rate);
+      await getFeeTotalAmount(
+          course.courseId, studentModel.batchId, course.rate);
       await pendingAmountCalculate(course.courseId, studentModel.batchId);
       await acceptStudentToCourse(studentModel, status, course.courseId);
 
@@ -288,5 +302,67 @@ class FeeController extends GetxController {
         log('Pending amount added');
       });
     });
+  }
+
+  Future<Map<String, Map<String, dynamic>>> fetchUnpaidStudents() async {
+    final unpaidStudentsWithFeeData = <String, Map<String, dynamic>>{};
+
+    try {
+      final batches = await _fbServer.collection('FeesCollection').get();
+
+      for (var batchDoc in batches.docs) {
+        final batchId = batchDoc.id;
+
+        final courses = await _fbServer
+            .collection('FeesCollection')
+            .doc(batchId)
+            .collection('Courses')
+            .get();
+
+        for (var courseDoc in courses.docs) {
+          final courseId = courseDoc.id;
+
+          final students = await _fbServer
+              .collection('FeesCollection')
+              .doc(batchId)
+              .collection('Courses')
+              .doc(courseId)
+              .collection('Students')
+              .where('paidStatus', isEqualTo: false)
+              .get();
+
+          for (var studentDoc in students.docs) {
+            final studentId = studentDoc.data()['studentID'];
+
+            final studentData = await server
+                .collection('DrivingSchoolCollection')
+                .doc(UserCredentialsController.schoolId)
+                .collection('Students')
+                .doc(studentId)
+                .get();
+
+            if (studentData.exists) {
+              final studentModel = StudentModel.fromMap(studentData.data()!);
+
+              if (unpaidStudentsWithFeeData.containsKey(studentId)) {
+                final existingData = unpaidStudentsWithFeeData[studentId];
+                existingData!['amountPaid'] += studentDoc.data()['amountPaid'];
+                existingData['totalAmount'] += studentDoc.data()['totalAmount'];
+              } else {
+                unpaidStudentsWithFeeData[studentId] = {
+                  'studentModel': studentModel,
+                  'amountPaid': studentDoc.data()['amountPaid'],
+                  'totalAmount': studentDoc.data()['totalAmount'],
+                };
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      log("Error fetching unpaid students: $e");
+    }
+
+    return unpaidStudentsWithFeeData;
   }
 }

@@ -8,13 +8,12 @@ import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/f
 class StdFeesLevelDropDown extends StatefulWidget {
   final StudentModel data;
   final CourseModel course;
-  final String feeData;
-
+  final String? feeData;
   const StdFeesLevelDropDown({
     super.key,
     required this.data,
     required this.course,
-    required this.feeData,
+    this.feeData,
   });
 
   @override
@@ -28,14 +27,19 @@ class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
   @override
   void initState() {
     super.initState();
-    selectStdLevel = widget.feeData;
+    // Set selectStdLevel to feeData if it's not null and valid; otherwise, set it to null
+    if (['partly paid', 'fully paid', 'not paid'].contains(widget.feeData)) {
+      selectStdLevel = widget.feeData;
+    } else {
+      selectStdLevel = null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       value: selectStdLevel,
-      hint: Text(widget.feeData),
+      hint: const Text('Choose fees status'),
       decoration: const InputDecoration(
         border: InputBorder.none,
         filled: false,

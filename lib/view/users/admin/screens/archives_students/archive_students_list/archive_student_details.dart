@@ -303,8 +303,8 @@ class ArchivesStudentDetailsContainer extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        StreamBuilder<List<String>>(
-                                          stream: studentController
+                                        FutureBuilder<List<String>>(
+                                          future: studentController
                                               .fetchStudentsCourse(data),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==

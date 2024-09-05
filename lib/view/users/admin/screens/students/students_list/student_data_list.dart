@@ -15,7 +15,7 @@ import 'package:new_project_driving/view/users/admin/screens/students/crud/updat
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
-class AllStudentDataList extends StatefulWidget {
+class AllStudentDataList extends StatelessWidget {
   final StudentModel data;
   final int index;
 
@@ -26,18 +26,13 @@ class AllStudentDataList extends StatefulWidget {
   });
 
   @override
-  State<AllStudentDataList> createState() => _AllStudentDataListState();
-}
-
-class _AllStudentDataListState extends State<AllStudentDataList> {
-  @override
   Widget build(BuildContext context) {
     StudentController studentController = Get.put(StudentController());
-    log('batchid : ${widget.data.batchId},${widget.data.studentName}');
+    log('batchid :$index ${data.batchId},${data.studentName}');
     return Container(
       height: 45,
       decoration: BoxDecoration(
-        color: widget.index % 2 == 0
+        color: index % 2 == 0
             ? const Color.fromARGB(255, 246, 246, 246)
             : Colors.blue[50],
       ),
@@ -48,8 +43,8 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                index: widget.index,
-                headerTitle: '  ${widget.index + 1}'), //....................No
+                index: index,
+                headerTitle: '  ${index + 1}'), //....................No
           ),
           const SizedBox(width: 1),
           Expanded(
@@ -66,7 +61,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                 ),
                 Expanded(
                   child: TextFontWidget(
-                    text: '  ${widget.data.studentName}',
+                    text: '  ${data.studentName}',
                     fontsize: 12,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -89,7 +84,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                 ),
                 Expanded(
                   child: TextFontWidget(
-                    text: "  ${widget.data.phoneNumber}",
+                    text: "  ${data.phoneNumber}",
                     fontsize: 12,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -100,8 +95,8 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
           const SizedBox(width: 2),
           Expanded(
             flex: 3,
-            child: StreamBuilder<List<String>>(
-              stream: studentController.fetchStudentsCourse(widget.data),
+            child: FutureBuilder<List<String>>(
+              future: studentController.fetchStudentsCourse(data),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -111,7 +106,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
-                    index: widget.index,
+                    index: index,
                     headerTitle: 'Course Not Found',
                   );
                 } else {
@@ -119,7 +114,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
-                    index: widget.index,
+                    index: index,
                     headerTitle: courses,
                   );
                 }
@@ -135,8 +130,8 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
               child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
                 color: cWhite,
-                index: widget.index,
-                headerTitle: stringTimeToDateConvert(widget.data.joiningDate),
+                index: index,
+                headerTitle: stringTimeToDateConvert(data.joiningDate),
               ),
             ),
           ), //............................. Student join date
@@ -148,21 +143,21 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                widget.data.batchId.isEmpty
+                data.batchId.isEmpty
                     ? Expanded(
                         child: DataContainerWidget(
-                          index: widget.index,
+                          index: index,
                           headerTitle: 'Batch not Assigned',
                           rowMainAccess: MainAxisAlignment.center,
                         ),
                       )
-                    : StreamBuilder(
-                        stream: server
+                    : FutureBuilder(
+                        future: server
                             .collection('DrivingSchoolCollection')
                             .doc(UserCredentialsController.schoolId)
                             .collection('Batch')
-                            .doc(widget.data.batchId)
-                            .snapshots(),
+                            .doc(data.batchId)
+                            .get(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -172,7 +167,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                             return Text('Error: ${snapshot.error}');
                           } else if (!snapshot.hasData ||
                               !snapshot.data!.exists) {
-                            log('No data found for batchId: ${widget.data.batchId}');
+                            log('No data found for batchId: ${data.batchId}');
                             return const Text('Batch Not Found');
                           } else {
                             final batchData =
@@ -180,10 +175,10 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                             String batchName = batchData.batchName.isEmpty
                                 ? "Not found"
                                 : batchData.batchName;
-                            log('Batch name for batchId ${widget.data.batchId}: $batchName');
+                            log('Batch name for batchId ${data.batchId}: $batchName');
                             return Expanded(
                               child: DataContainerWidget(
-                                index: widget.index,
+                                index: index,
                                 headerTitle: batchName,
                                 rowMainAccess: MainAxisAlignment.center,
                               ),
@@ -193,8 +188,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                       ),
                 IconButton(
                     onPressed: () {
-                      updateStudentBatch(
-                          context: context, studentModel: widget.data);
+                      updateStudentBatch(context: context, studentModel: data);
                     },
                     icon: const Icon(
                       Icons.edit,
@@ -214,19 +208,18 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                   scale: 0.65,
                   child: Switch(
                     activeColor: Colors.green,
-                    value: widget.data.status == true,
+                    value: data.status == true,
                     onChanged: (value) {
                       final newStatus = value ? true : false;
-                      studentController.updateStudentStatus(
-                          widget.data, newStatus);
+                      studentController.updateStudentStatus(data, newStatus);
                     },
                   ),
                 ),
                 Expanded(
                   child: DataContainerWidget(
-                    index: widget.index,
+                    index: index,
                     headerTitle:
-                        widget.data.status == true ? "  Active" : "  Inactive",
+                        data.status == true ? "  Active" : "  Inactive",
                     rowMainAccess: MainAxisAlignment.center,
                   ),
                 )
@@ -239,7 +232,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  archivesStudentsFunction(context, widget.data);
+                  archivesStudentsFunction(context, data);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -251,7 +244,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                       ),
                     ),
                     DataContainerWidget(
-                      index: widget.index,
+                      index: index,
                       headerTitle: 'Archive',
                       rowMainAccess: MainAxisAlignment.center,
                     ),
@@ -270,7 +263,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                     context: context,
                     onTap: () {
                       studentController
-                          .deleteStudents(widget.data)
+                          .deleteStudents(data)
                           .then((value) => Navigator.pop(context));
                     },
                   );
@@ -278,7 +271,7 @@ class _AllStudentDataListState extends State<AllStudentDataList> {
                 child: DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
                     color: cWhite,
-                    index: widget.index,
+                    index: index,
                     headerTitle: ' Remove 🗑️'),
               ),
             ),

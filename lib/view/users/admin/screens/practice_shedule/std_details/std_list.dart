@@ -89,23 +89,6 @@ class PracticeStudentListContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  ButtonContainerWidget(
-                    curving: 0,
-                    colorindex: 6,
-                    height: 35,
-                    width: 220,
-                    child: const Center(
-                      child: TextFontWidgetRouter(
-                        text: 'Send practice schedule to Students',
-                        fontsize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: cWhite,
-                      ),
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(

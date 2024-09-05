@@ -7,7 +7,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/batch/drop_down/batch_dp_dn.dart';
+import 'package:new_project_driving/view/users/admin/screens/students/crud/drop_down/all_batch_dp_dn.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/crud/search_students/search_student_name.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_data_list.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/students_list/student_details.dart';
@@ -94,21 +94,22 @@ class AllStudentListContainer extends StatelessWidget {
                                 const SizedBox(
                                   height: 05,
                                 ),
-                                BatchDropDown(
+                                AllStudentBatchDropDown(
                                   onChanged: (batch) {
                                     batchController.onBatchWiseView.value =
                                         true;
                                     batchController.batchView.value =
                                         batch!.batchId;
                                   },
+                                  onAllStudentsSelected: () {
+                                    batchController.onBatchWiseView.value =
+                                        false;
+                                  },
                                 )
                               ],
                             ),
                           ),
                         ],
-                      ),
-                      const SizedBox(
-                        height: 30,
                       ),
                       Container(
                         color: cWhite,
