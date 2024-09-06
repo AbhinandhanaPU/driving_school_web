@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
@@ -17,17 +16,20 @@ class StudentFeeDatalist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 45,
+      color: feeData['paidStatus'] == false
+          ? Colors.red.withOpacity(0.2)
+          : Colors.green.withOpacity(0.1),
       child: Row(
         children: [
           Expanded(
             flex: 1,
             child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: '${index + 1}'), //....................No
+              rowMainAccess: MainAxisAlignment.center,
+              index: index,
+              headerTitle: '  ${index + 1}',
+            ), //....................No
           ),
           const SizedBox(
             width: 02,
@@ -35,10 +37,10 @@ class StudentFeeDatalist extends StatelessWidget {
           Expanded(
             flex: 3,
             child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.start,
-                color: cWhite,
-                index: index,
-                headerTitle: stdData.studentName),
+              rowMainAccess: MainAxisAlignment.start,
+              index: index,
+              headerTitle: stdData.studentName,
+            ),
           ),
           const SizedBox(
             width: 02,
@@ -46,10 +48,23 @@ class StudentFeeDatalist extends StatelessWidget {
           Expanded(
             flex: 2,
             child: DataContainerWidget(
+              rowMainAccess: MainAxisAlignment.center,
+              index: index,
+              headerTitle: stringTimeToDateConvert(stdData.joiningDate),
+            ),
+          ),
+          const SizedBox(
+            width: 02,
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
                 index: index,
-                headerTitle: stringTimeToDateConvert(stdData.joiningDate)),
+                headerTitle: '0',
+              ),
+            ),
           ),
           const SizedBox(
             width: 02,
@@ -57,10 +72,10 @@ class StudentFeeDatalist extends StatelessWidget {
           Expanded(
             flex: 2,
             child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: '0'),
+              rowMainAccess: MainAxisAlignment.center,
+              index: index,
+              headerTitle: feeData['feeStatus'],
+            ),
           ),
           const SizedBox(
             width: 02,
@@ -68,10 +83,10 @@ class StudentFeeDatalist extends StatelessWidget {
           Expanded(
             flex: 2,
             child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: feeData['feeStatus']),
+              rowMainAccess: MainAxisAlignment.center,
+              index: index,
+              headerTitle: feeData['amountPaid'].toString(),
+            ),
           ),
           const SizedBox(
             width: 02,
@@ -79,20 +94,10 @@ class StudentFeeDatalist extends StatelessWidget {
           Expanded(
             flex: 2,
             child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: feeData['amountPaid'].toString()),
-          ),
-          const SizedBox(
-            width: 02,
-          ),  Expanded(
-            flex: 2,
-            child: DataContainerWidget(
-                rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
-                index: index,
-                headerTitle: feeData['totalAmount'].toString()),
+              rowMainAccess: MainAxisAlignment.center,
+              index: index,
+              headerTitle: feeData['totalAmount'].toString(),
+            ),
           ),
           const SizedBox(
             width: 02,
