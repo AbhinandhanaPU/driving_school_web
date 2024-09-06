@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/model/batch_model/batch_model.dart';
@@ -32,9 +31,9 @@ class UnpaidStudentDatalist extends StatelessWidget {
     return Container(
       height: 45,
       decoration: BoxDecoration(
-        color: index % 2 == 0
-            ? const Color.fromARGB(255, 246, 246, 246)
-            : Colors.blue[50],
+        color: pendingAmount != 0
+            ? Colors.red.withOpacity(0.2)
+            : Colors.green.withOpacity(0.1),
       ),
       child: Row(
         children: [
@@ -42,7 +41,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
             flex: 1,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
                 index: index,
                 headerTitle: '${index + 1}'), //....................No
           ),
@@ -50,10 +48,9 @@ class UnpaidStudentDatalist extends StatelessWidget {
             width: 02,
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.start,
-                color: cWhite,
                 index: index,
                 headerTitle: stdData.studentName),
           ),
@@ -64,7 +61,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
             flex: 2,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
                 index: index,
                 headerTitle: stringTimeToDateConvert(stdData.joiningDate)),
           ),
@@ -72,7 +68,7 @@ class UnpaidStudentDatalist extends StatelessWidget {
             width: 02,
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: FutureBuilder(
               future: server
                   .collection('DrivingSchoolCollection')
@@ -97,7 +93,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
                   log('Batch name for batchId ${stdData.batchId}: $batchName');
                   return Expanded(
                     child: DataContainerWidget(
-                      color: cWhite,
                       index: index,
                       headerTitle: batchName,
                       rowMainAccess: MainAxisAlignment.center,
@@ -111,7 +106,7 @@ class UnpaidStudentDatalist extends StatelessWidget {
             width: 02,
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: FutureBuilder<List<String>>(
               future: studentController.fetchStudentsCourse(stdData),
               builder: (context, snapshot) {
@@ -122,7 +117,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
-                    color: cWhite,
                     index: index,
                     headerTitle: 'Course Not Found',
                   );
@@ -130,7 +124,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
                   String courses = snapshot.data!.join(', ');
                   return DataContainerWidget(
                     rowMainAccess: MainAxisAlignment.center,
-                    color: cWhite,
                     index: index,
                     headerTitle: courses,
                   );
@@ -145,7 +138,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
             flex: 2,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
                 index: index,
                 headerTitle: pendingAmount.toString()),
           ),
@@ -156,7 +148,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
             flex: 2,
             child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
                 index: index,
                 headerTitle: amountPaid.toString()),
           ),
@@ -167,7 +158,6 @@ class UnpaidStudentDatalist extends StatelessWidget {
               flex: 2,
               child: DataContainerWidget(
                 rowMainAccess: MainAxisAlignment.center,
-                color: cWhite,
                 index: index,
                 headerTitle: totalAmount.toString(),
               )),
