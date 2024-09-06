@@ -10,6 +10,7 @@ import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/std_fees_level/std_fees_level.dart';
 import 'package:new_project_driving/view/widget/dropdown_widget/student_level/student_level.dart';
+import 'package:new_project_driving/view/widget/loading_widget/lottie_widget.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class AllCourseStudentDataList extends StatelessWidget {
@@ -177,7 +178,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                   );
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const LottieLoadingWidet();
                 }
                 if (snapshot.hasError) {
                   return Center(

@@ -10,7 +10,7 @@ class LottieLoadingWidet extends StatelessWidget {
       child: SizedBox(
         child: Center(
           child: Lottie.asset(
-            'webassets/lottie_files/Animation - 1725522744224.json',
+            'webassets/lottie_files/Animation - 1725617166634.json',
           ),
         ),
       ),
