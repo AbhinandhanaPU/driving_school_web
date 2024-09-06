@@ -46,7 +46,7 @@ sendPracticeScheduleNotification(BuildContext context) {
                       width: 10,
                     ),
                     Obx(() => practiceSheduleController.selectAllSchedule.value == false
-                        ? Checkbox(
+                        ? Checkbox( 
                             value: practiceSheduleController.selectAllSchedule.value,
                             onChanged: (value) {
                               practiceSheduleController.selectedScheduleList

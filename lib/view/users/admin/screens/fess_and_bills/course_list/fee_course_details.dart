@@ -27,8 +27,7 @@ class FeeCoursesDetails extends StatefulWidget {
 class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
   final CourseController courseController = Get.put(CourseController());
   final FeeController feeController = Get.put(FeeController());
-  final NotificationController notificationController =
-      Get.put(NotificationController());
+  final NotificationController notificationController = Get.put(NotificationController());
   @override
   void initState() {
     feeController.onTapBtach.value = false;
@@ -43,15 +42,12 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
         return courseController.ontapStudentDetail.value == true
             ? StudentsFeesStatus()
             : SingleChildScrollView(
-                scrollDirection: ResponsiveWebSite.isMobile(context)
-                    ? Axis.horizontal
-                    : Axis.vertical,
+                scrollDirection:
+                    ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
                 child: Container(
                   color: screenContainerbackgroundColor,
                   height: 650,
-                  width: ResponsiveWebSite.isDesktop(context)
-                      ? double.infinity
-                      : 1200,
+                  width: ResponsiveWebSite.isDesktop(context) ? double.infinity : 1200,
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,13 +60,12 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 20, top: 10, right: 10),
+                        padding: const EdgeInsets.only(bottom: 20, top: 10, right: 10),
                         child: Row(
                           children: [
                             const RouteSelectedTextContainer(
                               width: 180,
-                              title: 'All Courses',
+                              title: 'Unpaid Students',
                             ),
                             const Spacer(),
                             const SizedBox(
@@ -86,50 +81,53 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                             const SizedBox(
                               width: 6,
                             ),
-                            Obx(
-                              () => Checkbox(
-                                value: feeController.onTapUnpaid.value,
-                                checkColor: cWhite,
-                                activeColor: cBlue,
-                                onChanged: (value) {
-                                  feeController.onTapUnpaid.value = value!;
-                                },
-                              ),
-                            ),
+                            // Obx(
+                            //   () => Checkbox(
+                            //     value: feeController.onTapUnpaid.value,
+                            //     checkColor: cWhite,
+                            //     activeColor: cBlue,
+                            //     onChanged: (value) {
+                            //       feeController.onTapUnpaid.value = value!;
+                            //     },
+                            //   ),
+                            // ),
                             feeController.onTapUnpaid.value == true
                                 ? Obx(
-                                    () => Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: ProgressButtonWidget(
-                                        function: () async {
-                                          // Get.find<NotificationController>()
-                                          //     .fetchUnpaidUsers(
-                                          //   batchID:
-                                          //       feeController.batchId.value,
-                                          //   bodyText: 'bodyText',
-                                          //   titleText: 'Please pay on time',
-                                          // );
-                                        },
-                                        buttonstate: notificationController
-                                            .buttonstate.value,
-                                        text: 'Send Notification',
-                                      ),
+                                    () => Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 15),
+                                          child: ProgressButtonWidget(
+                                            function: () async {
+                                              // Get.find<NotificationController>()
+                                              //     .fetchUnpaidUsers(
+                                              //   batchID:
+                                              //       feeController.batchId.value,
+                                              //   bodyText: 'bodyText',
+                                              //   titleText: 'Please pay on time',
+                                              // );
+                                            },
+                                            buttonstate: notificationController.buttonstate.value,
+                                            text: 'Send Notification',
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 15),
+                                          child: SizedBox(
+                                            height: 50,
+                                            width: 250,
+                                            child: BatchDropDown(
+                                              onChanged: (batchModel) {
+                                                feeController.onTapBtach.value = true;
+                                                feeController.batchId.value = batchModel!.batchId;
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   )
-                                : Padding(
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: 250,
-                                      child: BatchDropDown(
-                                        onChanged: (batchModel) {
-                                          feeController.onTapBtach.value = true;
-                                          feeController.batchId.value =
-                                              batchModel!.batchId;
-                                        },
-                                      ),
-                                    ),
-                                  ),
+                                : const SizedBox()
                           ],
                         ),
                       ),
@@ -153,8 +151,7 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                                             Expanded(
                                                 flex: 1,
                                                 child:
-                                                    CatrgoryTableHeaderWidget(
-                                                        headerTitle: 'No')),
+                                                    CatrgoryTableHeaderWidget(headerTitle: 'No')),
                                             SizedBox(
                                               width: 02,
                                             ),
@@ -177,8 +174,7 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                                             Expanded(
                                               flex: 2,
                                               child: CatrgoryTableHeaderWidget(
-                                                  headerTitle:
-                                                      'Total Students'),
+                                                  headerTitle: 'Total Students'),
                                             ),
                                             SizedBox(
                                               width: 02,
@@ -186,8 +182,7 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                                             Expanded(
                                               flex: 2,
                                               child: CatrgoryTableHeaderWidget(
-                                                  headerTitle:
-                                                      'Amount Collected'),
+                                                  headerTitle: 'Amount Collected'),
                                             ),
                                             SizedBox(
                                               width: 02,
@@ -195,8 +190,7 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                                             Expanded(
                                               flex: 2,
                                               child: CatrgoryTableHeaderWidget(
-                                                  headerTitle:
-                                                      'Pending Amount'),
+                                                  headerTitle: 'Pending Amount'),
                                             ),
                                             SizedBox(
                                               width: 02,
@@ -216,59 +210,43 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                                   ),
                                   Expanded(
                                     child: Container(
-                                      width:
-                                          ResponsiveWebSite.isDesktop(context)
-                                              ? double.infinity
-                                              : 1200,
-                                      padding: const EdgeInsets.only(
-                                          left: 5, right: 5),
+                                      width: ResponsiveWebSite.isDesktop(context)
+                                          ? double.infinity
+                                          : 1200,
+                                      padding: const EdgeInsets.only(left: 5, right: 5),
                                       decoration: BoxDecoration(
                                         color: cWhite,
                                         border: Border.all(color: cWhite),
                                       ),
                                       child: StreamBuilder(
-                                        stream: feeController
-                                                    .onTapBtach.value ==
-                                                true
+                                        stream: feeController.onTapBtach.value == true
                                             ? server
-                                                .collection(
-                                                    'DrivingSchoolCollection')
-                                                .doc(UserCredentialsController
-                                                    .schoolId)
+                                                .collection('DrivingSchoolCollection')
+                                                .doc(UserCredentialsController.schoolId)
                                                 .collection('FeesCollection')
-                                                .doc(
-                                                    feeController.batchId.value)
+                                                .doc(feeController.batchId.value)
                                                 .collection('Courses')
                                                 .snapshots()
                                             : null,
                                         builder: (context, snapS) {
-                                          if (snapS.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const Center(
-                                                child:
-                                                    CircularProgressIndicator());
+                                          if (snapS.connectionState == ConnectionState.waiting) {
+                                            return const Center(child: CircularProgressIndicator());
                                           }
-                                          if (feeController.onTapBtach.value ==
-                                              false) {
+                                          if (feeController.onTapBtach.value == false) {
                                             return const Center(
                                               child: Text(
                                                 'Select Batch',
                                                 style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                                    fontSize: 20, fontWeight: FontWeight.w500),
                                               ),
                                             );
                                           }
-                                          if (snapS.data == null ||
-                                              snapS.data!.docs.isEmpty) {
+                                          if (snapS.data == null || snapS.data!.docs.isEmpty) {
                                             return const Center(
                                               child: Text(
                                                 'No courses',
                                                 style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                                    fontSize: 20, fontWeight: FontWeight.w500),
                                               ),
                                             );
                                           }
@@ -276,69 +254,46 @@ class _FeeCoursesDetailsState extends State<FeeCoursesDetails> {
                                           return ListView.separated(
                                             itemCount: snapS.data!.docs.length,
                                             itemBuilder: (context, index) {
-                                              final fee = snapS
-                                                  .data!.docs[index]
-                                                  .data();
+                                              final fee = snapS.data!.docs[index].data();
                                               final courseId = fee['courseId'];
                                               return StreamBuilder(
                                                 stream: server
-                                                    .collection(
-                                                        'DrivingSchoolCollection')
-                                                    .doc(
-                                                        UserCredentialsController
-                                                            .schoolId)
+                                                    .collection('DrivingSchoolCollection')
+                                                    .doc(UserCredentialsController.schoolId)
                                                     .collection('Courses')
                                                     .doc(courseId)
                                                     .snapshots(),
-                                                builder:
-                                                    (context, courseSnapshot) {
-                                                  if (courseSnapshot
-                                                          .connectionState ==
+                                                builder: (context, courseSnapshot) {
+                                                  if (courseSnapshot.connectionState ==
                                                       ConnectionState.waiting) {
                                                     return const SizedBox();
                                                   }
-                                                  final data =
-                                                      CourseModel.fromMap(
-                                                          courseSnapshot.data!
-                                                              .data()!);
-                                                  feeController
-                                                      .pendingAmountCalculate(
+                                                  final data = CourseModel.fromMap(
+                                                      courseSnapshot.data!.data()!);
+                                                  feeController.pendingAmountCalculate(
                                                     data.courseId,
                                                     feeController.batchId.value,
                                                   );
-                                                  feeController
-                                                      .getFeeTotalAmount(
-                                                          data.courseId,
-                                                          feeController
-                                                              .batchId.value,
-                                                          data.rate);
+                                                  feeController.getFeeTotalAmount(data.courseId,
+                                                      feeController.batchId.value, data.rate);
                                                   return GestureDetector(
                                                     onTap: () {
-                                                      courseController
-                                                          .setCourseData(data);
-                                                      courseController
-                                                          .ontapStudentDetail
-                                                          .value = true;
-                                                      courseController
-                                                              .ontapCourseName
-                                                              .value =
+                                                      courseController.setCourseData(data);
+                                                      courseController.ontapStudentDetail.value =
+                                                          true;
+                                                      courseController.ontapCourseName.value =
                                                           data.courseName;
-                                                      courseController
-                                                              .ontapCourseDocID
-                                                              .value =
+                                                      courseController.ontapCourseDocID.value =
                                                           data.courseId;
                                                     },
                                                     child: FeeCoursesDataList(
-                                                        data: data,
-                                                        feeModel: fee,
-                                                        index: index),
+                                                        data: data, feeModel: fee, index: index),
                                                   );
                                                 },
                                               );
                                             },
-                                            separatorBuilder:
-                                                (context, index) =>
-                                                    const SizedBox(height: 2),
+                                            separatorBuilder: (context, index) =>
+                                                const SizedBox(height: 2),
                                           );
                                         },
                                       ),
