@@ -41,12 +41,12 @@ sendPracticeScheduleNotification(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     BlueContainerWidget(
-                        title: "Add All Class", fontSize: 12, color: cBlack, width: 100),
+                        title: "Selecet All", fontSize: 12, color: cBlack, width: 100),
                     const SizedBox(
                       width: 10,
                     ),
                     Obx(() => practiceSheduleController.selectAllSchedule.value == false
-                        ? Checkbox( 
+                        ? Checkbox(
                             value: practiceSheduleController.selectAllSchedule.value,
                             onChanged: (value) {
                               practiceSheduleController.selectedScheduleList

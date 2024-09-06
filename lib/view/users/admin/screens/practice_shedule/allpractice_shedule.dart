@@ -45,7 +45,7 @@ class AllPracticeShedules extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           TextFontWidget(
-                            text: 'Practice Shedule',
+                            text: 'Practice schedule',
                             fontsize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -57,7 +57,7 @@ class AllPracticeShedules extends StatelessWidget {
                       Row(
                         children: [
                           const RouteSelectedTextContainer(
-                            title: 'All Students',
+                            title: 'Schedule List',
                             width: 200,
                           ),
                           const Spacer(),
