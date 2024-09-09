@@ -39,7 +39,7 @@ class TestStdDataList extends StatelessWidget {
                 headerTitle: '  ${index + 1}'), //....................No
           ),
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 4,
@@ -64,20 +64,31 @@ class TestStdDataList extends StatelessWidget {
             ),
           ), //........................................... Student Name
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 3,
-            child: DataContainerWidget(
-              rowMainAccess: MainAxisAlignment.center,
-              color: cWhite,
-              // width: 150,
-              index: index,
-              headerTitle:  stringTimeToDateConvert(data.joiningDate),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: Center(
+                    child: Image.asset(
+                      'webassets/png/calendar.png',
+                    ),
+                  ),
+                ),
+                DataContainerWidget(
+                  rowMainAccess: MainAxisAlignment.center,
+                  color: cWhite,
+                  index: index,
+                  headerTitle: '  ${stringTimeToDateConvert(data.joiningDate)}',
+                ),
+              ],
             ),
           ), //............................. Student joining Date
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 3,
@@ -89,7 +100,7 @@ class TestStdDataList extends StatelessWidget {
                 headerTitle: ' '),
           ), //............................. Student Completed days
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
           Expanded(
             flex: 3,
@@ -101,7 +112,21 @@ class TestStdDataList extends StatelessWidget {
                 headerTitle: ' '),
           ), //............................. Student no. of attempt
           const SizedBox(
-            width: 01,
+            width: 02,
+          ),
+          Expanded(
+            flex: 3,
+            child: Center(
+              child: DataContainerWidget(
+                  rowMainAccess: MainAxisAlignment.center,
+                  color: cWhite,
+                  // width: 150,
+                  index: index,
+                  headerTitle: 'Pass'),
+            ),
+          ), //............................. Student Result
+          const SizedBox(
+            width: 02,
           ),
           Expanded(
             flex: 2,
@@ -124,7 +149,7 @@ class TestStdDataList extends StatelessWidget {
             ),
           ), //....................Delete
           const SizedBox(
-            width: 01,
+            width: 02,
           ),
         ],
       ),

@@ -168,15 +168,15 @@ class AllCoursesDetails extends StatelessWidget {
                                   return const Center(
                                       child: CircularProgressIndicator());
                                 }
-                                // ignore: prefer_is_empty
-                                if (snapshot.data!.docs.length == 0) {
+                                if (snapshot.data!.docs.isEmpty) {
                                   return const Center(
-                                      child: Text(
-                                    'No courses',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ));
+                                    child: Text(
+                                      'No courses',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  );
                                 }
                                 return ListView.separated(
                                   itemCount: snapshot.data!.docs.length,

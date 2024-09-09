@@ -21,7 +21,7 @@ class StdFeesLevelDropDown extends StatefulWidget {
 }
 
 class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
-  FeeController studentController = Get.put(FeeController());
+  FeeController feeController = Get.put(FeeController());
   String? selectStdLevel;
 
   @override
@@ -71,13 +71,13 @@ class _StdFeesLevelDropDownState extends State<StdFeesLevelDropDown> {
               widget.course,
             );
           } else if (val == 'fully paid') {
-            studentController.addStudentfeeFullyPaid(
+            feeController.addStudentfeeFullyPaid(
               widget.data,
               val,
               widget.course,
             );
           } else {
-            studentController.addStudentFeeColl(
+            feeController.addStudentFeeColl(
               widget.data,
               val,
               widget.course,

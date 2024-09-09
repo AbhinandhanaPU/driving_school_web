@@ -69,18 +69,19 @@ class AllDrivingTestDetails extends StatelessWidget {
                                 );
                               },
                               child: ButtonContainerWidget(
-                                  curving: 0,
-                                  colorindex: 6,
-                                  height: 35,
-                                  width: 180,
-                                  child: const Center(
-                                    child: TextFontWidgetRouter(
-                                      text: 'Notify Test Date',
-                                      fontsize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: cWhite,
-                                    ),
-                                  )),
+                                curving: 0,
+                                colorindex: 6,
+                                height: 35,
+                                width: 180,
+                                child: const Center(
+                                  child: TextFontWidgetRouter(
+                                    text: 'Notify Test Date',
+                                    fontsize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: cWhite,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                           GestureDetector(

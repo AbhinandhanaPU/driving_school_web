@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
-import 'package:new_project_driving/controller/notice_controller/notice_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/notice_model/notice_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
@@ -14,8 +12,7 @@ import 'package:new_project_driving/view/widget/reusable_table_widgets/category_
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
 
 class NoticeAllList extends StatelessWidget {
-  final NoticeController noticeController = Get.put(NoticeController());
-  NoticeAllList({super.key});
+  const NoticeAllList({super.key});
 
   @override
   Widget build(BuildContext context) {
