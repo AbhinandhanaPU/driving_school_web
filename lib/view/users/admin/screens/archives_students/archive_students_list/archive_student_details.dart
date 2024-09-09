@@ -8,6 +8,7 @@ import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/model/batch_model/batch_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/widget/loading_widget/lottie_widget.dart';
 import 'package:new_project_driving/view/widget/profile_detail_widget/detail_tile_container.dart';
 import 'package:new_project_driving/view/widget/responsive/responsive.dart';
 import 'package:new_project_driving/view/widget/routeSelectedTextContainer/routeSelectedTextContainer.dart';
@@ -309,10 +310,7 @@ class ArchivesStudentDetailsContainer extends StatelessWidget {
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
+                                              return const LottieLoadingWidet();
                                             } else if (snapshot.hasError) {
                                               return Text(
                                                   'Error: ${snapshot.error}');

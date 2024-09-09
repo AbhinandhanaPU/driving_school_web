@@ -10,6 +10,7 @@ import 'package:new_project_driving/model/batch_model/batch_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/widget/loading_widget/lottie_widget.dart';
 import 'package:new_project_driving/view/widget/reusable_table_widgets/data_container.dart';
 
 class ArchiveAllStudentDataList extends StatelessWidget {
@@ -93,7 +94,7 @@ class ArchiveAllStudentDataList extends StatelessWidget {
               future: studentController.fetchStudentsCourse(data),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const LottieLoadingWidet();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -155,7 +156,7 @@ class ArchiveAllStudentDataList extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                            return const LottieLoadingWidet();
                           } else if (snapshot.hasError) {
                             log('Error fetching batch data: ${snapshot.error}');
                             return Text('Error: ${snapshot.error}');
