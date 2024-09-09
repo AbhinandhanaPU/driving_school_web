@@ -238,7 +238,7 @@ List<Widget> pages = [
   FeeCoursesDetails(), // index 12
   AllAdminListPage(), // index 13
   const AllStudyMaterialsList(), // index 14
-  NoticeAllList(), // index 15
+  const NoticeAllList(), // index 15
   const AllEventsList(), // index 16
   const AllVideosList(), // index 17
   AdminNotificationCreate(), // index 18

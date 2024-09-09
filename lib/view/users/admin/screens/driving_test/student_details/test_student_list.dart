@@ -71,6 +71,26 @@ class TestStudentListContainer extends StatelessWidget {
                     width: 200,
                   ),
                   const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: ButtonContainerWidget(
+                        curving: 0,
+                        colorindex: 6,
+                        height: 35,
+                        width: 180,
+                        child: const Center(
+                          child: TextFontWidgetRouter(
+                            text: 'Notify Students',
+                            fontsize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: cWhite,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
                       addStudents(context, testData.docId);
@@ -137,6 +157,14 @@ class TestStudentListContainer extends StatelessWidget {
                           flex: 3,
                           child: CatrgoryTableHeaderWidget(
                               headerTitle: 'Number of Attempt'),
+                        ),
+                        SizedBox(
+                          width: 02,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child:
+                              CatrgoryTableHeaderWidget(headerTitle: 'Result'),
                         ),
                         SizedBox(
                           width: 02,

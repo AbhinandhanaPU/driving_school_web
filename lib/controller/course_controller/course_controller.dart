@@ -247,4 +247,25 @@ class CourseController extends GetxController {
           .toList();
     });
   }
+
+  Future<void> updateStudentLevel(
+      StudentModel studentModel, String newLevel, String courseID) async {
+    try {
+      await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .collection('Courses')
+          .doc(courseID)
+          .collection('Students')
+          .doc(studentModel.docid)
+          .update({'level': newLevel}).then((value) {
+        studentModel.level = newLevel;
+        update();
+        log("Student level updated to $newLevel");
+        showToast(msg: "Student level updated to $newLevel");
+      });
+    } catch (e) {
+      log("Student level update error: $e");
+    }
+  }
 }

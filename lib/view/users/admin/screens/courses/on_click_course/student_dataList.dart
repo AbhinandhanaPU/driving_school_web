@@ -26,7 +26,7 @@ class AllCourseStudentDataList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modelData = courseController.courseModelData.value;
+    final courseModel = courseController.courseModelData.value!;
     return
         // Obx(() =>
         Container(
@@ -148,9 +148,35 @@ class AllCourseStudentDataList extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: StudentLevelDropDown(
-              data: data,
-              courseID: modelData!.courseId,
+            child: StreamBuilder(
+              stream: server
+                  .collection('DrivingSchoolCollection')
+                  .doc(UserCredentialsController.schoolId)
+                  .collection('Courses')
+                  .doc(courseModel.courseId)
+                  .collection('Students')
+                  .doc(data.docid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LottieLoadingWidet();
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+                String? level;
+                if (snapshot.hasData && snapshot.data?.data() != null) {
+                  final feeData = snapshot.data!.data();
+                  level = feeData!['level'] ?? 'biginner';
+                }
+                return StudentLevelDropDown(
+                  data: data,
+                  courseID: courseModel.courseId,
+                  level: level,
+                );
+              },
             ),
           ), //................................................. dropdwn
           const SizedBox(
@@ -166,7 +192,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                       .collection('FeesCollection')
                       .doc(data.batchId)
                       .collection('Courses')
-                      .doc(modelData.courseId)
+                      .doc(courseModel.courseId)
                       .collection('Students')
                       .doc(data.docid)
                       .snapshots()
@@ -199,7 +225,7 @@ class AllCourseStudentDataList extends StatelessWidget {
 
                 return StdFeesLevelDropDown(
                   data: data,
-                  course: modelData,
+                  course: courseModel,
                   feeData: feeStatus,
                 );
               },

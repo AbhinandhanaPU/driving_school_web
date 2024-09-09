@@ -292,25 +292,6 @@ class StudentController extends GetxController {
     return courseNames;
   }
 
-  Future<void> updateStudentLevel(
-      StudentModel studentModel, String newLevel, String courseID) async {
-    try {
-      await _fbServer
-          .collection('Courses')
-          .doc(courseID)
-          .collection('Students')
-          .doc(studentModel.docid)
-          .update({'level': newLevel}).then((value) {
-        studentModel.level = newLevel;
-        update();
-        log("Student level updated to $newLevel");
-        showToast(msg: "Student level updated to $newLevel");
-      });
-    } catch (e) {
-      log("Student level update error: $e");
-    }
-  }
-
   Stream<List<Map<String, dynamic>>> streamStudentsFromAllCourses() async* {
     try {
       final coursesStream = _fbServer.collection("Courses").snapshots();
