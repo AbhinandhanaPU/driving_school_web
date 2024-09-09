@@ -235,7 +235,7 @@ List<Widget> pages = [
   const MockTesttHome(), // index 9
   AllDrivingTestDetails(), // index 10
   AllPracticeShedules(), // index 11
-  const FeeCoursesDetails(), // index 12
+  FeeCoursesDetails(), // index 12
   AllAdminListPage(), // index 13
   const AllStudyMaterialsList(), // index 14
   NoticeAllList(), // index 15
