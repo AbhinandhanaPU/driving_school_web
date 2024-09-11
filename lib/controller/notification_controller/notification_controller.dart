@@ -106,7 +106,6 @@ class NotificationController extends GetxController {
   }
 
   Future<void> sendPushMessage(String token, String body, String title) async {
-
     final Uri url = Uri.parse(
         'https://fcm.googleapis.com/v1/projects/driving-school-6e78e/messages:send');
 
@@ -140,7 +139,6 @@ class NotificationController extends GetxController {
     };
 
     try {
-  
       final response = await http.post(
         url,
         headers: {
@@ -161,27 +159,25 @@ class NotificationController extends GetxController {
     }
   }
 
-Future<String> getPushNotification() async {
-  String serverKey = 'notification-key'; // default value
-  
-  // Fetch the serverKey from Firestore and wait for the result
-  DocumentSnapshot snapshot = await FirebaseFirestore.instance
-      .collection('PushNotification')
-      .doc('key')
-      .get();
+  Future<String> getPushNotification() async {
+    String serverKey = 'notification-key'; // default value
 
-  // Safely cast the data to a Map<String, dynamic> before accessing the 'key'
-  if (snapshot.exists) {
-    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
-    if (data != null && data.containsKey('key')) {
-      serverKey = data['key'];
+    // Fetch the serverKey from Firestore and wait for the result
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('PushNotification')
+        .doc('key')
+        .get();
+
+    // Safely cast the data to a Map<String, dynamic> before accessing the 'key'
+    if (snapshot.exists) {
+      Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+      if (data != null && data.containsKey('key')) {
+        serverKey = data['key'];
+      }
     }
+
+    return serverKey;
   }
-
-  return serverKey;
-}
-
-
 
   List<UserDeviceIDModel> fetchUnpaidUsersDeviceIDList = [];
   Future<void> fetchUnpaidUsers({
@@ -301,6 +297,7 @@ Future<String> getPushNotification() async {
           containerColor: WarningNotifierSetup().containerColor,
         );
         for (var i = 0; i < allDrivingStudentList.length; i++) {
+       log(allDrivingStudentList[i].studentName.toString());
           await server
               .collection('DrivingSchoolCollection')
               .doc(UserCredentialsController.schoolId)
