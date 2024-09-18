@@ -22,7 +22,10 @@ class StudentController extends GetxController {
     try {
       log("fetchAllStudents......................");
       studentProfileList = [];
-      final data = await _fbServer.collection('Students').get();
+      final data = await _fbServer
+          .collection('Students')
+          .where('status', isEqualTo: true)
+          .get();
       studentProfileList =
           data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
@@ -35,7 +38,10 @@ class StudentController extends GetxController {
     try {
       log("fetchAllArchivesStudents......................");
       studentProfileList = [];
-      final data = await _fbServer.collection('Archives').get();
+      final data = await _fbServer
+          .collection('Students')
+          .where('status', isEqualTo: false)
+          .get();
       studentProfileList =
           data.docs.map((e) => StudentModel.fromMap(e.data())).toList();
       log(studentProfileList[0].toString());
@@ -51,13 +57,11 @@ class StudentController extends GetxController {
           .doc(studentModel.docid)
           .delete()
           .then((value) async {
-        await deleteStudentFromAllStudents(studentModel, isArchiving: false);
-        await deleteStudentFromCourse(studentModel, isArchiving: false);
-        await deleteStudentFromBatch(studentModel, isArchiving: false);
-        await deleteStudentFromDrivingTest(studentModel, isArchiving: false);
-        await deleteStudentFromPracticeSchedule(studentModel,
-            isArchiving: false);
-        // await deleteStudentFromFee(studentModel, isArchiving: false);
+        await deleteStudentFromAllStudents(studentModel);
+        await deleteStudentFromCourse(studentModel);
+        await deleteStudentFromBatch(studentModel);
+        await deleteStudentFromDrivingTest(studentModel);
+        await deleteStudentFromPracticeSchedule(studentModel);
         log("Student deleted");
       });
     } catch (e) {
@@ -325,47 +329,36 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> addStudentsToArchive(StudentModel studentModel) async {
-    try {
-      await _fbServer
-          .collection('Archives')
-          .doc(studentModel.docid)
-          .set(studentModel.toMap())
-          .then((value) async {
-        log('Student Archived');
-        await deleteStudentFromAllStudents(studentModel, isArchiving: true);
-        await deleteStudentFromCourse(studentModel, isArchiving: true);
-        await deleteStudentFromBatch(studentModel, isArchiving: true);
-        await deleteStudentFromDrivingTest(studentModel, isArchiving: true);
-        await deleteStudentFromPracticeSchedule(studentModel,
-            isArchiving: true);
-        await deleteStudentFromFee(studentModel, isArchiving: true);
-        showToast(msg: 'Student Archived');
-        Get.back();
-      });
-    } catch (e) {
-      log('Students archive error $e', name: 'StudentController');
-    }
-  }
+  // Future<void> addStudentsToArchive(StudentModel studentModel) async {
+  //   try {
+  //     await _fbServer
+  //         .collection('Archives')
+  //         .doc(studentModel.docid)
+  //         .set(studentModel.toMap())
+  //         .then((value) async {
+  //       log('Student Archived');
+  //       await deleteStudentFromAllStudents(studentModel, isArchiving: true);
+  //       await deleteStudentFromCourse(studentModel, isArchiving: true);
+  //       await deleteStudentFromBatch(studentModel, isArchiving: true);
+  //       await deleteStudentFromDrivingTest(studentModel, isArchiving: true);
+  //       await deleteStudentFromPracticeSchedule(studentModel,
+  //           isArchiving: true);
+  //       await deleteStudentFromFee(studentModel, isArchiving: true);
+  //       showToast(msg: 'Student Archived');
+  //       Get.back();
+  //     });
+  //   } catch (e) {
+  //     log('Students archive error $e', name: 'StudentController');
+  //   }
+  // }
 
-  Future<void> deleteStudentFromAllStudents(StudentModel studentModel,
-      {bool isArchiving = false}) async {
+  Future<void> deleteStudentFromAllStudents(StudentModel studentModel) async {
     try {
       final documents = await _fbServer
           .collection('Students')
           .doc(studentModel.docid)
           .collection('Documents')
           .get();
-      if (isArchiving) {
-        for (var doc in documents.docs) {
-          await _fbServer
-              .collection('Archives')
-              .doc(studentModel.docid)
-              .collection('Documents')
-              .doc(doc.id)
-              .set(doc.data());
-        }
-      }
 
       for (var doc in documents.docs) {
         await _fbServer
@@ -407,8 +400,7 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> deleteStudentFromCourse(StudentModel studentModel,
-      {bool isArchiving = false}) async {
+  Future<void> deleteStudentFromCourse(StudentModel studentModel) async {
     try {
       final coursesSnapshot = await _fbServer.collection("Courses").get();
 
@@ -424,19 +416,6 @@ class StudentController extends GetxController {
               .get();
 
           if (studentDoc.exists) {
-            if (isArchiving) {
-              final courseName = courseDoc.data()['courseName'];
-              await _fbServer
-                  .collection('Archives')
-                  .doc(studentModel.docid)
-                  .collection('CoursesDetails')
-                  .doc(studentModel.docid)
-                  .set({
-                'courseName': courseName,
-                'courseId': courseDocid,
-              }, SetOptions(merge: true));
-            }
-
             await _fbServer
                 .collection("Courses")
                 .doc(courseDocid)
@@ -473,17 +452,6 @@ class StudentController extends GetxController {
 
           if (studentDoc.exists) {
             final batchName = batchDoc.data()['batchName'];
-            if (isArchiving) {
-              await _fbServer
-                  .collection('Archives')
-                  .doc(studentModel.docid)
-                  .collection('CoursesDetails')
-                  .doc(studentModel.docid)
-                  .set({
-                'batchName': batchName,
-                'batchId': batchDocid,
-              }, SetOptions(merge: true));
-            }
             await _fbServer
                 .collection("Batch")
                 .doc(batchDocid)
@@ -502,8 +470,7 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> deleteStudentFromDrivingTest(StudentModel studentModel,
-      {bool isArchiving = false}) async {
+  Future<void> deleteStudentFromDrivingTest(StudentModel studentModel) async {
     try {
       final drivingTestsSnapshot =
           await _fbServer.collection("DrivingTest").get();
@@ -520,18 +487,6 @@ class StudentController extends GetxController {
               .get();
 
           if (studentDoc.exists) {
-            final testDate = drivingTestDoc.data()['testDate'];
-            if (isArchiving) {
-              await _fbServer
-                  .collection('Archives')
-                  .doc(studentModel.docid)
-                  .collection('CoursesDetails')
-                  .doc(studentModel.docid)
-                  .set({
-                'testId': drivingTestDocid,
-                'testDate': testDate,
-              }, SetOptions(merge: true));
-            }
             await _fbServer
                 .collection("DrivingTest")
                 .doc(drivingTestDocid)
@@ -550,8 +505,7 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> deleteStudentFromFee(StudentModel studentModel,
-      {bool isArchiving = false}) async {
+  Future<void> deleteStudentFromFee(StudentModel studentModel) async {
     try {
       final feeCollectionSnapshot = await _fbServer
           .collection("FeesCollection")
@@ -573,20 +527,6 @@ class StudentController extends GetxController {
               .get();
 
           if (studentDoc.exists) {
-            final feeStatus = studentDoc.data()!['feeStatus'];
-            final pendingAmount = studentDoc.data()!['pendingAmount'];
-
-            if (isArchiving) {
-              await _fbServer
-                  .collection('Archives')
-                  .doc(studentModel.docid)
-                  .collection('CoursesDetails')
-                  .doc(studentModel.docid)
-                  .set({
-                'feeStatus': feeStatus,
-                'pendingAmount': pendingAmount,
-              }, SetOptions(merge: true));
-            }
             await _fbServer
                 .collection("FeesCollection")
                 .doc(studentModel.batchId)
@@ -607,8 +547,8 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> deleteStudentFromPracticeSchedule(StudentModel studentModel,
-      {bool isArchiving = false}) async {
+  Future<void> deleteStudentFromPracticeSchedule(
+      StudentModel studentModel) async {
     try {
       final practiceScheduleSnapshot =
           await _fbServer.collection("PracticeSchedule").get();
@@ -625,18 +565,6 @@ class StudentController extends GetxController {
               .get();
 
           if (studentDoc.exists) {
-            final practiceName = practiceDoc.data()['practiceName'];
-            if (isArchiving) {
-              await _fbServer
-                  .collection('Archives')
-                  .doc(studentModel.docid)
-                  .collection('CoursesDetails')
-                  .doc(studentModel.docid)
-                  .set({
-                'practiceName': practiceName,
-                'practiceId': practiceDocid,
-              }, SetOptions(merge: true));
-            }
             await _fbServer
                 .collection("PracticeSchedule")
                 .doc(practiceDocid)
@@ -644,7 +572,7 @@ class StudentController extends GetxController {
                 .doc(studentModel.docid)
                 .delete()
                 .then((value) {
-              log('Student deleted from practice schedule: $practiceName');
+              log('Student deleted from practice schedule');
             });
           }
           log('Student not added to any practice schedule to delete');
