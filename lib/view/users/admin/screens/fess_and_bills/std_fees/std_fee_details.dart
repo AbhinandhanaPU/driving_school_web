@@ -73,7 +73,7 @@ class StudentsFeesStatus extends StatelessWidget {
                         function: () async {
                           Get.find<NotificationController>().fetchUnpaidUsers(
                             batchID: feeController.batchId.value,
-                            courseID: courseid,
+                         
                             bodyText: 'fees notification',
                             titleText: 'Please pay on time',
                           );

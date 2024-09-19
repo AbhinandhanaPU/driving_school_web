@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -181,7 +182,6 @@ class NotificationController extends GetxController {
   List<UserDeviceIDModel> fetchUnpaidUsersDeviceIDList = [];
   Future<void> fetchUnpaidUsers({
     required String batchID,
-    required String courseID,
     required String bodyText,
     required String titleText,
   }) async {
@@ -205,41 +205,52 @@ class NotificationController extends GetxController {
           .collection('FeesCollection')
           .doc(batchID)
           .collection('Courses')
-          .doc(courseID)
-          .collection('Students')
           .get()
-          .then((docvalue) async {
-        for (var i = 0; i < docvalue.docs.length; i++) {
-          if (docvalue.docs[i].data()['paidStatus'] == false) {
-            final userID = docvalue.docs[i].data()['studentID'];
-            try {
+          .then((courseId) async {
+        for (var i = 0; i < courseId.docs.length; i++) {
+          await server
+              .collection('DrivingSchoolCollection')
+              .doc(UserCredentialsController.schoolId)
+              .collection('FeesCollection')
+              .doc(batchID)
+              .collection('Courses')
+              .doc(courseId.docs[i].data()['courseId'])
+              .collection('Students')
+              .get()
+              .then((docvalue) async {
+            for (var i = 0; i < docvalue.docs.length; i++) {
+              if (docvalue.docs[i].data()['paidStatus'] == false) {
+                final userID = docvalue.docs[i].data()['studentID'];
+                try {
+                  await server
+                      .collection('DrivingSchoolCollection')
+                      .doc(UserCredentialsController.schoolId)
+                      .collection('AllUsersDeviceID')
+                      .doc(userID)
+                      .get()
+                      .then((usersvalue) async {
+                    fetchUnpaidUsersDeviceIDList
+                        .add(UserDeviceIDModel.fromMap(usersvalue.data()!));
+                  });
+                } catch (e) {
+                  log('fetch AllUsersDeviceID Collection Error: $e');
+                }
+              }
+            }
+          }).then((value) async {
+            for (var i = 0; i < fetchUnpaidUsersDeviceIDList.length; i++) {
+              await sendPushMessage(fetchUnpaidUsersDeviceIDList[i].devideID,
+                  bodyText, titleText); // Push notification
               await server
                   .collection('DrivingSchoolCollection')
                   .doc(UserCredentialsController.schoolId)
                   .collection('AllUsersDeviceID')
-                  .doc(userID)
-                  .get()
-                  .then((usersvalue) async {
-                fetchUnpaidUsersDeviceIDList
-                    .add(UserDeviceIDModel.fromMap(usersvalue.data()!));
-              });
-            } catch (e) {
-              log('fetch AllUsersDeviceID Collection Error: $e');
+                  .doc(fetchUnpaidUsersDeviceIDList[i].docId)
+                  .collection("Notification_Message")
+                  .doc(uuid)
+                  .set(messageDetails.toMap());
             }
-          }
-        }
-      }).then((value) async {
-        for (var i = 0; i < fetchUnpaidUsersDeviceIDList.length; i++) {
-          await sendPushMessage(fetchUnpaidUsersDeviceIDList[i].devideID,
-              bodyText, titleText); // Push notification
-          await server
-              .collection('DrivingSchoolCollection')
-              .doc(UserCredentialsController.schoolId)
-              .collection('AllUsersDeviceID')
-              .doc(fetchUnpaidUsersDeviceIDList[i].docId)
-              .collection("Notification_Message")
-              .doc(uuid)
-              .set(messageDetails.toMap());
+          });
         }
       }).then((value) {
         showToast(msg: "Notification sent successfully");
@@ -254,73 +265,75 @@ class NotificationController extends GetxController {
   List<StudentModel> allDrivingStudentList = [];
   Future<void> fetchDrivingTestAllUsers(
       {required String bodyText, required String titleText}) async {
+    showToast(msg: "Please wait......");
+    allDrivingStudentList.clear();
+
     try {
-      showToast(msg: "Please wait......");
-      allDrivingStudentList.clear();
-      await server
+      // Get the diving test data first
+      final divingTestDatas = await server
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
           .collection('DrivingTest')
-          .get()
-          .then((divingTestDatas) {
-        for (var i = 0; i < divingTestDatas.docs.length; i++) {
-          final data = TestModel.fromMap(divingTestDatas.docs[i].data());
+          .get();
 
-          server
-              .collection('DrivingSchoolCollection')
-              .doc(UserCredentialsController.schoolId)
-              .collection('DrivingTest')
-              .doc(data.docId)
-              .collection('Students')
-              .get()
-              .then((allStudentvalue) async {
-            final results = allStudentvalue.docs
-                .map((e) => StudentModel.fromMap(e.data()))
-                .toList();
-            allDrivingStudentList.addAll(results);
-            // if(i == divingTestDatas.docs.length-1){
-            //   allDrivingStudentList = allDrivingStudentList.toSet().toList();
-            // }
-          });
+      // Loop through each diving test data
+      for (var i = 0; i < divingTestDatas.docs.length; i++) {
+        final data = TestModel.fromMap(divingTestDatas.docs[i].data());
+        log("testTime: ${data.testTime}");
+
+        // Get the students for each driving test
+        final allStudentvalue = await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('DrivingTest')
+            .doc(data.docId)
+            .collection('Students')
+            .get();
+
+        // If there are students, add them to the list
+        if (allStudentvalue.docs.isNotEmpty) {
+          final results = allStudentvalue.docs
+              .map((e) => StudentModel.fromMap(e.data()))
+              .toList();
+          allDrivingStudentList.addAll(results);
         }
-      }).then((value) async {
-        final uuid = const Uuid().v1();
-        NotificationModel messageDetails = NotificationModel(
-          dateTime: DateTime.now().toString(),
-          docid: uuid,
-          open: false,
-          icon: WarningNotifierSetup().icon,
-          messageText: bodyText,
-          headerText: titleText,
-          whiteshadeColor: WarningNotifierSetup().whiteshadeColor,
-          containerColor: WarningNotifierSetup().containerColor,
-        );
-        for (var i = 0; i < allDrivingStudentList.length; i++) {
-       log(allDrivingStudentList[i].studentName.toString());
-          await server
-              .collection('DrivingSchoolCollection')
-              .doc(UserCredentialsController.schoolId)
-              .collection('AllUsersDeviceID')
-              .doc(allDrivingStudentList[i].docid)
-              .get()
-              .then((value) async {
-            if (value.data() != null) {
-              await sendPushMessage(value.data()!['devideID'], bodyText,
-                  titleText); // Push notification
-              await server
-                  .collection('DrivingSchoolCollection')
-                  .doc(UserCredentialsController.schoolId)
-                  .collection('AllUsersDeviceID')
-                  .doc(allDrivingStudentList[i].docid)
-                  .collection("Notification_Message")
-                  .doc(uuid)
-                  .set(messageDetails.toMap());
-            }
-          });
-        }
-      }).then((value) async {
-        showToast(msg: "Notification sent successfully");
-      });
+      }
+
+      // Now you can safely use the populated allDrivingStudentList
+      final uuid = const Uuid().v1();
+      NotificationModel messageDetails = NotificationModel(
+        dateTime: DateTime.now().toString(),
+        docid: uuid,
+        open: false,
+        icon: WarningNotifierSetup().icon,
+        messageText: bodyText,
+        headerText: titleText,
+        whiteshadeColor: WarningNotifierSetup().whiteshadeColor,
+        containerColor: WarningNotifierSetup().containerColor,
+      );
+      for (var i = 0; i < allDrivingStudentList.length; i++) {
+        log(allDrivingStudentList[i].studentName.toString());
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('AllUsersDeviceID')
+            .doc(allDrivingStudentList[i].docid)
+            .get()
+            .then((value) async {
+          if (value.data() != null) {
+            await sendPushMessage(value.data()!['devideID'], bodyText,
+                titleText); // Push notification
+            await server
+                .collection('DrivingSchoolCollection')
+                .doc(UserCredentialsController.schoolId)
+                .collection('AllUsersDeviceID')
+                .doc(allDrivingStudentList[i].docid)
+                .collection("Notification_Message")
+                .doc(uuid)
+                .set(messageDetails.toMap());
+          }
+        });
+      }
     } catch (e) {
       log('fetchDrivingTestAllUsers Error: $e');
       showToast(msg: "Please try again");
