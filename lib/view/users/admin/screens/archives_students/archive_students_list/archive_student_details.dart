@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:new_project_driving/colors/colors.dart';
+import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/admin_section/student_controller/student_controller.dart';
 import 'package:new_project_driving/controller/class_controller/class_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
@@ -208,11 +208,72 @@ class ArchivesStudentDetailsContainer extends StatelessWidget {
                                                 ProfileDetailTileContainer(
                                                   flex: 1,
                                                   title: 'Joining Date',
-                                                  subtitle: DateFormat(
-                                                          'yyyy-MM-dd')
-                                                      .format(DateTime.parse(
-                                                          data.joiningDate)),
+                                                  subtitle:
+                                                      stringTimeToDateConvert(
+                                                          data.joiningDate),
                                                 ),
+                                                FutureBuilder<List<String>>(
+                                                  future: studentController
+                                                      .fetchStudentsCourse(
+                                                          data),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const LottieLoadingWidet();
+                                                    } else if (snapshot
+                                                        .hasError) {
+                                                      return Text(
+                                                          'Error: ${snapshot.error}');
+                                                    } else if (!snapshot
+                                                            .hasData ||
+                                                        snapshot
+                                                            .data!.isEmpty) {
+                                                      return const ProfileDetailTileContainer(
+                                                        flex: 1,
+                                                        title: 'Course Name',
+                                                        subtitle: 'N/A',
+                                                      );
+                                                    } else {
+                                                      String courses = snapshot
+                                                          .data!
+                                                          .join(', ');
+                                                      return ProfileDetailTileContainer(
+                                                        flex: 1,
+                                                        title: 'Course Name',
+                                                        subtitle: courses,
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                                StreamBuilder(
+                                                    stream: server
+                                                        .collection(
+                                                            'DrivingSchoolCollection')
+                                                        .doc(
+                                                            UserCredentialsController
+                                                                .schoolId)
+                                                        .collection('Batch')
+                                                        .doc(data.batchId)
+                                                        .snapshots(),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      final batchData =
+                                                          BatchModel.fromMap(
+                                                              snapshot.data!
+                                                                  .data()!);
+                                                      return ProfileDetailTileContainer(
+                                                        flex: 1,
+                                                        title: 'Batch Name',
+                                                        subtitle: batchData
+                                                                    .batchName !=
+                                                                ''
+                                                            ? batchData
+                                                                .batchName
+                                                            : "N/A",
+                                                      );
+                                                    }),
                                               ],
                                             ),
                                           ),
@@ -263,166 +324,6 @@ class ArchivesStudentDetailsContainer extends StatelessWidget {
                       width: double.infinity,
                       color: Colors.blue,
                       height: 02,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
-              child: Container(
-                color: cWhite,
-                height: 200,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 100,
-                            color: Colors.blue.withOpacity(0.1),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 10, top: 10),
-                                  child: TextFontWidget(
-                                    text: 'Course and Batch Details',
-                                    fontsize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 20, left: 10),
-                                  child: SizedBox(
-                                    width: 500,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        FutureBuilder<List<String>>(
-                                          future: studentController
-                                              .fetchStudentsCourse(data),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return const LottieLoadingWidet();
-                                            } else if (snapshot.hasError) {
-                                              return Text(
-                                                  'Error: ${snapshot.error}');
-                                            } else if (!snapshot.hasData ||
-                                                snapshot.data!.isEmpty) {
-                                              return const ProfileDetailTileContainer(
-                                                flex: 1,
-                                                title: 'Course Name',
-                                                subtitle: 'N/A',
-                                              );
-                                            } else {
-                                              String courses =
-                                                  snapshot.data!.join(', ');
-                                              return ProfileDetailTileContainer(
-                                                flex: 1,
-                                                title: 'Course Name',
-                                                subtitle: courses,
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        StreamBuilder(
-                                            stream: server
-                                                .collection(
-                                                    'DrivingSchoolCollection')
-                                                .doc(UserCredentialsController
-                                                    .schoolId)
-                                                .collection('Batch')
-                                                .doc(data.batchId)
-                                                .snapshots(),
-                                            builder: (context, snapshot) {
-                                              final batchData =
-                                                  BatchModel.fromMap(
-                                                      snapshot.data!.data()!);
-                                              return ProfileDetailTileContainer(
-                                                flex: 1,
-                                                title: 'Batch Name',
-                                                subtitle:
-                                                    batchData.batchName != ''
-                                                        ? batchData.batchName
-                                                        : "N/A",
-                                              );
-                                            }),
-                                        // const ProfileDetailTileContainer(
-                                        //   flex: 1,
-                                        //   title: 'Practice Schedule',
-                                        //   subtitle:
-                                        //       // data['practiceName'] ??
-                                        //       'N/A',
-                                        // ),
-                                        // const ProfileDetailTileContainer(
-                                        //   flex: 1,
-                                        //   title: 'Driving Test Date',
-                                        //   subtitle:
-                                        //       // data['testDate'] ??
-                                        //       'N/A',
-                                        // ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Expanded(
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.only(left: 20),
-                          //     child: Column(
-                          //       mainAxisAlignment:
-                          //           MainAxisAlignment.spaceEvenly,
-                          //       children: [
-                          //         Row(
-                          //           children: [
-                          //             const TextFontWidget(
-                          //               text: "Fee Status : ",
-                          //               fontsize: 13,
-                          //               color: cBlack,
-                          //             ),
-                          //             TextFontWidget(
-                          //               text: data.['feeStatus'] ?? 'N/A',
-                          //               fontsize: 12,
-                          //               color: cBlue,
-                          //             ),
-                          //           ],
-                          //         ),
-                          //         Row(
-                          //           children: [
-                          //             const TextFontWidget(
-                          //               text: "Pending Amount : ",
-                          //               fontsize: 13,
-                          //               color: cBlack,
-                          //             ),
-                          //             TextFontWidget(
-                          //               text:
-                          //                   data['pendingAmount']?.toString() ??
-                          //                       'N/A',
-                          //               fontsize: 12,
-                          //               color: cBlue,
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      color: Colors.blue,
-                      height: 2,
                     ),
                   ],
                 ),

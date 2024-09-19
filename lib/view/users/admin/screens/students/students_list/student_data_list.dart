@@ -10,7 +10,6 @@ import 'package:new_project_driving/model/batch_model/batch_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/utils/firebase/firebase.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
-import 'package:new_project_driving/view/users/admin/screens/students/crud/archives_function/archive_std.dart';
 import 'package:new_project_driving/view/users/admin/screens/students/crud/update_std_batch.dart';
 import 'package:new_project_driving/view/widget/custom_delete_showdialog/custom_delete_showdialog.dart';
 import 'package:new_project_driving/view/widget/loading_widget/lottie_widget.dart';
@@ -205,6 +204,14 @@ class AllStudentDataList extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Expanded(
+                  child: DataContainerWidget(
+                    index: index,
+                    headerTitle:
+                        data.status == true ? "  Active" : "  Inactive",
+                    rowMainAccess: MainAxisAlignment.center,
+                  ),
+                ),
                 Transform.scale(
                   scale: 0.65,
                   child: Switch(
@@ -216,44 +223,9 @@ class AllStudentDataList extends StatelessWidget {
                     },
                   ),
                 ),
-                Expanded(
-                  child: DataContainerWidget(
-                    index: index,
-                    headerTitle:
-                        data.status == true ? "  Active" : "  Inactive",
-                    rowMainAccess: MainAxisAlignment.center,
-                  ),
-                )
               ],
             ),
           ), //............................. Status [Active or DeActivate]
-          const SizedBox(width: 2),
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  archivesStudentsFunction(context, data);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: 15,
-                      child: Image.asset(
-                        'webassets/png/shape.png',
-                      ),
-                    ),
-                    DataContainerWidget(
-                      index: index,
-                      headerTitle: 'Archive',
-                      rowMainAccess: MainAxisAlignment.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
           const SizedBox(width: 2),
           Expanded(
             flex: 2,

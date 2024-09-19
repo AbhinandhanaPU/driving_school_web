@@ -70,27 +70,6 @@ class TestStudentListContainer extends StatelessWidget {
                     title: 'Students List',
                     width: 200,
                   ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: ButtonContainerWidget(
-                        curving: 0,
-                        colorindex: 6,
-                        height: 35,
-                        width: 180,
-                        child: const Center(
-                          child: TextFontWidgetRouter(
-                            text: 'Notify Students',
-                            fontsize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: cWhite,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   GestureDetector(
                     onTap: () {
                       addStudents(context, testData.docId);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/fonts/google_poppins_widget.dart';
 import 'package:new_project_driving/view/home/appbar/app_bar.dart';
-import 'package:new_project_driving/view/home/home_page/HomeMainImageScreen/HomeMainImage_screen.dart';
+import 'package:new_project_driving/view/home/home_page/home_mainimage_screen/home_main_image_screen.dart';
 import 'package:new_project_driving/view/home/home_page/about/about.dart';
 import 'package:new_project_driving/view/home/home_page/screens/footer/footer.dart';
 import 'package:new_project_driving/view/home/home_page/screens/footer/lepton_footerbar.dart';
