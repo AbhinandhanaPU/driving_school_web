@@ -339,4 +339,68 @@ class NotificationController extends GetxController {
       showToast(msg: "Please try again");
     }
   }
+
+  List<StudentModel> fetchStudentsForPartice = [];
+  Future<void> sendNotificationParticeSchedule(
+      {required String bodyText,
+      required String titleText,
+      required List<String> selectedListDocID}) async {
+    try {
+          showToast(msg: "Please wait......");
+          fetchStudentsForPartice.clear();
+      for (var i = 0; i < selectedListDocID.length; i++) {
+        final QuerySnapshot<Map<String, dynamic>> fetchstudentparaticeSDetails =
+            await server
+                .collection('DrivingSchoolCollection')
+                .doc(UserCredentialsController.schoolId)
+                .collection('PracticeSchedule')
+                .doc(selectedListDocID[i])
+                .collection('Students')
+                .get();
+        final results = fetchstudentparaticeSDetails.docs
+            .map((e) => StudentModel.fromMap(e.data()))
+            .toList();
+        fetchStudentsForPartice.addAll(results);
+      }
+      // Now you can safely use the populated allDrivingStudentList
+      final uuid = const Uuid().v1();
+      NotificationModel messageDetails = NotificationModel(
+        dateTime: DateTime.now().toString(),
+        docid: uuid,
+        open: false,
+        icon: CardNotifierSetup().icon,
+        messageText: bodyText,
+        headerText: titleText,
+        whiteshadeColor: CardNotifierSetup().whiteshadeColor,
+        containerColor: CardNotifierSetup().containerColor,
+      );
+      for (var i = 0; i < fetchStudentsForPartice.length; i++) {
+        log(fetchStudentsForPartice[i].studentName.toString());
+        await server
+            .collection('DrivingSchoolCollection')
+            .doc(UserCredentialsController.schoolId)
+            .collection('AllUsersDeviceID')
+            .doc(fetchStudentsForPartice[i].docid)
+            .get()
+            .then((value) async {
+          if (value.data() != null) {
+            await sendPushMessage(value.data()!['devideID'], bodyText,
+                titleText); // Push notification
+            await server
+                .collection('DrivingSchoolCollection')
+                .doc(UserCredentialsController.schoolId)
+                .collection('AllUsersDeviceID')
+                .doc(fetchStudentsForPartice[i].docid)
+                .collection("Notification_Message")
+                .doc(uuid)
+                .set(messageDetails.toMap());
+          }
+        });
+      }
+            showToast(msg: "Notification sent successfully");
+    } catch (e) {
+      log('sendNotificationParticeSchedule Error: $e');
+      showToast(msg: "Please try again");
+    }
+  }
 }
