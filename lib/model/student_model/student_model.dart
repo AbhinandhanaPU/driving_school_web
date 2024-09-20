@@ -1,24 +1,23 @@
 import 'dart:convert';
 
 class StudentModel {
-  String docid;
-  String password;
-  String studentemail;
-  String studentName;
-  String phoneNumber;
-  String dateofBirth;
-  String guardianName;
-  String address;
-  String place;
-  String profileImageId;
-  String profileImageUrl;
-  String rtoName;
-  String licenceNumber;
-  String joiningDate;
-  bool status;
-  String level;
-  String batchId;
-
+  String docid;//
+  String password;//
+  String studentemail;//
+  String studentName;//
+  String phoneNumber;//
+  String dateofBirth;//
+  String guardianName;//
+  String address;//
+  String place;//
+  String profileImageId;//
+  String profileImageUrl;//
+  String rtoName;//
+  String licenceNumber;//
+  String joiningDate;//
+  bool status;//
+  String level;//
+  String batchId;//
   String userRole = 'student';
 
   StudentModel({

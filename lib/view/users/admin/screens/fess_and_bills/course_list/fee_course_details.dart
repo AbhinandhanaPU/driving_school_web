@@ -70,13 +70,14 @@ class FeeCoursesDetails extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 15),
                       child: ProgressButtonWidget(
                         function: () async {
-                          // Get.find<NotificationController>()
-                          //     .fetchUnpaidUsers(
-                          //   batchID:
-                          //       feeController.batchId.value,
-                          //   bodyText: 'bodyText',
-                          //   titleText: 'Please pay on time',
-                          // );
+                          Get.find<NotificationController>()
+                              .fetchUnpaidUsers(
+                       
+                            batchID:
+                                feeController.batchId.value,
+                            bodyText: 'bodyText',
+                            titleText: 'Please pay on time',
+                          );
                         },
                         buttonstate: notificationController.buttonstate.value,
                         text: 'Send Notification',
