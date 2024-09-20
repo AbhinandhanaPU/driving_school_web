@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/constant/const.dart';
+import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
 import 'package:new_project_driving/controller/practice_shedule_controller/practice_shedule_controller.dart';
 import 'package:new_project_driving/fonts/text_widget.dart';
 import 'package:new_project_driving/view/widget/back_button/back_button.dart';
@@ -10,8 +13,10 @@ import 'package:new_project_driving/view/widget/loading_widget/loading_widget.da
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
 
 sendPracticeScheduleNotification(BuildContext context) {
-  final PracticeSheduleController practiceSheduleController = Get.put(PracticeSheduleController());
-
+  final PracticeSheduleController practiceSheduleController =
+      Get.put(PracticeSheduleController());
+  final NotificationController notificationController =
+      Get.put(NotificationController());
   showDialog(
     context: context,
     builder: (context) {
@@ -41,28 +46,39 @@ sendPracticeScheduleNotification(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     BlueContainerWidget(
-                        title: "Selecet All", fontSize: 12, color: cBlack, width: 100),
+                        title: "Selecet All",
+                        fontSize: 12,
+                        color: cBlack,
+                        width: 100),
                     const SizedBox(
                       width: 10,
                     ),
-                    Obx(() => practiceSheduleController.selectAllSchedule.value == false
-                        ? Checkbox(
-                            value: practiceSheduleController.selectAllSchedule.value,
-                            onChanged: (value) {
-                              practiceSheduleController.selectedScheduleList
-                                  .addAll(practiceSheduleController.allScheduleList);
-                              practiceSheduleController.selectAllSchedule.value = true;
-                            },
-                          )
-                        : Checkbox(
-                            checkColor: cWhite,
-                            activeColor: cBlue,
-                            value: practiceSheduleController.selectAllSchedule.value,
-                            onChanged: (value) {
-                              practiceSheduleController.selectAllSchedule.value = false;
-                              practiceSheduleController.selectedScheduleList.clear();
-                            },
-                          ))
+                    Obx(() =>
+                        practiceSheduleController.selectAllSchedule.value ==
+                                false
+                            ? Checkbox(
+                                value: practiceSheduleController
+                                    .selectAllSchedule.value,
+                                onChanged: (value) {
+                                  practiceSheduleController.selectedScheduleList
+                                      .addAll(practiceSheduleController
+                                          .allScheduleList);
+                                  practiceSheduleController
+                                      .selectAllSchedule.value = true;
+                                },
+                              )
+                            : Checkbox(
+                                checkColor: cWhite,
+                                activeColor: cBlue,
+                                value: practiceSheduleController
+                                    .selectAllSchedule.value,
+                                onChanged: (value) {
+                                  practiceSheduleController
+                                      .selectAllSchedule.value = false;
+                                  practiceSheduleController.selectedScheduleList
+                                      .clear();
+                                },
+                              ))
                   ],
                 ),
                 Padding(
@@ -78,10 +94,14 @@ sendPracticeScheduleNotification(BuildContext context) {
                                   final data = snapshot.data![index];
                                   return Obx(
                                     () => Container(
-                                      color: practiceSheduleController.selectedScheduleList
-                                              .where((element) => element.practiceId.contains(
-                                                  practiceSheduleController
-                                                      .allScheduleList[index].practiceId))
+                                      color: practiceSheduleController
+                                              .selectedScheduleList
+                                              .where((element) =>
+                                                  element.practiceId.contains(
+                                                      practiceSheduleController
+                                                          .allScheduleList[
+                                                              index]
+                                                          .practiceId))
                                               .isNotEmpty
                                           ? Colors.green.withOpacity(0.1)
                                           : Colors.blue.withOpacity(0.2),
@@ -90,20 +110,28 @@ sendPracticeScheduleNotification(BuildContext context) {
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
                                           children: [
-                                            TextFontWidget(text: data.practiceName, fontsize: 12),
+                                            TextFontWidget(
+                                                text: data.practiceName,
+                                                fontsize: 12),
                                             const Spacer(),
                                             Container(
                                               decoration: BoxDecoration(
                                                 border: Border.all(
-                                                  color: cBlack.withOpacity(0.1),
+                                                  color:
+                                                      cBlack.withOpacity(0.1),
                                                 ),
                                               ),
                                               height: 30,
-                                              child: practiceSheduleController.selectedScheduleList
+                                              child: practiceSheduleController
+                                                      .selectedScheduleList
                                                       .where(
-                                                        (element) => element.practiceId.contains(
-                                                            practiceSheduleController
-                                                                .allScheduleList[index].practiceId),
+                                                        (element) => element
+                                                            .practiceId
+                                                            .contains(
+                                                                practiceSheduleController
+                                                                    .allScheduleList[
+                                                                        index]
+                                                                    .practiceId),
                                                       )
                                                       .isNotEmpty
                                                   ? Checkbox(
@@ -114,9 +142,11 @@ sendPracticeScheduleNotification(BuildContext context) {
                                                         final indexx = practiceSheduleController
                                                             .selectedScheduleList
                                                             .indexWhere((element) =>
-                                                                element.practiceId ==
+                                                                element
+                                                                    .practiceId ==
                                                                 practiceSheduleController
-                                                                    .allScheduleList[index]
+                                                                    .allScheduleList[
+                                                                        index]
                                                                     .practiceId);
 
                                                         if (indexx != -1) {
@@ -127,7 +157,8 @@ sendPracticeScheduleNotification(BuildContext context) {
                                                           practiceSheduleController
                                                               .selectedScheduleList
                                                               .add(practiceSheduleController
-                                                                  .allScheduleList[index]);
+                                                                      .allScheduleList[
+                                                                  index]);
                                                         }
                                                       },
                                                     )
@@ -136,9 +167,11 @@ sendPracticeScheduleNotification(BuildContext context) {
                                                         practiceSheduleController
                                                             .selectedScheduleList
                                                             .add(practiceSheduleController
-                                                                .allScheduleList[index]);
+                                                                    .allScheduleList[
+                                                                index]);
                                                       },
-                                                      child: const TextFontWidget(
+                                                      child:
+                                                          const TextFontWidget(
                                                         text: 'Select',
                                                         fontsize: 12,
                                                         color: cBlack,
@@ -172,7 +205,14 @@ sendPracticeScheduleNotification(BuildContext context) {
             () => Center(
               child: ProgressButtonWidget(
                   function: () async {
-                    if (practiceSheduleController.selectedScheduleList.isNotEmpty) {
+                    if (practiceSheduleController
+                        .selectedScheduleList.isNotEmpty) {
+                      log('selected schedule : ${practiceSheduleController.selectedScheduleList.length}');
+                      notificationController.sendNotificationParticeSchedule(
+                          bodyText: 'practice schedule',
+                          titleText: 'practise Scedule',
+                          selectedListDocID:
+                              practiceSheduleController.selectedScheduleList);
                     } else {
                       showToast(msg: 'select any schedule');
                     }

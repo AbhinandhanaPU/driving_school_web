@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/model/notification_model/notification_model.dart';
+import 'package:new_project_driving/model/practice_shedule_model/practice_shedule_model.dart';
 import 'package:new_project_driving/model/student_model/student_model.dart';
 import 'package:new_project_driving/model/test_model/test_model.dart';
 import 'package:new_project_driving/model/userDeviceModel/userDeviceModel.dart';
@@ -344,7 +345,7 @@ class NotificationController extends GetxController {
   Future<void> sendNotificationParticeSchedule(
       {required String bodyText,
       required String titleText,
-      required List<String> selectedListDocID}) async {
+      required List<PracticeSheduleModel> selectedListDocID}) async {
     try {
           showToast(msg: "Please wait......");
           fetchStudentsForPartice.clear();
@@ -354,7 +355,7 @@ class NotificationController extends GetxController {
                 .collection('DrivingSchoolCollection')
                 .doc(UserCredentialsController.schoolId)
                 .collection('PracticeSchedule')
-                .doc(selectedListDocID[i])
+                .doc(selectedListDocID[i].practiceId)
                 .collection('Students')
                 .get();
         final results = fetchstudentparaticeSDetails.docs
