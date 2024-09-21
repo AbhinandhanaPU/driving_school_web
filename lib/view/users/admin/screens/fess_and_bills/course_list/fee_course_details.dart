@@ -14,13 +14,16 @@ class FeeCoursesDetails extends StatelessWidget {
   FeeCoursesDetails({super.key});
 
   final FeeController feeController = Get.put(FeeController());
-  final NotificationController notificationController = Get.put(NotificationController());
+  final NotificationController notificationController =
+      Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => SingleChildScrollView(
-        scrollDirection: ResponsiveWebSite.isMobile(context) ? Axis.horizontal : Axis.vertical,
+        scrollDirection: ResponsiveWebSite.isMobile(context)
+            ? Axis.horizontal
+            : Axis.vertical,
         child: Container(
           color: screenContainerbackgroundColor,
           height: 650,
@@ -63,26 +66,28 @@ class FeeCoursesDetails extends StatelessWidget {
                                 title: 'Students List',
                                 width: 200,
                               ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: ProgressButtonWidget(
+                                  function: () async {
+                                    Get.find<NotificationController>()
+                                        .fetchUnpaidUsers(
+                                      batchID: feeController.batchId.value,
+                                      bodyText: 'bodyText',
+                                      titleText: 'Please pay on time',
+                                    );
+                                  },
+                                  buttonstate:
+                                      notificationController.buttonstate.value,
+                                  text: 'Send Notification',
+                                ),
+                              ),
                             ],
                           ),
                     const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: ProgressButtonWidget(
-                        function: () async {
-                          Get.find<NotificationController>()
-                              .fetchUnpaidUsers(
-                       
-                            batchID:
-                                feeController.batchId.value,
-                            bodyText: 'bodyText',
-                            titleText: 'Please pay on time',
-                          );
-                        },
-                        buttonstate: notificationController.buttonstate.value,
-                        text: 'Send Notification',
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
                       child: SizedBox(
