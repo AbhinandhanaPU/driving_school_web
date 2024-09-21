@@ -11,6 +11,7 @@ import 'package:new_project_driving/view/widget/back_button/back_button.dart';
 import 'package:new_project_driving/view/widget/blue_container_widget/blue_container_widget.dart';
 import 'package:new_project_driving/view/widget/loading_widget/loading_widget.dart';
 import 'package:new_project_driving/view/widget/progess_button/progress_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 
 sendPracticeScheduleNotification(BuildContext context) {
   final PracticeSheduleController practiceSheduleController =
@@ -86,7 +87,7 @@ sendPracticeScheduleNotification(BuildContext context) {
                   child: SizedBox(
                     height: 300,
                     child: FutureBuilder(
-                      future: practiceSheduleController.fetchClass(),
+                      future: practiceSheduleController.fetchPracticeSchdule(),
                       builder: (context, snapshot) {
                         return snapshot.hasData
                             ? ListView.separated(
@@ -208,11 +209,17 @@ sendPracticeScheduleNotification(BuildContext context) {
                     if (practiceSheduleController
                         .selectedScheduleList.isNotEmpty) {
                       log('selected schedule : ${practiceSheduleController.selectedScheduleList.length}');
-                      notificationController.sendNotificationParticeSchedule(
-                          bodyText: 'practice schedule',
-                          titleText: 'practise Scedule',
-                          selectedListDocID:
-                              practiceSheduleController.selectedScheduleList);
+                      practiceSheduleController.buttonstate.value =
+                          ButtonState.loading;
+                      notificationController
+                          .sendNotificationParticeSchedule(
+                              bodyText: 'practice schedule',
+                              titleText: 'Practice Scedule Notification',
+                              selectedListDocID: practiceSheduleController
+                                  .selectedScheduleList)
+                          .then((value) {
+                        Get.back();
+                      });
                     } else {
                       showToast(msg: 'select any schedule');
                     }
