@@ -76,8 +76,9 @@ class FeeCoursesDetails extends StatelessWidget {
                                     Get.find<NotificationController>()
                                         .fetchUnpaidUsers(
                                       batchID: feeController.batchId.value,
-                                      bodyText: 'bodyText',
-                                      titleText: 'Please pay on time',
+                                      bodyText:
+                                          'Your fee payment of your course is due. Please make the payment to avoid any late fees. Thank you!',
+                                      titleText: 'Fees Reminder',
                                     );
                                   },
                                   buttonstate:
