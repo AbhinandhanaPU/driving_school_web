@@ -242,11 +242,7 @@ class AllCourseStudentDataList extends StatelessWidget {
                   customDeleteShowDialog(
                     context: context,
                     onTap: () {
-                      courseController
-                          .deleteStudentsFromCourse(data)
-                          .then((value) {
-                        Navigator.pop(context);
-                      });
+                      courseController.deleteStudentsFromCourse(data);
                     },
                   );
                 },

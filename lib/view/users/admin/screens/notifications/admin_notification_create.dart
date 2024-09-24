@@ -142,11 +142,16 @@ class AdminNotificationCreate extends StatelessWidget {
                 if (notificationCntrl.formKey.currentState!.validate()) {
                   Future<void> sendNotificationsForRole(String role) async {
                     await notificationCntrl.fetchUsersID(role: role);
-                    await notificationCntrl.sendNotificationSelectedUsers(
+                    await notificationCntrl
+                        .sendNotificationSelectedUsers(
                       icon: Icons.warning_rounded,
-                      whiteshadeColor:InfoNotifierSetup().whiteshadeColor,
+                      whiteshadeColor: InfoNotifierSetup().whiteshadeColor,
                       containerColor: InfoNotifierSetup().containerColor,
-                    );
+                    )
+                        .then((value) {
+                      notificationCntrl.headingController.clear();
+                      notificationCntrl.messageController.clear();
+                    });
                   }
 
                   if (notificationCntrl.selectStudent.value &&
