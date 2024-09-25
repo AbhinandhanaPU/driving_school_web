@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project_driving/colors/colors.dart';
 import 'package:new_project_driving/colors/notification_color/notification_color_widget.dart';
+import 'package:new_project_driving/constant/const.dart';
 import 'package:new_project_driving/constant/constant.validate.dart';
 import 'package:new_project_driving/controller/notification_controller/notification_controller.dart';
 import 'package:new_project_driving/view/widget/blue_container_widget/blue_container_widget.dart';
@@ -138,34 +139,39 @@ class AdminNotificationCreate extends StatelessWidget {
         child: Obx(
           () => ProgressButtonWidget(
               function: () async {
-                notificationCntrl.selectedUSerUIDList.clear();
-                if (notificationCntrl.formKey.currentState!.validate()) {
-                  Future<void> sendNotificationsForRole(String role) async {
-                    await notificationCntrl.fetchUsersID(role: role);
-                    await notificationCntrl
-                        .sendNotificationSelectedUsers(
-                      icon: Icons.warning_rounded,
-                      whiteshadeColor: InfoNotifierSetup().whiteshadeColor,
-                      containerColor: InfoNotifierSetup().containerColor,
-                    )
-                        .then((value) {
-                      notificationCntrl.headingController.clear();
-                      notificationCntrl.messageController.clear();
-                    });
-                  }
+                if (notificationCntrl.selectStudent.value == true ||
+                    notificationCntrl.selectTeacher.value == true) {
+                  notificationCntrl.selectedUSerUIDList.clear();
+                  if (notificationCntrl.formKey.currentState!.validate()) {
+                    Future<void> sendNotificationsForRole(String role) async {
+                      await notificationCntrl.fetchUsersID(role: role);
+                      await notificationCntrl
+                          .sendNotificationSelectedUsers(
+                        icon: Icons.warning_rounded,
+                        whiteshadeColor: InfoNotifierSetup().whiteshadeColor,
+                        containerColor: InfoNotifierSetup().containerColor,
+                      )
+                          .then((value) {
+                        notificationCntrl.headingController.clear();
+                        notificationCntrl.messageController.clear();
+                      });
+                    }
 
-                  if (notificationCntrl.selectStudent.value &&
-                      notificationCntrl.selectTeacher.value) {
-                    // Fetch and send notifications for both students and teachers
-                    await sendNotificationsForRole('student');
-                    await sendNotificationsForRole('teacher');
-                  } else if (notificationCntrl.selectStudent.value) {
-                    // Fetch and send notifications for students only
-                    await sendNotificationsForRole('student');
-                  } else if (notificationCntrl.selectTeacher.value) {
-                    // Fetch and send notifications for teachers only
-                    await sendNotificationsForRole('teacher');
+                    if (notificationCntrl.selectStudent.value &&
+                        notificationCntrl.selectTeacher.value) {
+                      // Fetch and send notifications for both students and teachers
+                      await sendNotificationsForRole('student');
+                      await sendNotificationsForRole('teacher');
+                    } else if (notificationCntrl.selectStudent.value) {
+                      // Fetch and send notifications for students only
+                      await sendNotificationsForRole('student');
+                    } else if (notificationCntrl.selectTeacher.value) {
+                      // Fetch and send notifications for teachers only
+                      await sendNotificationsForRole('teacher');
+                    }
                   }
+                } else {
+                  showToast(msg: 'Select any user type');
                 }
               },
               buttonstate: notificationCntrl.buttonstate.value,
