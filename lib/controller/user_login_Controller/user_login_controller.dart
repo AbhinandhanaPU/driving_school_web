@@ -27,8 +27,8 @@ class UserLoginController extends GetxController {
   final TextEditingController userEmailIDController = TextEditingController();
   final TextEditingController userPasswordController = TextEditingController();
   String batchID = '';
-  late String? schoolID = UserCredentialsController.schoolId;
-  late String? schoolName = UserCredentialsController.schoolName;
+  RxString? schoolID = ''.obs;
+  RxString? schoolName = ''.obs;
 
   Future<bool> secondaryAdminLogin() async {
     //....... .......................................Secondary Admin Login Function
@@ -50,7 +50,7 @@ class UserLoginController extends GetxController {
           await SharedPreferencesHelper.setString(
               SharedPreferencesHelper.userRoleKey, 'secondoryAdmin');
           await SharedPreferencesHelper.setString(
-                  SharedPreferencesHelper.schoolIdKey, schoolID!)
+                  SharedPreferencesHelper.schoolIdKey, schoolID!.value)
               // await SharedPreferencesHelper.setString(
               //         SharedPreferencesHelper.schoolNameKey, schoolName!)
               .then((value) async {
@@ -88,32 +88,31 @@ class UserLoginController extends GetxController {
 
     //....... ........................................Admin  Login Function
     try {
-    
       await serverAuth
           .signInWithEmailAndPassword(
               email: userEmailIDController.text.trim(),
               password: userPasswordController.text.trim())
-          .then((authvalue) async {  final loginUser = await server
-          .collection('DrivingSchoolCollection')
-          .doc(UserCredentialsController.schoolId)
-          .get();
-      UserCredentialsController.adminModel =
-          AdminModel.fromMap(loginUser.data()!);
+          .then((authvalue) async {
         await SharedPreferencesHelper.setString(
             SharedPreferencesHelper.currentUserDocid, authvalue.user!.uid);
-        UserCredentialsController.adminModel =
-            AdminModel.fromMap(loginUser.data()!);
         userUID.value = authvalue.user!.uid;
+        final sample = await server
+            .collection('DrivingSchoolCollection')
+            .doc(userUID.value)
+            .get();
+        UserCredentialsController.schoolId = sample.data()!['schoolID'];
+          schoolID!.value=UserCredentialsController.schoolId!;
+        UserCredentialsController.schoolName = sample.data()!['schoolName'];
+        UserCredentialsController.userRole = sample.data()!['userRole'];
 
         log("Admin ID $userUID");
-        log("schoolID ID $schoolID");
+        log("schoolID ID ${ schoolID!.value}");
 
-        if (userUID.value == schoolID) {
-          log("...........");
+        if (userUID.value == schoolID!.value) {
           await SharedPreferencesHelper.setString(
               SharedPreferencesHelper.userRoleKey, 'admin');
           await SharedPreferencesHelper.setString(
-                  SharedPreferencesHelper.schoolIdKey, schoolID!)
+                  SharedPreferencesHelper.schoolIdKey, schoolID!.value)
               // await SharedPreferencesHelper.setString(
               //         SharedPreferencesHelper.schoolNameKey, schoolName!)
               .then((value) async {
@@ -176,7 +175,7 @@ class UserLoginController extends GetxController {
           await SharedPreferencesHelper.setString(
               SharedPreferencesHelper.userRoleKey, 'student');
           await SharedPreferencesHelper.setString(
-              SharedPreferencesHelper.schoolIdKey, schoolID!);
+              SharedPreferencesHelper.schoolIdKey, schoolID!.value);
           // await SharedPreferencesHelper.setString(
           //     SharedPreferencesHelper.schoolNameKey, schoolName!);
           if (context.mounted) {
@@ -233,7 +232,7 @@ class UserLoginController extends GetxController {
           await SharedPreferencesHelper.setString(
               SharedPreferencesHelper.userRoleKey, 'teacher');
           await SharedPreferencesHelper.setString(
-              SharedPreferencesHelper.schoolIdKey, schoolID!);
+              SharedPreferencesHelper.schoolIdKey, schoolID!.value);
           // await SharedPreferencesHelper.setString(
           //     SharedPreferencesHelper.schoolNameKey, schoolName!);
           if (context.mounted) {
