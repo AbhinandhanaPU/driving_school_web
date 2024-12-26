@@ -174,13 +174,11 @@ class TestController extends GetxController {
               .doc(testDocid)
               .collection('Students')
               .doc(docId)
-              .delete()
-              .then((value) {
-            showToast(msg: "Deleted Successfully");
-            log("Deleted Successfully");
-            Get.back();
-          });
+              .delete();
         }
+        showToast(msg: "Deleted Successfully");
+        log("Deleted Successfully");
+        Get.back();
       } else {
         log("No Test found");
       }
@@ -206,7 +204,7 @@ class TestController extends GetxController {
           .collection('DrivingSchoolCollection')
           .doc(UserCredentialsController.schoolId)
           .collection('Students')
-          .where('status', isEqualTo: true)
+          // .where('status', isEqualTo: true)
           .where('docid', whereIn: studentIds)
           .get();
 

@@ -95,7 +95,7 @@ class StudentController extends GetxController {
         log("Student batch updated to $batchId");
       });
       await addStudentToBatch(studentModel);
-      await checkStudentInBatches(studentModel);
+      await checkStudentFeeBatches(studentModel);
       final docidofcourse = await _fbServer.collection("Courses").get();
       if (docidofcourse.docs.isNotEmpty) {
         for (var courseDoc in docidofcourse.docs) {
@@ -169,7 +169,7 @@ class StudentController extends GetxController {
     }
   }
 
-  Future<void> checkStudentInBatches(StudentModel studentModel) async {
+  Future<void> checkStudentFeeBatches(StudentModel studentModel) async {
     try {
       final batchDoc = await _fbServer.collection('FeesCollection').get();
 
