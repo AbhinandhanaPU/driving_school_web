@@ -2,10 +2,10 @@ import 'package:adaptive_ui_layout/flutter_responsive_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_project_driving/firebase_options.dart';
 import 'package:new_project_driving/controller/user_login_Controller/user_login_controller.dart';
-import 'package:new_project_driving/view/splash_screen/splash_screen.dart';
+import 'package:new_project_driving/firebase_options.dart';
 import 'package:new_project_driving/utils/user_auth/user_credentials.dart';
+import 'package:new_project_driving/view/splash_screen/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:adaptive_ui_layout/flutter_responsive_layout.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:new_project_driving/colors/colors.dart';
@@ -14,7 +13,6 @@ import 'package:new_project_driving/controller/user_signup_controller/teacher_si
 import 'package:new_project_driving/fonts/fonts.dart';
 import 'package:new_project_driving/view/widget/Iconbackbutton.dart';
 import 'package:new_project_driving/view/widget/signup_form_field_widget/signup_form_field_widget.dart';
-import 'package:uuid/uuid.dart';
 
 class StudentProfileCreationScreen extends StatefulWidget {
   const StudentProfileCreationScreen({super.key});
@@ -337,15 +335,15 @@ class _StudentProfileCreationScreenState
                                       ),
                                     );
                                   } else {
-                                    String uid = const Uuid().v1();
-                                    UploadTask uploadTask = FirebaseStorage
-                                        .instance
-                                        .ref()
-                                        .child("files/studentProfile/$uid")
-                                        .putData(file!);
-                                    final TaskSnapshot snap = await uploadTask;
-                                    studentSignUpController.downloadUrl.value =
-                                        await snap.ref.getDownloadURL();
+                                    // String uid = const Uuid().v1();
+                                    // UploadTask uploadTask = FirebaseStorage
+                                    //     .instance
+                                    //     .ref()
+                                    //     .child("files/studentProfile/$uid")
+                                    //     .putData(file!);
+                                    // final TaskSnapshot snap = await uploadTask;
+                                    // studentSignUpController.downloadUrl.value =
+                                    //     await snap.ref.getDownloadURL();
                                     await studentSignUpController
                                         .createStudent(context);
                                   }

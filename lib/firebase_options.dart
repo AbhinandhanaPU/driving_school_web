@@ -21,13 +21,25 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,48 +52,13 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC0qq5hN6hqw0SsQvczWg2hbm5vAufjvXs',
-    appId: '1:693384841272:ios:90e470901be80cd777becd',
-    messagingSenderId: '693384841272',
-    projectId: 'driving-school-6e78e',
-    storageBucket: 'driving-school-6e78e.appspot.com',
-    iosBundleId: 'com.example.newProjectDriving',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC0qq5hN6hqw0SsQvczWg2hbm5vAufjvXs',
-    appId: '1:693384841272:ios:90e470901be80cd777becd',
-    messagingSenderId: '693384841272',
-    projectId: 'driving-school-6e78e',
-    storageBucket: 'driving-school-6e78e.appspot.com',
-    iosBundleId: 'com.example.newProjectDriving',
-  );
-
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBxcSjfdNFCPuMc_oYbZJNwRe9snW5FnRA',
-    appId: '1:693384841272:web:119aea8e1d7008c877becd',
-    messagingSenderId: '693384841272',
-    projectId: 'driving-school-6e78e',
-    authDomain: 'driving-school-6e78e.firebaseapp.com',
-    storageBucket: 'driving-school-6e78e.appspot.com',
+    apiKey: 'AIzaSyArLfU6w7piL_OymvYDpQ5bxlJb0FY64DI',
+    appId: '1:916555957522:web:25c0956ca2c75a2eb49fcb',
+    messagingSenderId: '916555957522',
+    projectId: 'bca-2024-5e55a',
+    authDomain: 'bca-2024-5e55a.firebaseapp.com',
+    storageBucket: 'bca-2024-5e55a.firebasestorage.app',
+    measurementId: 'G-4PNDMBX7YE',
   );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBHah0nNCIBpQSbtBN-6LR13h58dHJVu58',
-    appId: '1:693384841272:android:a525c41697fd7a8277becd',
-    messagingSenderId: '693384841272',
-    projectId: 'driving-school-6e78e',
-    storageBucket: 'driving-school-6e78e.appspot.com',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBxcSjfdNFCPuMc_oYbZJNwRe9snW5FnRA',
-    appId: '1:693384841272:web:2429292bfcbcec7077becd',
-    messagingSenderId: '693384841272',
-    projectId: 'driving-school-6e78e',
-    authDomain: 'driving-school-6e78e.firebaseapp.com',
-    storageBucket: 'driving-school-6e78e.appspot.com',
-  );
-
 }

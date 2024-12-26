@@ -88,18 +88,28 @@ class UserLoginController extends GetxController {
 
     //....... ........................................Admin  Login Function
     try {
+    
       await serverAuth
           .signInWithEmailAndPassword(
               email: userEmailIDController.text.trim(),
               password: userPasswordController.text.trim())
-          .then((authvalue) async {
+          .then((authvalue) async {  final loginUser = await server
+          .collection('DrivingSchoolCollection')
+          .doc(UserCredentialsController.schoolId)
+          .get();
+      UserCredentialsController.adminModel =
+          AdminModel.fromMap(loginUser.data()!);
         await SharedPreferencesHelper.setString(
             SharedPreferencesHelper.currentUserDocid, authvalue.user!.uid);
+        UserCredentialsController.adminModel =
+            AdminModel.fromMap(loginUser.data()!);
         userUID.value = authvalue.user!.uid;
+
         log("Admin ID $userUID");
         log("schoolID ID $schoolID");
 
         if (userUID.value == schoolID) {
+          log("...........");
           await SharedPreferencesHelper.setString(
               SharedPreferencesHelper.userRoleKey, 'admin');
           await SharedPreferencesHelper.setString(
